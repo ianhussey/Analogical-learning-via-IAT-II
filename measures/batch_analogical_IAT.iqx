@@ -1,0 +1,70 @@
+﻿************************************************
+Batch script for IAT as an analogical task II
+************************************************
+Ian Hussey (ian.hussey@ugent.be)
+GPLv3+ license
+
+************************************************
+overview 
+************************************************
+If participants do not agree to participate in the experiment, the entire batch file
+gets aborted via function script.abort() in the ConsentformScript.iqx script
+
+************************************************
+condition 1 - IAT then derivation opportunities
+ 
+<batch>
+/ subjects=(1 of 4)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="sciat_white_1.iqx"
+/ file="ratings.iqx"
+/ file="iat.iqx"
+/ file="ratings_2.iqx"
+/ file="sciat_white_2.iqx"
+/ file="compliance.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+<batch>
+/ subjects=(2 of 4)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="sciat_white_1.iqx"
+/ file="ratings.iqx"
+/ file="iat.iqx"
+/ file="ratings_2.iqx"
+/ file="sciat_white_2.iqx"
+/ file="compliance.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+************************************************
+condition 2 - derivation opportunities then IAT
+
+<batch>
+/ subjects=(3 of 4)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="sciat_black_1.iqx"
+/ file="ratings.iqx"
+/ file="iat.iqx"
+/ file="ratings_black_2.iqx"
+/ file="sciat_2.iqx"
+/ file="compliance.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+<batch>
+/ subjects=(4 of 4)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="sciat_black_1.iqx"
+/ file="ratings.iqx"
+/ file="iat.iqx"
+/ file="ratings_black_2.iqx"
+/ file="sciat_2.iqx"
+/ file="compliance.iqx"
+/ file="debriefing.iqx"
+</batch>
+
