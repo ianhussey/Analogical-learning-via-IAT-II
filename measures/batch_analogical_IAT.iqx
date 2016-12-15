@@ -12,9 +12,9 @@ gets aborted via function script.abort() in the ConsentformScript.iqx script
 
 ************************************************
 
-IAT/SCIAT block order 1 & race IAT & ratings first
+IAT/SCIAT block order 1 & race IAT
 <batch>
-/ subjects=(1 of 8)
+/ subjects=(1 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="modern_racism_scale.iqx"
@@ -25,9 +25,9 @@ IAT/SCIAT block order 1 & race IAT & ratings first
 / file="debriefing.iqx"
 </batch>
 
-IAT/SCIAT block order 2 & race IAT & ratings firs
+IAT/SCIAT block order 2 & race IAT
 <batch>
-/ subjects=(2 of 8)
+/ subjects=(2 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="modern_racism_scale.iqx"
@@ -38,35 +38,9 @@ IAT/SCIAT block order 2 & race IAT & ratings firs
 / file="debriefing.iqx"
 </batch>
 
-IAT/SCIAT block order 1 & race IAT & SCIAT first
+IAT/SCIAT block order 1 & flowers insects IAT 
 <batch>
-/ subjects=(3 of 8)
-/ groupassignment = subjectnumber
-/ file="demographics.iqx"
-/ file="modern_racism_scale.iqx"
-/ file="IAT_race.iqx"
-/ file="sciat.iqx"
-/ file="ratings.iqx"
-/ file="demand_compliance.iqx"
-/ file="debriefing.iqx"
-</batch>
-
-IAT/SCIAT block order 2 & race IAT & SCIAT first
-<batch>
-/ subjects=(4 of 8)
-/ groupassignment = subjectnumber
-/ file="demographics.iqx"
-/ file="modern_racism_scale.iqx"
-/ file="IAT_race.iqx"
-/ file="sciat.iqx"
-/ file="ratings.iqx"
-/ file="demand_compliance.iqx"
-/ file="debriefing.iqx"
-</batch>
-
-IAT/SCIAT block order 1 & flowers insects IAT & ratings first
-<batch>
-/ subjects=(5 of 8)
+/ subjects=(3 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="modern_racism_scale.iqx"
@@ -77,41 +51,15 @@ IAT/SCIAT block order 1 & flowers insects IAT & ratings first
 / file="debriefing.iqx"
 </batch>
 
-IAT/SCIAT block order 2 & flowers insects IAT & ratings first
+IAT/SCIAT block order 2 & flowers insects IAT 
 <batch>
-/ subjects=(6 of 8)
+/ subjects=(4 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="modern_racism_scale.iqx"
 / file="IAT_flowers_insects.iqx"
 / file="ratings.iqx"
 / file="sciat.iqx"
-/ file="demand_compliance.iqx"
-/ file="debriefing.iqx"
-</batch>
-
-IAT/SCIAT block order 1 & flowers insects IAT & SCIAT first
-<batch>
-/ subjects=(7 of 8)
-/ groupassignment = subjectnumber
-/ file="demographics.iqx"
-/ file="modern_racism_scale.iqx"
-/ file="IAT_flowers_insects.iqx"
-/ file="sciat.iqx"
-/ file="ratings.iqx"
-/ file="demand_compliance.iqx"
-/ file="debriefing.iqx"
-</batch>
-
-IAT/SCIAT block order 2 & flowers insects IAT & SCIAT first
-<batch>
-/ subjects=(8 of 8)
-/ groupassignment = subjectnumber
-/ file="demographics.iqx"
-/ file="modern_racism_scale.iqx"
-/ file="IAT_flowers_insects.iqx"
-/ file="sciat.iqx"
-/ file="ratings.iqx"
 / file="demand_compliance.iqx"
 / file="debriefing.iqx"
 </batch>
