@@ -1,0 +1,93 @@
+﻿*********************************************
+Ratings scales
+*********************************************
+Ian Hussey (ian.hussey@ugent.be)
+GPLv3+ license
+
+*********************************************
+Stimuli
+
+<item items>
+/1 = "It is easy to understand the anger of black people in my country."
+/2 = "I am against racial preferences in hiring and education."
+/3 = "Black people are getting too demanding in their push for equal rights."
+/4 = "Over the past few years blacks have gotten more economically than they deserve."
+/5 = "Over the past few years the government and news media have shown more respect to blacks than they deserve."
+/6 = "Black people should not push themselves where they’re not wanted."
+/7 = "Discrimination against black people is no longer a problem in my country."
+</item>
+
+*********************************************
+Instructions
+
+<instruct>
+/ windowsize = (80%, 80%)
+/ inputdevice = mouse
+/ nextkey = (" ")
+/ inputdevice = keyboard
+</instruct>
+
+<page intro>
+^Please indicate how much you agree with each of the follow statements.
+</page>
+
+*********************************************
+DEFAULTS
+
+<defaults>
+/minimumversion = "4.0.2.0"
+/ canvasaspectratio = (4, 3)
+/ fontstyle = ("Arial", 3.00%)
+/ txcolor = white
+/ screencolor = black
+/ txbgcolor = black
+</defaults>
+
+<values>
+/ questionfontsize = 5%
+</values>
+
+*********************************************
+DATA
+
+<data>
+/ file = "modern_racism_scale.iqdat"
+/ columns = [build, date, time, subject, blockcode, blocknum, trialcode, trialnum, stimulusitem, response]
+</data>
+
+*********************************************
+STIMULI
+
+<text scale>
+/ items = items
+/ position = (50, 40)
+</text>
+
+
+*********************************************
+TRIALS
+
+<likert likert_scale>
+/ numpoints = 5
+/ anchors = [1="Strongly disagree"; 2="Disagree"; 3="Neutral"; 4="Agree"; 5="Strongly agree"]
+/ anchorwidth = 15%
+/ fontstyle = ("Arial", 2%)
+/ stimulusframes = [1 = scale]
+/ position = (50%, 70%)
+</likert>
+
+*********************************************
+BLOCKS
+
+<block ratings>
+/ trials = [1-7 = likert_scale]
+</block>
+
+*********************************************
+EXPERIMENT
+
+<expt>
+/ preinstructions = (intro)
+/ blocks = [1 = ratings]
+</expt>
+
