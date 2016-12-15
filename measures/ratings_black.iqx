@@ -79,7 +79,7 @@ TRIALS
 *********************************************
 BLOCKS
 
-<block ratings_black_1>
+<block ratings_black>
 / trials = [1-6 = noreplace(images)]
 </block>
 

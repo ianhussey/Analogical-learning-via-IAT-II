@@ -12,55 +12,91 @@ gets aborted via function script.abort() in the ConsentformScript.iqx script
 
 ************************************************
 
-IAT block order 1 & white SCIAT 
+IAT/SCIAT block order 1 & race IAT & ratings first
 <batch>
-/ subjects=(1 of 4)
+/ subjects=(1 of 8)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
-/ file="sciat_white_1.iqx"
-/ file="ratings_white_1.iqx"
-/ file="IAT.iqx"
-/ file="ratings_white_2.iqx"
-/ file="sciat_white_2.iqx"
+/ file="IAT_race.iqx"
+/ file="ratings_black.iqx"
+/ file="sciat_black.iqx"
 / file="demand_compliance.iqx"
 </batch>
 
-IAT block order 2 & white SCIAT 
+IAT/SCIAT block order 2 & race IAT & ratings firs
 <batch>
-/ subjects=(2 of 4)
+/ subjects=(2 of 8)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
-/ file="sciat_white_1.iqx"
-/ file="ratings_white_1.iqx"
-/ file="IAT.iqx"
-/ file="ratings_white_2.iqx"
-/ file="sciat_white_2.iqx"
+/ file="IAT_race.iqx"
+/ file="ratings_black.iqx"
+/ file="sciat_black.iqx"
 / file="demand_compliance.iqx"
 </batch>
 
-IAT block order 1 & black SCIAT 
+IAT/SCIAT block order 1 & race IAT & SCIAT first
 <batch>
-/ subjects=(3 of 4)
+/ subjects=(3 of 8)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
-/ file="sciat_black_1.iqx"
-/ file="ratings_black_1.iqx"
-/ file="IAT.iqx"
-/ file="ratings_black_2.iqx"
-/ file="sciat_2.iqx"
+/ file="IAT_race.iqx"
+/ file="sciat_black.iqx"
+/ file="ratings_black.iqx"
 / file="demand_compliance.iqx"
 </batch>
 
-IAT block order 2 & black SCIAT 
+IAT/SCIAT block order 2 & race IAT & SCIAT first
 <batch>
-/ subjects=(4 of 4)
+/ subjects=(4 of 8)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
-/ file="sciat_black_1.iqx"
-/ file="ratings_black_1.iqx"
-/ file="IAT.iqx"
-/ file="ratings_black_2.iqx"
-/ file="sciat_2.iqx"
+/ file="IAT_race.iqx"
+/ file="sciat_black.iqx"
+/ file="ratings_black.iqx"
+/ file="demand_compliance.iqx"
+</batch>
+
+IAT/SCIAT block order 1 & flowers insects IAT & ratings first
+<batch>
+/ subjects=(5 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="ratings_black.iqx"
+/ file="sciat_black.iqx"
+/ file="demand_compliance.iqx"
+</batch>
+
+IAT/SCIAT block order 2 & flowers insects IAT & ratings first
+<batch>
+/ subjects=(6 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="ratings_black.iqx"
+/ file="sciat_black.iqx"
+/ file="demand_compliance.iqx"
+</batch>
+
+IAT/SCIAT block order 1 & flowers insects IAT & SCIAT first
+<batch>
+/ subjects=(7 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="sciat_black.iqx"
+/ file="ratings_black.iqx"
+/ file="demand_compliance.iqx"
+</batch>
+
+IAT/SCIAT block order 2 & flowers insects IAT & SCIAT first
+<batch>
+/ subjects=(8 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="sciat_black.iqx"
+/ file="ratings_black.iqx"
 / file="demand_compliance.iqx"
 </batch>
 
