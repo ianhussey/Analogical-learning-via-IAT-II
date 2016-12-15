@@ -107,19 +107,19 @@ participants_with_full_data <-
   dplyr::semi_join(participants_with_full_data, demand_compliance, by = "participant")
 
 
-# modern_racism_scale <-
-#   trimmed_df %>%
-#   dplyr::filter(grepl("modern_racism_scale", trialcode)) %>%  # filter rows where the block_name includes string
-#   dplyr::group_by(participant) %>%
-#   dplyr::summarize(racism_scale_rows = n()) %>%  # count the number of trials per participant
-#   dplyr::ungroup() %>%
-#   dplyr::mutate(modal_racism_scale_rows = modal_value(modal_racism_scale_rows)) %>%  # find modal n of trials
-#   dplyr::rowwise() %>%
-#   dplyr::filter(racism_scale_rows == modal_racism_scale_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
-#   dplyr::select(-modal_racism_scale_rows)
-#
-# participants_with_full_data <-
-#   dplyr::semi_join(participants_with_full_data, modern_racism_scale, by = "participant")
+modern_racism_scale <-
+  trimmed_df %>%
+  dplyr::filter(grepl("modern_racism_scale", trialcode)) %>%  # filter rows where the block_name includes string
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(racism_scale_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_racism_scale_rows = modal_value(modal_racism_scale_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(racism_scale_rows == modal_racism_scale_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_racism_scale_rows)
+
+participants_with_full_data <-
+  dplyr::semi_join(participants_with_full_data, modern_racism_scale, by = "participant")
 
 
 # participants with at least partial data
@@ -146,9 +146,9 @@ prolific_codes_for_complete_participants <-
   dplyr::distinct(participant, .keep_all = TRUE) 
 
 # participants to credit
-prolific_codes_for_complete_participants %>% readr::write_csv("processed data/prolific codes - complete data.csv")
+prolific_codes_for_complete_participants %>% readr::write_csv("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/prolific codes - complete data.csv")
 # participant with complete data - i.e., the inclusion list
-prolific_codes_for_complete_participants %>% select(participant) %>% readr::write_csv("processed data/inclusion list.csv")
+prolific_codes_for_complete_participants %>% select(participant) %>% readr::write_csv("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/inclusion list.csv")
 
 # 1.1 N of complete participants
 prolific_codes_for_complete_participants %>% dplyr::summarize(participant = n())
@@ -161,7 +161,7 @@ prolific_codes_for_incomplete_participants <-
   dplyr::select(participant, response) %>%
   dplyr::distinct(participant, .keep_all = TRUE) 
 
-prolific_codes_for_incomplete_participants %>% readr::write_csv("processed data/prolific codes - incomplete data.csv")
+prolific_codes_for_incomplete_participants %>% readr::write_csv("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/prolific codes - incomplete data.csv")
 
 # 2.1 N of incomplete participants
 prolific_codes_for_incomplete_participants %>% dplyr::summarize(participant = n())
