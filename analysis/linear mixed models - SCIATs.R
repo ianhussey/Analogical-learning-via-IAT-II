@@ -74,14 +74,14 @@ model_1 <- afex::mixed(rt ~ block * IAT_condition + modern_racism_scale_total + 
                        progress = TRUE, 
                        return = "mixed")
 
-save(model_1, file = "model_1_lmm_freq_sciats.RData")
-#load(model_1, file = "model_1_lmm_freq_sciats.RData")
+save(model_1, file = "analysis/model_1_lmm_freq_sciats.RData")
+#load(model_1, file = "analysis/model_1_lmm_freq_sciats.RData")
 
 summary(model_1)
 print(model_1)  # same as using anova() here
 
 # write to disk
-sink("1 frequentist linear mixed effects model - sciats.txt")
+sink("analysis/1 frequentist linear mixed effects model - sciats.txt")
 summary(model_1)
 print(model_1)  # same as using anova() here
 sink()
@@ -101,8 +101,8 @@ model_2 <- generalTestBF(rt ~ block * IAT_condition + modern_racism_scale_total 
                          rscaleRandom = "nuisance",  # default
                          multicore = TRUE) 
 
-save(model_2, file = "model_2_lmm_BF_sciats.RData")
-#load(model_2, file = "model_2_lmm_BF_sciats.RData")
+save(model_2, file = "analysis/model_2_lmm_BF_sciats.RData")
+#load(model_2, file = "analysis/model_2_lmm_BF_sciats.RData")
 
 # all BF models
 model_2
@@ -113,7 +113,7 @@ model_2["block + IAT_condition + block:IAT_condition + modern_racism_scale_total
   model_2["block + modern_racism_scale_total + participant"]
 
 # write to disk
-sink("2 BF linear mixed effects model - sciats.txt")
+sink("analysis/2 BF linear mixed effects model - sciats.txt")
 cat("FULL MODEL \n\n")
 model_2
 cat("\n\ninteraction after controlling for participant (random) and racism (fixed)\n\n")
@@ -137,14 +137,14 @@ model_3 <- afex::mixed(rt ~ block * IAT_condition + modern_racism_scale_total + 
                        progress = TRUE, 
                        return = "mixed")
 
-save(model_3, file = "model_3_lmm_freq_sciats.RData")
-#load(model_3, file = "model_3_lmm_freq_sciats.RData")
+save(model_3, file = "analysis/model_3_lmm_freq_sciats.RData")
+#load(model_3, file = "analysis/model_3_lmm_freq_sciats.RData")
 
 summary(model_3)
 print(model_3)  # same as using anova() here
 
 # write to disk
-sink("3 frequentist linear mixed effects model - sciats - demand compliant removed.txt")
+sink("analysis/3 frequentist linear mixed effects model - sciats - demand compliant removed.txt")
 summary(model_3)
 print(model_3)  # same as using anova() here
 sink()
@@ -165,8 +165,8 @@ model_4 <- generalTestBF(rt ~ block * IAT_condition + modern_racism_scale_total 
                          rscaleRandom = "nuisance",  # default
                          multicore = TRUE) 
 
-save(model_4, file = "model_4_lmm_BF_sciats.RData")
-#load(model_4, file = "model_4_lmm_BF_sciats.RData")
+save(model_4, file = "analysis/model_4_lmm_BF_sciats.RData")
+#load(model_4, file = "analysis/model_4_lmm_BF_sciats.RData")
 
 # all BF models
 model_4
@@ -177,7 +177,7 @@ model_4["block + IAT_condition + block:IAT_condition + modern_racism_scale_total
   model_4["block + modern_racism_scale_total + participant"]
 
 # write to disk
-sink("4 BF linear mixed effects model - sciats - demand compliance removed.txt")
+sink("analysis/4 BF linear mixed effects model - sciats - demand compliance removed.txt")
 cat("FULL MODEL \n\n")
 model_4
 cat("\n\ninteraction after controlling for participant (random) and racism (fixed)\n\n")
