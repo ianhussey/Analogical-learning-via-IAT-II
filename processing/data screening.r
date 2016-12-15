@@ -16,7 +16,7 @@ library(data.table)
 
 
 ## Set the working directory
-setwd("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/pilot 1/")
+setwd("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/raw data/")
 
 # Read all files with the .iqdat extension
 files <- list.files(pattern = "\\.csv$")  

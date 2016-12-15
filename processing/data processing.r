@@ -21,7 +21,7 @@ library(schoRsch)
 
 
 ## Set the working directory
-setwd("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/pilot 1/")
+setwd("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/raw data/")
 
 # Read all files with the .iqdat extension
 files <- list.files(pattern = "\\.csv$")  
@@ -55,7 +55,7 @@ cleaned_df <-
                 rt = as.numeric(rt))
   
 # MANUAL INCLUSIONS HERE - ONLY THOSE WITH COMPLETE DATA
-inclusion_df <- read.csv("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/pilot 1/processed data/inclusion list.csv")
+inclusion_df <- read.csv("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/inclusion list.csv")
 
 cleaned_df <- dplyr::inner_join(cleaned_df, inclusion_df, by = "participant")
 
