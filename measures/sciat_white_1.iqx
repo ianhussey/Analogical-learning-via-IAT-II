@@ -110,7 +110,7 @@ Editable Parameters: can be easily set by each experimenter
 Stimuli: Edit here
 ***********************************************************************
 <item attributeAlabel>
-/1 = "Good"
+/1 = "Positive"
 </item>
 
 <item attributeA>
@@ -124,9 +124,8 @@ Stimuli: Edit here
 /8 = "Wonderful"
 </item>
 
-
 <item attributeBlabel>
-/1 = "Bad"
+/1 = "Negative"
 </item>
 
 <item attributeB>
@@ -263,7 +262,7 @@ expressions.d:						overall d-score
 									with qualifying latencies
 
 <data>
-/file = "SC_IAT_rawdata.iqdat"
+/file = "SCIAT_1_rawdata.iqdat"
 /separatefiles = true
 / columns = [date, time, group, subject, blockcode, blocknum, trialcode, trialnum, 
 			response, correct, latency, stimulusnumber, stimulusitem,
@@ -290,7 +289,7 @@ script.elapsedtime:					time it took to run script (in ms)
 						with qualifying latencies
 
 <summarydata >
-/file = "SC_IAT_summary.iqdat"
+/file = "SCIAT_1_summary.iqdat"
 /columns = [script.startdate, script.starttime, script.subjectid, script.groupid, script.elapsedtime, values.completed, 
 			expressions.m1, expressions.sd1, expressions.m2, expressions.sd2,
 			expressions.d, expressions.latdiff, expressions.percentcorrect]
@@ -342,29 +341,19 @@ Task instruction stimuli
 
 <item instructions>
 / 1 = "
-Put your middle or index fingers on the <%values.key_left_label%>  and <%values.key_right_label%> keys of your keyboard. Words representing the categories at the top will appear one-by-one in the middle of the screen. When the item belongs to a category on the left, press the <%values.key_left_label%> key; when the item belongs to a category on the right, press the <%values.key_right_label%> key. Items belong to only one category. If you make an error, an X will appear.
+Put your middle or index fingers on the E and I keys. 
 
-This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. Going too slow or making too many errors will result in an uninterpretable score. Continue on with some practice trials."
+Pictures and words representing the categories at the top will appear in the middle of the screen. 
+Categorize them using the E key for categories on the left and I key for categories on the right. 
+If you make an error, an X will appear - hit the correct key to continue.
+
+This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. 
+
+This task will take about 5 minutes to complete."
 / 2 = "
-Sort the same three categories again.
-
-Remember: Put your middle or index fingers on the <%values.key_left_label%>  and <%values.key_right_label%> keys of your keyboard. Words representing the categories at the top will appear one-by-one in the middle of the screen. When the item belongs to a category on the left, press the <%values.key_left_label%> key; when the item belongs to a category on the right, press the <%values.key_right_label%> key. Items belong to only one category. If you make an error, an X will appear.
-
-This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. Going too slow or making too many errors will result in an uninterpretable score."
-
+Notice above, there are now three cateogries to be categorized."
 / 3 = "
-See above, the three categories now appear together in a new configuration. Remember, each item belongs to only one group.
-
-The rules stay the same: Words representing the categories at the top will appear one-by-one in the middle of the screen. When the item belongs to a category on the left, press the <%values.key_left_label%> key; when the item belongs to a category on the right, press the <%values.key_right_label%> key. Items belong to only one category. If you make an error, an X will appear.
-
-This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. Going too slow or making too many errors will result in an uninterpretable score. Continue on with some practice trials."
-
-/ 4 = "
-Sort the same three categories again.
-
-Remember: Put your middle or index fingers on the <%values.key_left_label%>  and <%values.key_right_label%> keys of your keyboard. Words representing the categories at the top will appear one-by-one in the middle of the screen. When the item belongs to a category on the left, press the <%values.key_left_label%> key; when the item belongs to a category on the right, press the <%values.key_right_label%> key. Items belong to only one category. If you make an error, an X will appear.
-
-This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. Going too slow or making too many errors will result in an uninterpretable score."
+See above, one of the three categories has changed sides. Sort the categories using the new configuration."
 </item>
 
 <text spacebar>
@@ -376,13 +365,13 @@ This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes
 <text attributeA>
 / items = attributeA
 / fontstyle = ("Arial", 5%)
-/ txcolor = (0, 255, 0)
+/ txcolor = purple
 </text>
 
 <text attributeB>
 / items = attributeB
 / fontstyle = ("Arial", 5%)
-/ txcolor = (0, 255, 0)
+/ txcolor = purple
 </text>
 
 <picture targetA>
@@ -402,7 +391,7 @@ This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes
 / valign = top
 / halign = left
 / position = (5%, 5%)
-/ txcolor = (0, 255, 0)
+/ txcolor = purple
 / fontstyle = ("Arial", 5%)
 </text>
 
@@ -411,7 +400,7 @@ This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes
 / valign = top
 / halign = right
 / position = (95%, 5%)
-/ txcolor = (0, 255, 0)
+/ txcolor = purple
 / fontstyle = ("Arial", 5%)
 </text>
 
@@ -528,22 +517,20 @@ Trials
 Blocks
 ***********************************************************************
 
-Note: presents the trials in a  7:7:10 ratio => 14 (good + target) on responsekey_left and 10 (bad) on responsekey_right
 <block practice_compatibletest>
-/ bgstim = (attributeAleft, orleft, targetAleftmixed, attributeBright)
+/ bgstim = (attributeAleft, attributeBright)
 / trials = [1=instructions; 
-2-25 = noreplace(targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft,
-				attributeA, attributeA, attributeA, attributeA, attributeA,  attributeA, attributeA,
-				attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB)]
+			2-11 = noreplace(attributeA, attributeA, attributeA, attributeA, attributeA,
+							 attributeB, attributeB, attributeB, attributeB, attributeB)]
 / responsemode = correct
 </block>
 
-Note: presents the trials in a  7:7:10 ratio => 14 (good + target) on responsekey_left and 10 (bad) on responsekey_right
+Note: presents the trials in a  20:20:30 ratio => 40 (good + target) on responsekey_left and 30 (bad) on responsekey_right
 <block compatibletest>
 / bgstim = (attributeAleft, orleft, targetAleftmixed, attributeBright)
-/ trials = [1-72 =noreplace(targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft,
-				attributeA, attributeA, attributeA, attributeA, attributeA,  attributeA, attributeA,
-				attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB)]
+/ trials = [1-70 = noreplace(targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, 
+							 attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, 
+							 attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB)]
 / ontrialend = [if(block.compatibletest.latency  <= 10000) values.sum1 =  values.sum1 + block.compatibletest.latency]
 / ontrialend = [if(block.compatibletest.latency  <= 10000) values.n1 =  values.n1 + 1]
 / ontrialend = [if(block.compatibletest.latency  <= 10000) values.ss1 =  values.ss1 + (block.compatibletest.latency * block.compatibletest.latency)]
@@ -553,19 +540,19 @@ Note: presents the trials in a  7:7:10 ratio => 14 (good + target) on responseke
 
 Note: presents the trials in a  7:7:10 ratio => 10 (good) on responsekey_left and 14 (bad + target) on responsekey_right
 <block practice_incompatibletest>
-/ bgstim = (attributeAleft, targetARightMixed, orright, attributeBright)
-/ trials = [1=instructions; 2-25 = noreplace(targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright,
-				attributeA, attributeA, attributeA, attributeA, attributeA,  attributeA, attributeA, attributeA, attributeA, attributeA,
-				attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB)]
+/ bgstim = (attributeAleft, attributeBright)
+/ trials = [1=instructions; 
+			2-11 = noreplace(attributeA, attributeA, attributeA, attributeA, attributeA,
+							 attributeB, attributeB, attributeB, attributeB, attributeB)]
 / responsemode = correct
 </block>
 
 Note: presents the trials in a  7:7:10 ratio => 10 (good) on responsekey_left and 14 (bad + target) on responsekey_right
 <block incompatibletest>
 / bgstim = (attributeAleft, targetARightMixed, orright, attributeBright)
-/ trials = [1-72 = noreplace(targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright,
-				attributeA, attributeA, attributeA, attributeA, attributeA,  attributeA, attributeA, attributeA, attributeA, attributeA,
-				attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB)]
+/ trials = [1-70 = noreplace(targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, 
+							 attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA,   
+							 attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, )]
 / ontrialend = [if(block.incompatibletest.latency  <= 10000) values.sum2 =  values.sum2 + block.incompatibletest.latency]
 / ontrialend = [if(block.incompatibletest.latency  <= 10000) values.n2 =  values.n2 + 1]
 / ontrialend = [if(block.incompatibletest.latency  <= 10000) values.ss2 =  values.ss2 + (block.incompatibletest.latency * block.incompatibletest.latency)]
@@ -597,39 +584,26 @@ Experiment
 
 <expt>
 /subjects = (1 of 2)
-/groupassignment = groupnumber
+/groupassignment = subjectnumber
 / blocks = [1=practice_compatibletest; 2=compatibletestinstructions; 3=compatibletest;
- 4=practice_incompatibletest; 5=incompatibletestinstructions; 6=incompatibletest; 7=summary]
+			4=incompatibletestinstructions; 5=incompatibletest; 6=summary]
 /onexptend = [values.completed = 1]
 </expt>
 
 <expt>
 /subjects = (2 of 2)
-/groupassignment = groupnumber
+/groupassignment = subjectnumber
 / blocks = [1=practice_incompatibletest; 2=incompatibletestinstructions; 3=incompatibletest; 
-4=practice_compatibletest; 5=compatibletestinstructions; 6=compatibletest; 7=summary]
+			4=compatibletestinstructions; 5=compatibletest; 6=summary]
 /onexptend = [values.completed = 1]
 </expt>
 
 ***********************************************************************
 Test Monkey
 ***********************************************************************
+
 <monkey>
 / latencydistribution = normal(500, 100)
 / percentcorrect = 90
 </monkey>
-
-***********************************************************************
-End of File
-***********************************************************************
-
-
-
-
-
-
-
-
-
-
 

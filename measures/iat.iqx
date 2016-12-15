@@ -41,7 +41,7 @@ these parameters can be changed easily by each experimenter
 /showsummaryfeedback:				set parameter showsummaryfeedback = true to display summary feedback to participants at the end (default)
 									set parameter showsummaryfeedback = false if no summary feedback should be presented to participants
 <values>
-/showsummaryfeedback = true
+/showsummaryfeedback = false
 </values>
 
 ***********************************************************************
@@ -52,7 +52,7 @@ stimulus items and labels immediately below this line.
 ***********************************************************************
 
 <item attributeAlabel>
-/1 = "Good"
+/1 = "Positive"
 </item>
 
 <item attributeA>
@@ -67,7 +67,7 @@ stimulus items and labels immediately below this line.
 </item>
 
 <item attributeBlabel>
-/1 = "Bad"
+/1 = "Negative"
 </item>
 
 <item attributeB>
@@ -321,28 +321,28 @@ Task instruction stimuli
 </text>
 
 <item instructions>
-/ 1 = "Put your middle or index fingers on the E and I keys of your keyboard. Pictures or words representing the categories at the top will appear one-by-one in the middle of the screen. When the item belongs to a category on the left, press the E key; when the item belongs to a category on the right, press the I key. Items belong to only one category. If you make an error, an X will appear - fix the error by hitting the other key.
+/ 1 = "
+Put your middle or index fingers on the E and I keys. 
 
-This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. Going too slow or making too many errors will result in an uninterpretable score. This task will take about 5 minutes to complete."
-/ 2 = "See above, the categories have changed. the items for sorting have changed as well. The rules, however, are the same.
+Pictures and words representing the categories at the top will appear in the middle of the screen. 
+Categorize them using the E key for categories on the left and I key for categories on the right. 
+If you make an error, an X will appear - hit the correct key to continue.
 
-When the item belongs to a category on the left, press the E key; when the item belongs to a category on the right, press the I key. Items belong to only one category. An X appears after an error - fix the error by hitting the other key. GO AS FAST AS YOU CAN."
-/ 3 = "See above, the four categories you saw separately now appear together. Remember, each item belongs to only one group. For example, if the categories <%item.targetalabel.item(1)%> and <%item.attributealabel.item(1)%> appear on separate sides above - pictures or words meaning <%item.targetalabel.item(1)%> would go in the <%item.targetalabel.item(1)%> category, not the <%item.attributealabel.item(1)%> category.
+This is a timed sorting task. GO AS FAST AS YOU CAN while making as few mistakes as possible. 
 
-The green and white labels and items may help to identify the appropriate category. Use the E and I keys to categorize items into four groups left and right, and correct errors by hitting the other key."
-
-/ 4 = "Sort the same four categories again. Remember to go as fast as you can while making as few mistakes as possible.
-
-The green and white labels and items may help to identify the appropriate category. Use the E and I keys to categorize items into the four groups left and right, and correct errors by hitting the other key."
-/ 5 = "Notice above, there are only two cateogries and they have switched positions. The concept that was previously on the left is now on the right, and the concept that was on the right is now on the left. Practice this new configuration.
-
-Use the E and I keys to catgorize items left and right, and correct errors by hitting the other key."
-/ 6 = "See above, the four categories now appear together in a new configuration. Remember, each item belongs to only one group.
-
-The green and white labels and items may help to identify the appropriate category. Use the E and I keys to categorize items into the four groups left and right, and correct errors by hitting the other key."
-/ 7 = "Sort the same four categories again. Remember to go as fast as you can while making as few mistakes as possible.
-
-The green and white labels and items may help to identify the appropriate category. Use the E and I keys to categorize items into the four groups left and right, and correct errors by hitting the other key."
+This task will take about 5 minutes to complete."
+/ 2 = "
+See above, the categories have changed."
+/ 3 = "
+See above, the four categories you saw separately now appear together."
+/ 4 = "
+Sort the same four categories again."
+/ 5 = "
+Notice above, there are only two cateogries and they have switched positions."
+/ 6 = "
+See above, the four categories now appear together in a new configuration."
+/ 7 = "
+Sort the same four categories again."
 </item>
 
 <text spacebar>

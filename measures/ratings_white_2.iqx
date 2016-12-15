@@ -1,0 +1,93 @@
+﻿*********************************************
+Ratings scales
+*********************************************
+Ian Hussey (ian.hussey@ugent.be)
+GPLv3+ license
+
+*********************************************
+Stimuli
+
+<item image_exemplars>
+/1 = "wf2_nc.jpg"
+/2 = "wf3_nc.jpg"
+/3 = "wf6_nc.jpg"
+/4 = "wm1_nc.jpg"
+/5 = "wm4_nc.jpg"
+/6 = "wm6_nc.jpg"
+</item>
+
+*********************************************
+Instructions
+
+<instruct>
+/ windowsize = (80%, 80%)
+/ inputdevice = mouse
+/ nextkey = (" ")
+/ inputdevice = keyboard
+</instruct>
+
+<page intro>
+^Please rate how much you like the following images using your mouse or trackpad.
+</page>
+
+*********************************************
+DEFAULTS
+
+<defaults>
+/minimumversion = "4.0.2.0"
+/ canvasaspectratio = (4, 3)
+/ fontstyle = ("Arial", 3.00%)
+/ txcolor = white
+/ screencolor = black
+/ txbgcolor = black
+</defaults>
+
+<values>
+/ questionfontsize = 5%
+</values>
+
+*********************************************
+DATA
+
+<data>
+/ file = "ratings_white_2.iqdat"
+/ columns = [build, date, time, subject, blockcode, blocknum, trialcode, trialnum, stimulusitem, response]
+</data>
+
+*********************************************
+STIMULI
+
+<picture images>
+/ items = image_exemplars
+/ position = (50, 40)
+/ size = (40%, 40%)
+</picture>
+
+
+*********************************************
+TRIALS
+
+<likert images>
+/ numpoints = 7
+/ anchors = [1="Very negative"; 2="Quite negative"; 3="Somewhat negative"; 4="Neutral"; 5="Somewhat positive"; 6="Quite positive"; 7="Very positive"]
+/ anchorwidth = 15%
+/ fontstyle = ("Arial", 2%)
+/ stimulusframes = [1 = images]
+/ position = (50%, 70%)
+</likert>
+
+*********************************************
+BLOCKS
+
+<block ratings_white_2>
+/ trials = [1-6 = noreplace(images)]
+</block>
+
+*********************************************
+EXPERIMENT
+
+<expt >
+/ preinstructions = (intro)
+/ blocks = [1 = ratings_white_2]
+</expt>
+

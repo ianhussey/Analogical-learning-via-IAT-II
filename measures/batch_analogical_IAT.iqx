@@ -11,60 +11,56 @@ If participants do not agree to participate in the experiment, the entire batch 
 gets aborted via function script.abort() in the ConsentformScript.iqx script
 
 ************************************************
-condition 1 - IAT then derivation opportunities
- 
+
+IAT block order 1 & white SCIAT 
 <batch>
 / subjects=(1 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="sciat_white_1.iqx"
-/ file="ratings.iqx"
-/ file="iat.iqx"
-/ file="ratings_2.iqx"
+/ file="ratings_white_1.iqx"
+/ file="IAT.iqx"
+/ file="ratings_white_2.iqx"
 / file="sciat_white_2.iqx"
-/ file="compliance.iqx"
-/ file="debriefing.iqx"
+/ file="demand_compliance.iqx"
 </batch>
 
+IAT block order 2 & white SCIAT 
 <batch>
 / subjects=(2 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="sciat_white_1.iqx"
-/ file="ratings.iqx"
-/ file="iat.iqx"
-/ file="ratings_2.iqx"
+/ file="ratings_white_1.iqx"
+/ file="IAT.iqx"
+/ file="ratings_white_2.iqx"
 / file="sciat_white_2.iqx"
-/ file="compliance.iqx"
-/ file="debriefing.iqx"
+/ file="demand_compliance.iqx"
 </batch>
 
-************************************************
-condition 2 - derivation opportunities then IAT
-
+IAT block order 1 & black SCIAT 
 <batch>
 / subjects=(3 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="sciat_black_1.iqx"
-/ file="ratings.iqx"
-/ file="iat.iqx"
+/ file="ratings_black_1.iqx"
+/ file="IAT.iqx"
 / file="ratings_black_2.iqx"
 / file="sciat_2.iqx"
-/ file="compliance.iqx"
-/ file="debriefing.iqx"
+/ file="demand_compliance.iqx"
 </batch>
 
+IAT block order 2 & black SCIAT 
 <batch>
 / subjects=(4 of 4)
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="sciat_black_1.iqx"
-/ file="ratings.iqx"
-/ file="iat.iqx"
+/ file="ratings_black_1.iqx"
+/ file="IAT.iqx"
 / file="ratings_black_2.iqx"
 / file="sciat_2.iqx"
-/ file="compliance.iqx"
-/ file="debriefing.iqx"
+/ file="demand_compliance.iqx"
 </batch>
 

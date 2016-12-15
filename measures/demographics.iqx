@@ -39,7 +39,7 @@ Demographics
 <textbox ProlificCode>
 / caption = 
 "Please enter your prolific ID here. 
-If you cannot remember it please quit the experiment now using ctrl-C or cmd-C
+If you cannot remember it please quit the experiment now using ctrl-q
 and retrieve it before restarting. Otherwise you cannot be paid."
 / position = (10%,10%)
 / textboxsize = (45, 40)
