@@ -259,13 +259,17 @@ wide_D1_scored_data_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 a
 
 
 
-# long format IAT rts -----------------------------------------------------
+# other tasks -------------------------------------------------------------
 
 
 other_tasks_df <- 
   output_df %>%
   dplyr::select(participant, IAT_condition, block_order, 
-                task_order, gender, age, demand_compliance_boolean) # racism also needed
+                task_order, gender, age, demand_compliance_boolean,
+                modern_racism_scale_total)
+
+
+# long format IAT rts -----------------------------------------------------
 
 
 IAT_long_format_df <-  
