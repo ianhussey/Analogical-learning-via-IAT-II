@@ -10,7 +10,7 @@ GPLv3+ license
 
 <radiobuttons demand_compliance>
 / caption = "Please select the statement which best reflects your beliefs."
-/ options = ("~nI responded to the faces based on ~nhow I personal felt about them.~n",
+/ options = ("~nI responded to the faces based on ~nhow I personally felt about them.~n",
 			 "~nI responded to the faces based on ~nwhat I thought the experimenter wanted me to do.~n",
 			 "~nI do not know why I evaluated the ~nfaces the way I did.~n")
 </radiobuttons>

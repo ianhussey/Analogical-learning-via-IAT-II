@@ -50,7 +50,7 @@ DEFAULTS
 DATA
 
 <data>
-/ file = "ratings_black_1.iqdat"
+/ file = "ratings.iqdat"
 / columns = [build, date, time, subject, blockcode, blocknum, trialcode, trialnum, stimulusitem, response]
 </data>
 
@@ -79,7 +79,7 @@ TRIALS
 *********************************************
 BLOCKS
 
-<block ratings_black>
+<block ratings>
 / trials = [1-6 = noreplace(images)]
 </block>
 
@@ -88,6 +88,6 @@ EXPERIMENT
 
 <expt >
 / preinstructions = (intro)
-/ blocks = [1 = ratings_black_1]
+/ blocks = [1 = ratings]
 </expt>
 

@@ -18,9 +18,10 @@ IAT/SCIAT block order 1 & race IAT & ratings first
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_race.iqx"
-/ file="ratings_black.iqx"
-/ file="sciat_black.iqx"
+/ file="ratings.iqx"
+/ file="sciat.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
 IAT/SCIAT block order 2 & race IAT & ratings firs
@@ -29,9 +30,10 @@ IAT/SCIAT block order 2 & race IAT & ratings firs
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_race.iqx"
-/ file="ratings_black.iqx"
-/ file="sciat_black.iqx"
+/ file="ratings.iqx"
+/ file="sciat.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
 IAT/SCIAT block order 1 & race IAT & SCIAT first
@@ -40,9 +42,10 @@ IAT/SCIAT block order 1 & race IAT & SCIAT first
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_race.iqx"
-/ file="sciat_black.iqx"
-/ file="ratings_black.iqx"
+/ file="sciat.iqx"
+/ file="ratings.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
 IAT/SCIAT block order 2 & race IAT & SCIAT first
@@ -51,9 +54,10 @@ IAT/SCIAT block order 2 & race IAT & SCIAT first
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_race.iqx"
-/ file="sciat_black.iqx"
-/ file="ratings_black.iqx"
+/ file="sciat.iqx"
+/ file="ratings.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
 IAT/SCIAT block order 1 & flowers insects IAT & ratings first
@@ -62,9 +66,10 @@ IAT/SCIAT block order 1 & flowers insects IAT & ratings first
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_flowers_insects.iqx"
-/ file="ratings_black.iqx"
-/ file="sciat_black.iqx"
+/ file="ratings.iqx"
+/ file="sciat.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
 IAT/SCIAT block order 2 & flowers insects IAT & ratings first
@@ -73,9 +78,10 @@ IAT/SCIAT block order 2 & flowers insects IAT & ratings first
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_flowers_insects.iqx"
-/ file="ratings_black.iqx"
-/ file="sciat_black.iqx"
+/ file="ratings.iqx"
+/ file="sciat.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
 IAT/SCIAT block order 1 & flowers insects IAT & SCIAT first
@@ -84,9 +90,10 @@ IAT/SCIAT block order 1 & flowers insects IAT & SCIAT first
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_flowers_insects.iqx"
-/ file="sciat_black.iqx"
-/ file="ratings_black.iqx"
+/ file="sciat.iqx"
+/ file="ratings.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
 IAT/SCIAT block order 2 & flowers insects IAT & SCIAT first
@@ -95,8 +102,9 @@ IAT/SCIAT block order 2 & flowers insects IAT & SCIAT first
 / groupassignment = subjectnumber
 / file="demographics.iqx"
 / file="IAT_flowers_insects.iqx"
-/ file="sciat_black.iqx"
-/ file="ratings_black.iqx"
+/ file="sciat.iqx"
+/ file="ratings.iqx"
 / file="demand_compliance.iqx"
+/ file="debriefing.iqx"
 </batch>
 
