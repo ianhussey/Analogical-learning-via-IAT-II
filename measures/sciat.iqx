@@ -1,102 +1,8 @@
-﻿**************************************************************************************************************
-**************************************************************************************************************
-	Single Category Picture Implicit Attitude Test (SC-IAT) - adapted by Millisecond Software
-**************************************************************************************************************
-**************************************************************************************************************
-Last Modified:	04-01-2015 by K. Borchert (katjab@millisecond.com) for Millisecond Software
-
+﻿****************************************************
+Single Category Picture Implicit Attitude Test (SC-IAT)
+****************************************************
 Copyright ©  04-01-2015 Millisecond Software
-**************************************************************************************************************
-**************************************************************************************************************
-	Background Info
-**************************************************************************************************************
-**************************************************************************************************************
-The SC-IAT script is based on:
-
-Karpinski, A. & Steinman, R.B. (2006). The Single Category Implicit Association Test as a Measure of Implicit
-Social Cognition. Journal of Personality and Social Psychology, 91, 16–32.
-
-and the general IAT.iqx script published by Millisecond Software LLC
-
-Differences btw. this script and Karpinski & Steinman (2006)
-- error responses in this script need to be corrected before moving on
-- no response window:
-stimuli stay on screen until a correct response is given. A reminder to "respond more quickly" is
-optional if latencies exceed a certain limit (see section "Editable Values" for more info)
-- no error response correction necessary for d-score calculation as error responses needed to be corrected
-before moving on (therefore an error penalty was added automatically to each error latency)
-
-
-IAT-Background Info:
-
-The Implicit Association Task (Greenwald, McGhee, & Schwartz, 1998) is a widely-used cognitive-behavioral paradigm
-that measures the strength of automatic (implicit) associations between concepts in people’s minds relying 
-on latency measures in a simple sorting task.
- 
-The strength of an association between concepts is measured by the standardized mean difference score of 
-the 'hypothesis-inconsistent' pairings and 'hypothesis-consistent' pairings (d-score) (Greenwald, Nosek, & Banaji, 2003). 
-In general, the higher the d-score the stronger is the association between the 'hypothesis-consistent' pairings 
-(decided by researchers). Negative d-scores suggest a stronger association between the 'hypothesis-inconsistent' pairings.
-
-Inquisit calculates d-scores using the improved scoring algorithm as described in Greenwald et al (2003). 
-Error trials are handled by requiring respondents to correct their responses according to recommendation (p.214).
-This differs slightly from Karpinski & Steinman (2006) who removed noresponse trials from d-score calculations and 
-replaced error responses with the mean latency + 400ms penalty.
-
-D-scores obtained with this script:
-positive D-scores: positive attitude towards animals
-negative D-scores: negative attitude towards animals
-
-References:
-Greenwald, A. G., McGhee, D. E., & Schwartz, J. K. L. (1998). Measuring individual differences in implicit cognition: 
-The Implicit Association Test. Journal of Personality and Social Psychology, 74, 1464-1480.
-
-Greenwald, A. G., Nosek, B. A., & Banaji, M. R. (2003). Understanding and Using the Implicit Association Test: 
-I. An Improved Scoring Algorithm. Journal of Personality and Social Psychology, 85, 197-216.
-
-
-												Script Specifics:
-
-(1) EXPERIMENTAL PROCEDURE:
-a) Block Practice Compatible* (24 trials); responses not counted towards D-score
-b) Block Compatible (72 trials)
-c) Block Practice InCompatible (24 trials); responses not counted towards D-score
-d) Block InCompatible (72 trials)
-
-*order compatible - incompatible counterbalanced by groupnumber
-
-=> one D-score is determined 
-
-(2) TRIALS
-After a pretrialpause of 250ms (default, editable), stimuli are presented until correct response is given. 
-In contrast to Karpinski & Steinman (2006), participants have to correct error responses and stimulus stays on screen until response
-is corrected. If latencies exceed a certain limit, a reminder to "respond more quickly" is optional in this script (see Editable Values for more info).
-
-(3) STIMULI:
-- 21 words for Attribute Categories Good/Bad
-- 7 words for target category (here: Animals)
-
-(4) SCORING:
-Inquisit calculates d-scores using the improved scoring algorithm as described in Greenwald et al (2003). 
-Only trials from test blocks count towards d-score calculation in this script.
-Error trials are handled by requiring respondents to correct their responses according to recommendation Greenwald et al (2003, p.214).
-This differs slightly from Karpinski & Steinman (2006) who removed noresponse trials from d-score calculations and 
-replaced error responses with the block mean latency + 400ms error penalty.
-
-************************************************************************
-Editable Parameters: can be easily set by each experimenter
-************************************************************************
-/showsummaryfeedback:					set parameter showsummaryfeedback = true to display summary feedback to participants at the end (default)
-										set parameter showsummaryfeedback = false if no summary feedback should be presented to participants
-
-/pretrialpause:							pause before stimuli presentation (default: 250ms)
-/showreminder:							true = shows a reminder to respond faster if latencies exceeds a predetermined latency
-														Note: Karpinsky & Steinman (2006) call using a reminder "largly window dressing" but that the response window (in this script: a pseudo response window) might create a "sense of urgency" (p.18)
-										false = does not show reminder to respond more quickly (default in this script)
-/reminderRT:							if response latency is larger than reminderRT, a reminder is presented to respond faster (if values.showreminder = true)
-											Note: error responses have to be corrected in this script; this will add ms to their response latencies
-/reminderduration:						time that the reminder to respond more quickly stays on the screen (default: 500ms)
-
+modified by Ian Hussey
 
 <values>
 /showsummaryfeedback = false
@@ -106,9 +12,9 @@ Editable Parameters: can be easily set by each experimenter
 / reminderduration = 500
 </values>
 
-***********************************************************************
-Stimuli: Edit here
-***********************************************************************
+****************************************************
+stimuli
+****************************************************
 <item attributeAlabel>
 /1 = "Positive"
 </item>
@@ -152,17 +58,9 @@ Stimuli: Edit here
 /6 = "bm56_nc.jpg"
 </item>
 
-***********************************************************************
-To change the categories, you need only change the stimulus items and 
-labels immediately above this line. All commands below relate to the 
-IAT procedure, and need only be changed if you wish to modify the 
-generic IAT procedure.
-***********************************************************************
-
-
-***********************************************************************
-Defaults
-***********************************************************************
+****************************************************
+defaults
+****************************************************
 
 <defaults>
 / fontstyle = ("Arial", 3.5%)
@@ -172,28 +70,9 @@ Defaults
 / minimumversion = "4.0.0.0"
 </defaults>
 
-***********************************************************************
-Scoring
-***********************************************************************
-
-*********************
-automatically updated
-*********************
-/completed:					0 = script was not completed; 1 = script was completed (all conditions run)
-/correct:					1 = correct response; 0 = incorrect response
-/ sum1:						tracks the sum of the latencies to correct responses (and latencies <= 10000ms) for the compatible block
-/ sum2a:					tracks the sum of the latencies to correct responses (and latencies <= 10000ms) for the incompatible block
-/ n1:						counts the number of correct trials in compatible block
-/ n2:						counts the number of correct trials in incompatible block
-/ ss1:						tracks the sum of the squared latencies to correct responses (and latencies <= 10000ms) in the compatible block 
-/ ss2						tracks the sum of the squared latencies to correct responses (and latencies <= 10000ms) in the incompatible block
-/ magnitude:				stores the magnitude of the implicit preference: "little to no", "a slight", "a moderate", "a strong"
-/ n_correct:				counts all initial correct responses of all trials that count towards D score
-
-/key_left:								left response key scancode (default: 18 => E)
-/key_left_label:						label of left response key (here: E)
-/key_right:								right response key scancode (default: 23 => I)
-/key_right_label:						label of right response key (here: "I")
+****************************************************
+scoring
+****************************************************
 
 <values>
 /completed = 0
@@ -213,17 +92,6 @@ automatically updated
 /key_right_label = "I"
 </values>
 
-/ m1:					mean latencies of correct responses in compatible block
-/ m2:					mean latencies of correct responses in incompatible block
-/ sd1:					standard deviation of latencies of correct responses in compatible block
-/ sd2:					standard deviation of latencies of correct responses in incompatible block
-/ sd:					standarddeviation of latencies overall
-/ d:					overall D-score
-/ latdiff:				difference between mean latencies in incompatible and compatible block
-/ attitude:				positive vs. negative 
-/ percentcorrect:       calculates the overall percent correct score of initial responses of compatible and incompatible trials
-						with specified latencies
-
 <expressions>
 / m1 = values.sum1 / values.n1
 / m2 = values.sum2 / values.n2
@@ -236,31 +104,6 @@ automatically updated
 / percentcorrect = (values.n_correct/ (block.compatibletest.trialcount + block.incompatibletest.trialcount)) * 100
 </expressions>
 
-***********************************************************************
-Data Columns
-***********************************************************************
-date/time/group/subject:			built in variables that track date and time when script was run with the assigned
-									subject- and group number
-
-									Note: group1/group2 counterbalance the order in which the pairings are run
-
-blockcode:							the name of the current trial
-blocknum:							the number of the current trial
-trialcode:							the name of the current trial
-trialnum:							the number of the current trial
-response:							the final trial response (scancodes of the keys pressed)
-										Note: script saves the final and -by design- correct response
-correct:							the accuracy of the initial response
-										0 = initial response was incorrect and needed to be corrected
-										1 = initial response is correct
-latency:							the latency of the final (correct) response
-stimulusnumber:						the number of the current stimulus
-stimulusitem:						the currently presented item
-expressions.d:						overall d-score
-/ latdiff:							difference between mean latencies in incompatible and compatible block
-/percentcorrect:       				the overall percent correct score of initial responses of compatible and incompatible trials
-									with qualifying latencies
-
 <data>
 /file = "SCIAT_rawdata.iqdat"
 /separatefiles = true
@@ -269,36 +112,12 @@ expressions.d:						overall d-score
 			expressions.d, expressions.latdiff, expressions.percentcorrect]
 </data>
 
-*******************
-Summary Data File
-*******************
-script.startdate:					date script was run
-script.starttime:					time script was started
-script.subjectid:					subject id number
-script.groupid:						group id number
-script.elapsedtime:					time it took to run script (in ms)
-/completed:							0 = script was not completed; 1 = script was completed (all conditions run)
-
-/ m1:					mean latencies of correct responses in compatible block
-/ m2:					mean latencies of correct responses in incompatible block
-/ sd1:					standard deviation of latencies of correct responses in compatible block
-/ sd2:					standard deviation of latencies of correct responses in incompatible block
-/d:						overall d-score
-/ latdiff:				difference between mean latencies in incompatible and compatible block
-/percentcorrect:       	the overall percent correct score of initial responses of compatible and incompatible trials
-						with qualifying latencies
-
 <summarydata >
 /file = "SCIAT_summary.iqdat"
 /columns = [script.startdate, script.starttime, script.subjectid, script.groupid, script.elapsedtime, values.completed, 
 			expressions.m1, expressions.sd1, expressions.m2, expressions.sd2,
 			expressions.d, expressions.latdiff, expressions.percentcorrect]
 </summarydata>
-
-
-***********************************************************************
-Performance summary
-***********************************************************************
 
 <trial summary>
 / stimulustimes = [0=summary]
@@ -318,9 +137,9 @@ Performance summary
 / hjustify = left
  </text>
 
-***********************************************************************
-Task instruction stimuli
-***********************************************************************
+****************************************************
+instructions
+****************************************************
 
 <trial instructions>
 / stimulustimes = [1=instructions, spacebar]
@@ -458,9 +277,9 @@ See above, one of the three categories has changed sides. Sort the categories us
 / fontstyle = ("Arial", 5%, false, false, false, false, 5, 1)
 </text>
 
-***********************************************************************
-Trials
-***********************************************************************
+****************************************************
+trials
+****************************************************
 
 <trial attributeA>
 /pretrialpause = values.pretrialpause
@@ -513,9 +332,9 @@ Trials
 /recorddata = false
 </trial>
 
-***********************************************************************
-Blocks
-***********************************************************************
+****************************************************
+blocks
+****************************************************
 
 <block practice_compatibletest>
 / bgstim = (attributeAleft, attributeBright)
@@ -578,9 +397,9 @@ Note: presents the trials in a  7:7:10 ratio => 10 (good) on responsekey_left an
 / recorddata = false
 </block>
 
-***********************************************************************
-Experiment
-***********************************************************************
+****************************************************
+experiment
+****************************************************
 
 <expt>
 /subjects = (1 of 2)
@@ -598,12 +417,11 @@ Experiment
 /onexptend = [values.completed = 1]
 </expt>
 
-***********************************************************************
+****************************************************
 Test Monkey
-***********************************************************************
+****************************************************
 
 <monkey>
 / latencydistribution = normal(500, 100)
 / percentcorrect = 90
 </monkey>
-
