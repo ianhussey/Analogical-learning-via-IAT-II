@@ -79,7 +79,7 @@ TRIALS
 *********************************************
 BLOCKS
 
-<block ratings>
+<block racism_scale>
 / trials = [1-7 = likert_scale]
 </block>
 
@@ -88,6 +88,6 @@ EXPERIMENT
 
 <expt>
 / preinstructions = (intro)
-/ blocks = [1 = ratings]
+/ blocks = [1 = racism_scale]
 </expt>
 
