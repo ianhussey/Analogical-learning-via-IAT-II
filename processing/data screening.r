@@ -50,35 +50,43 @@ trimmed_df %>% distinct(task)
 #  trimmed_df %>%
 #  dplyr::distinct(task)
 
+# no base funciton for mode, so define one
+modal_value <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
 #separate each tasks and find uniques
 participants_with_full_data <- #start with demographics
   trimmed_df %>%
   dplyr::filter(grepl("demographics", task)) %>%  # filter rows where the block_name includes string
   dplyr::distinct(participant)
 
-
-IAT <-
+IAT_and_SCIAT <-
   trimmed_df %>%
-  dplyr::filter(grepl("incompatibletest2", task)) %>%  # filter rows where the block_name includes string
-  dplyr::distinct(participant)
+  dplyr::filter(grepl("compatibletest", task)) %>%  # filter rows where the block_name includes string
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(IAT_and_SCIAT_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_IAT_and_SCIAT_rows = modal_value(IAT_and_SCIAT_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(IAT_and_SCIAT_rows == modal_IAT_and_SCIAT_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_IAT_and_SCIAT_rows)
 
 participants_with_full_data <- 
-  dplyr::semi_join(participants_with_full_data, IAT, by = "participant")
-
-
-SCIAT <-
-  trimmed_df %>%
-  dplyr::filter(grepl("incompatibletest", task)) %>%  # filter rows where the block_name includes string
-  dplyr::distinct(participant)
-
-participants_with_full_data <- 
-  dplyr::semi_join(participants_with_full_data, SCIAT, by = "participant")
+  dplyr::semi_join(participants_with_full_data, IAT_and_SCIAT, by = "participant")
 
 
 ratings <-
   trimmed_df %>%
   dplyr::filter(grepl("ratings", task)) %>%  # filter rows where the block_name includes string
-  dplyr::distinct(participant)
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(ratings_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_ratings_rows = modal_value(ratings_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(ratings_rows == modal_ratings_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_ratings_rows)
 
 participants_with_full_data <- 
   dplyr::semi_join(participants_with_full_data, ratings, by = "participant")
@@ -87,7 +95,13 @@ participants_with_full_data <-
 demand_compliance <-
   trimmed_df %>%
   dplyr::filter(grepl("demand_compliance", trialcode)) %>%  # filter rows where the block_name includes string
-  dplyr::distinct(participant)
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(demand_compliance_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_demand_compliance_rows = modal_value(demand_compliance_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(demand_compliance_rows == modal_demand_compliance_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_demand_compliance_rows)
 
 participants_with_full_data <- 
   dplyr::semi_join(participants_with_full_data, demand_compliance, by = "participant")
@@ -96,9 +110,15 @@ participants_with_full_data <-
 # modern_racism_scale <-
 #   trimmed_df %>%
 #   dplyr::filter(grepl("modern_racism_scale", trialcode)) %>%  # filter rows where the block_name includes string
-#   dplyr::distinct(participant)
-# 
-# participants_with_full_data <- 
+#   dplyr::group_by(participant) %>%
+#   dplyr::summarize(racism_scale_rows = n()) %>%  # count the number of trials per participant
+#   dplyr::ungroup() %>%
+#   dplyr::mutate(modal_racism_scale_rows = modal_value(modal_racism_scale_rows)) %>%  # find modal n of trials
+#   dplyr::rowwise() %>%
+#   dplyr::filter(racism_scale_rows == modal_racism_scale_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+#   dplyr::select(-modal_racism_scale_rows)
+#
+# participants_with_full_data <-
 #   dplyr::semi_join(participants_with_full_data, modern_racism_scale, by = "participant")
 
 
