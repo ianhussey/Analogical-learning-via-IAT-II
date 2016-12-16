@@ -19,14 +19,14 @@ stimuli
 </item>
 
 <item attributeA>
-/1 = "Joy"
-/2 = "Happy"
-/3 = "Laughter"
-/4 = "Love"
-/5 = "Glorious"
-/6 = "Pleasure"
-/7 = "Peace"
-/8 = "Wonderful"
+/ 1 = "triumphant"
+/ 2 = "love"
+/ 3 = "paradise"
+/ 4 = "loved"
+/ 5 = "joy"
+/ 6 = "miracle"
+/ 7 = "funny"
+/ 8 = "humor"
 </item>
 
 <item attributeBlabel>
@@ -34,14 +34,14 @@ stimuli
 </item>
 
 <item attributeB>
-/1 = "Evil"
-/2 = "Agony"
-/3 = "Awful"
-/4 = "Nasty"
-/5 = "Terrible"
-/6 = "Horrible"
-/7 = "Failure"
-/8 = "Hurt"
+/ 1 = "funeral"
+/ 2 = "cancer"
+/ 3 = "rejected"
+/ 4 = "murderer"
+/ 5 = "miserable"
+/ 6 = "suffocate"
+/ 7 = "torture"
+/ 8 = "unhappy"
 </item>
 
 <item targetAlabel>
