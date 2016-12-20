@@ -34,7 +34,7 @@ Instructions
 DEFAULTS
 
 <defaults>
-/minimumversion = "4.0.2.0"
+/ minimumversion = "4.0.2.0"
 / canvasaspectratio = (4, 3)
 / fontstyle = ("Arial", 3.00%)
 / txcolor = white

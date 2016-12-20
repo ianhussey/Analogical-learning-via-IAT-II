@@ -19,6 +19,4 @@ IAT and SC-IAT code is copyright (c) Millisecond Software (2015) with modificati
 
 ### Stimuli
 
-Valenced words from ANEW 2010 battery based on extreme valence scores.
-
-Race images from Project Implicit.
+Stimuli from Xu, Nosek & Greenwald (2014)

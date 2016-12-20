@@ -7,6 +7,8 @@ GPLv3+ license
 
 ************************************************
 <defaults>
+/ canvassize = (1024px, 768px)
+/ windowsize = (1024px, 768px)
 / screencolor = white
 / txcolor = black
 / fontstyle = ("Arial", 3%)
