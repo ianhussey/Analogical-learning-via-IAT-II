@@ -92,21 +92,6 @@ participants_with_full_data <-
   dplyr::semi_join(participants_with_full_data, ratings, by = "participant")
 
 
-demand_compliance <-
-  trimmed_df %>%
-  dplyr::filter(grepl("demand_compliance", trialcode)) %>%  # filter rows where the block_name includes string
-  dplyr::group_by(participant) %>%
-  dplyr::summarize(demand_compliance_rows = n()) %>%  # count the number of trials per participant
-  dplyr::ungroup() %>%
-  dplyr::mutate(modal_demand_compliance_rows = modal_value(demand_compliance_rows)) %>%  # find modal n of trials
-  dplyr::rowwise() %>%
-  dplyr::filter(demand_compliance_rows == modal_demand_compliance_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
-  dplyr::select(-modal_demand_compliance_rows)
-
-participants_with_full_data <- 
-  dplyr::semi_join(participants_with_full_data, demand_compliance, by = "participant")
-
-
 modern_racism_scale <-
   trimmed_df %>%
   dplyr::filter(grepl("modern_racism_scale", trialcode)) %>%  # filter rows where the block_name includes string

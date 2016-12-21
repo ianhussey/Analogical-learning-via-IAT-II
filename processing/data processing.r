@@ -120,20 +120,6 @@ ratings_df <-
   dplyr::summarize(mean_rating = round(mean(ratings), 2))
 
 
-# demand compliance -------------------------------------------------------
-
-
-demand_df <-
-  cleaned_df %>%
-  dplyr::filter(grepl("demand_compliance", trialcode)) %>%  # filter rows where the trialcode includes string
-  dplyr::select(participant, response) %>%
-  dplyr::mutate(demand_compliance = ifelse(response == " I responded to the faces based on  how I personally felt about them. ", "personally felt",
-                                           ifelse(response == " I responded to the faces based on  what I thought the experimenter wanted me to do. ", "demand compliance",
-                                                  ifelse(response == " I do not know why I evaluated the faces the way I did. ", "unsure", NA))),
-                demand_compliance_boolean = ifelse(demand_compliance == "demand compliance", TRUE, FALSE)) %>%
-  dplyr::select(-response)
-
-
 # modern racism scale -----------------------------------------------------
 
 
@@ -240,8 +226,7 @@ wide_D1_scored_data_df <-
                       as.data.frame(IAT_summary_stats_df),
                       as.data.frame(SCIAT_D1_df),
                       as.data.frame(SCIAT_summary_stats_df),
-                      as.data.frame(racism_scale_df),
-                      as.data.frame(demand_df)),
+                      as.data.frame(racism_scale_df)),
                  by = "participant",
                  type = "full") %>%
   dplyr::arrange(participant)
@@ -265,8 +250,7 @@ wide_D1_scored_data_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 a
 other_tasks_df <- 
   output_df %>%
   dplyr::select(participant, IAT_condition, block_order, 
-                task_order, gender, age, demand_compliance_boolean,
-                modern_racism_scale_total)
+                task_order, gender, age, modern_racism_scale_total)
 
 
 # long format IAT rts -----------------------------------------------------
