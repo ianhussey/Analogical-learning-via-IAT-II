@@ -248,7 +248,7 @@ wide_D1_scored_data_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 a
 
 
 other_tasks_df <- 
-  output_df %>%
+  wide_D1_scored_data_df %>%
   dplyr::select(participant, IAT_condition, block_order, 
                 task_order, gender, age, modern_racism_scale_total)
 

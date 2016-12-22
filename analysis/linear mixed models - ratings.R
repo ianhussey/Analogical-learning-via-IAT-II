@@ -22,7 +22,9 @@ setwd("~/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known 
 
 data <- 
   read.csv("data/processed data/long ratings data.csv") %>%
-  mutate(participant = as.factor(participant))
+  mutate(participant = as.factor(participant)) %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE,
+         SCIAT_exclude_based_on_fast_trials == FALSE) 
 
 # check that what should be factors are indeed factors
 sapply(data, class)

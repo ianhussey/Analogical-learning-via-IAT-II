@@ -8,15 +8,15 @@ The purpose of this study is to examine factors that influence learning and cogn
 
 ### Estimated time
 
-10 minutes
+12 minutes
 
 ### Max time
 
-20 mins
+30 mins
 
 ### Reward
 
-£1
+£1.20
 
 ### Screening
 
