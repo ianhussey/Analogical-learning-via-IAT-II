@@ -22,9 +22,7 @@ setwd("~/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known 
 
 data <- 
   read.csv("data/processed data/long SCIAT data.csv") %>%
-  mutate(participant = as.factor(participant)) %>%
-  filter(IAT_exclude_based_on_fast_trials == FALSE,
-         SCIAT_exclude_based_on_fast_trials == FALSE) 
+  mutate(participant = as.factor(participant))
 
 data_outliers_removed <-
   data %>%
