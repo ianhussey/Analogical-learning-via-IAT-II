@@ -253,26 +253,6 @@ other_tasks_df <-
                 task_order, gender, age, modern_racism_scale_total)
 
 
-# long format IAT rts -----------------------------------------------------
-
-
-IAT_long_format_df <-  
-  cleaned_df %>%
-  dplyr::filter(block_name == "compatibletest1" | 
-                  block_name == "compatibletest2" | 
-                  block_name == "incompatibletest1" |
-                  block_name == "incompatibletest2") %>%
-  dplyr::mutate(block = ifelse(block_name == "compatibletest1" | block_name == "compatibletest2", "compatible", "incompatible")) %>%
-  dplyr::select(participant, 
-                block,
-                trial_n,
-                rt,
-                accuracy) %>%
-  dplyr::left_join(other_tasks_df, by = "participant")
-
-IAT_long_format_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/long IAT data.csv", row.names = FALSE)
-
-
 # long format SC-IAT rts --------------------------------------------------
 
 
@@ -291,7 +271,7 @@ SCIAT_long_format_df <-
 SCIAT_long_format_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/long SCIAT data.csv", row.names = FALSE)
 
 
-# long format SC-IAT rts --------------------------------------------------
+# long format ratings rts -------------------------------------------------
 
 
 ratings_long_format_df <-  

@@ -22,13 +22,13 @@ setwd("~/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known 
 data_df <- 
   read.csv("data/processed data/wide D1 scored data.csv") %>%
   filter(IAT_exclude_based_on_fast_trials == FALSE,
-         SCIAT_exclude_based_on_fast_trials == FALSE) 
+         SCIAT_exclude_based_on_fast_trials == FALSE)
 
 
 # ancova with 2x DV, 2x IV, and one covariate -----------------------------
 
 
-model1 <- lm(formula = mean_rating ~ IAT_condition + modern_racism_scale_total, 
+model1 <- lm(formula = mean_rating ~ modern_racism_scale_total + IAT_condition, 
              data = data_df)  # NB if anova() had been used below there would be ordering effects for the model: must specify as DV ~ covariate + IV
 ancova <- etaSquared(model1, 
                      type = 3, 
@@ -60,7 +60,7 @@ ancova_F        <-  round(ancova[2,"F"], 2)         # where 2 specifies the main
 ancova_df_1     <-  round(ancova[2,"df"], 2)        # where 2 specifies the main effect row
 ancova_df_2     <-  round(ancova[3,"df"], 2)        # where 3 specifies the residuals row
 ancova_p        <-  round(ancova[2,"p"], 5)         # where 2 specifies the main effect row
-ancova_eta2     <-  round(ancova[2,"eta.sq"], 2)    # where 2 specifies the main effect row
+ancova_eta2     <-  round(ancova[2,"eta.sq"], 3)    # where 2 specifies the main effect row
 
 # 90% CI on eta2 (nb 90% not 95%, see Wuensch, 2009; Steiger. 2004)
 # from http://daniellakens.blogspot.be/2014/06/calculating-confidence-intervals-for.html

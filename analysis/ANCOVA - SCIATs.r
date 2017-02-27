@@ -28,7 +28,7 @@ data_df <-
 # ancova with 2x DV, 2x IV, and one covariate -----------------------------
 
 
-model1 <- lm(formula = SCIAT_D1 ~ IAT_condition + modern_racism_scale_total, 
+model1 <- lm(formula = SCIAT_D1 ~  modern_racism_scale_total + IAT_condition, 
              data = data_df)  # NB if anova() had been used below there would be ordering effects for the model: must specify as DV ~ covariate + IV
 ancova <- etaSquared(model1, 
                      type = 3, 

@@ -43,8 +43,6 @@ plot(density(data$rt), col = "red")
 lines(density(data_outliers_removed$rt), col = "blue")
 # rescaled
 plot(density(data_outliers_removed$rt), col = "blue")
-# interactions
-with(data_outliers_removed, interaction.plot(block, IAT_condition, rt))
 
 
 # model 1 ------------------------------------------------------------------
@@ -71,7 +69,7 @@ model_1 <- afex::mixed(rt ~ block * IAT_condition + modern_racism_scale_total + 
                        return = "mixed")
 
 save(model_1, file = "analysis/model_1_lmm_freq_sciats.RData")
-#load(model_1, file = "analysis/model_1_lmm_freq_sciats.RData")
+#load(file = "analysis/model_1_lmm_freq_sciats.RData")
 
 summary(model_1)
 print(model_1)  # same as using anova() here
@@ -89,7 +87,7 @@ sink()
 # Bayes factors mixed linear effects model with participant as a random effect
 # and racism as covariate
 
-model_2 <- generalTestBF(rt ~ block * IAT_condition + modern_racism_scale_total + participant, 
+model_2 <- generalTestBF(rt ~ block * IAT_condition + participant + modern_racism_scale_total, 
                          whichRandom = "participant",  # random factors
                          data = data_outliers_removed,
                          rscaleFixed = "medium",  # default 

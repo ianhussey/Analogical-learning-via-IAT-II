@@ -3,6 +3,8 @@
 # author: Ian Hussey (ian.hussey@ugent.be)
 # license: GPLv3+ 
 
+# Im no longer sure if this is appropriate - check.
+
 
 # dependencies ------------------------------------------------------------
 
@@ -58,8 +60,8 @@ model_3 <- afex::mixed(rating ~ IAT_condition + modern_racism_scale_total + (1 |
                        progress = TRUE, 
                        return = "mixed")
 
-save(model_3, file = "analysis/model_5_lmm_freq_ratings.RData")
-#load(model_3, file = "analysis/model_5_lmm_freq_ratings.RData")
+save(model_3, file = "analysis/model_3_lmm_freq_ratings.RData")
+#load(file = "analysis/model_3_lmm_freq_ratings.RData")
 
 summary(model_3)
 print(model_3)  # same as using anova() here
@@ -77,7 +79,7 @@ sink()
 # Bayes factors mixed linear effects model with participant as a random effect
 # and racism as covariate
 
-model_4 <- generalTestBF(rating ~ IAT_condition + modern_racism_scale_total + participant, 
+model_4 <- generalTestBF(rating ~ IAT_condition + participant + modern_racism_scale_total, 
                          whichRandom = "participant",  # random factors
                          data = data,
                          rscaleFixed = "medium",  # default 
@@ -85,8 +87,8 @@ model_4 <- generalTestBF(rating ~ IAT_condition + modern_racism_scale_total + pa
                          rscaleRandom = "nuisance",  # default
                          multicore = TRUE) 
 
-save(model_4, file = "analysis/model_6_lmm_BF_ratings.RData")
-#load(model_4, file = "analysis/model_6_lmm_BF_ratings.RData")
+save(model_4, file = "analysis/model_4_lmm_BF_ratings.RData")
+#load(model_4, file = "analysis/model_4_lmm_BF_ratings.RData")
 
 # all BF models
 model_4
