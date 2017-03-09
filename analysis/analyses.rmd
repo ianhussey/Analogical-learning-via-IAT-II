@@ -1,0 +1,309 @@
+---
+title: "Analysis of learning via the IAT using race stimuli"
+author: "Ian Hussey"
+params:
+  location_of_data: /Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/
+output:
+  html_notebook:
+    highlight: haddock
+    toc: yes
+  pdf_document:
+    highlight: haddock
+    toc: yes
+---
+
+## Hypotheses
+
+H1: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative implicit evaluations of the outgroup (black people) on the SCIAT than participants who completed a control (flowers-insects) IAT.  
+
+H2: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
+
+
+```{r}
+# dependencies
+library(tidyverse)
+library(psych)
+library(afex)
+library(effsize)
+library(weights)  # for rd(), a round() alternative
+library(plotrix)  # for std.error
+```
+
+# Descriptive statistics
+
+## All participants
+Descriptive data for sample.
+
+```{r}
+setwd(params$location_of_data)
+
+data_df <- 
+  read.csv("processed data/wide all tasks data.csv") %>%
+  mutate(gender = as.factor(gender))
+
+colnames(data_df)
+
+data_df %>% dplyr::count(gender)
+
+data_df %>% 
+  dplyr::select(age) %>%
+  psych::describe(fast = TRUE,  # subset of descriptive stats
+                  ranges = FALSE,
+                  trim = 0) %>%
+  dplyr::select(-vars, -se)
+```
+
+## Sample descriptive statistics
+
+```{r}
+passers_df <- 
+  data_df %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE & SCIAT_exclude_based_on_fast_trials == FALSE) 
+
+passers_df %>% dplyr::count(IAT_condition)
+
+passers_df %>% 
+  dplyr::select(IAT_mean_RT,
+                IAT_perc_acc,
+                SCIAT_mean_RT,
+                SCIAT_perc_acc) %>%
+  psych::describe(fast = TRUE,  # subset of descriptive stats
+                  ranges = FALSE,
+                  trim = 0) %>%
+  dplyr::select(-vars, -se)
+```
+
+# H1: Differences in IAT effects between contrast pair conditions
+## Outlier removal
+
+```{r warning = FALSE, message = FALSE}
+# get data
+setwd(params$location_of_data)
+
+# exclude participants who had more than 10% of trials in less than 300ms, and make variables factors
+SCIAT_data <- 
+  read.csv("processed data/long SCIAT data.csv") %>%
+  mutate(participant = as.factor(participant),
+         block = as.factor(ifelse(block == "compatible", "black-positive", 
+                        ifelse(block == "incompatible", "black-negative", NA))),
+         IAT_condition = as.factor(IAT_condition)) %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE & SCIAT_exclude_based_on_fast_trials == FALSE)  
+
+# exclude outliers
+SCIAT_data_outliers_removed <-
+  SCIAT_data %>%
+  schoRsch::outlier(dv = "rt",  # exclude individual RTs that are greater than 2.5 SD from the mean
+                    todo="elim", 
+                    upper.z = 2.5, 
+                    lower.z = -2.5)
+```
+
+## Descriptive statistics
+
+```{r}
+SCIAT_summary_data <-
+  SCIAT_data_outliers_removed %>%
+  group_by(IAT_condition, block) %>%
+  dplyr::summarize(mean_rt = round(mean(rt), 0),
+                   sd_rt = round(sd(rt), 0),
+                   se_rt = round(std.error(rt), 2))
+
+SCIAT_summary_data
+```
+
+## Plots
+
+```{r cache = TRUE}
+# apa theme for all plots
+apatheme <- 
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        #text = element_text(family='Arial'),  # doesn't play nice with knittr
+        legend.title = element_blank(),
+        legend.position = c(.9,.9),
+        axis.line.x = element_line(color='black'),
+        axis.line.y = element_line(color='black'))
+
+# add a combined condition*IAT block variable for plotting
+SCIAT_data_outliers_removed <- 
+  SCIAT_data_outliers_removed %>%
+  mutate(exp_factor = paste(IAT_condition, block, sep = "_"))
+```
+
+### Outlier removal
+Distribution of RTs before and after trimming outliers.
+
+```{r}
+ggplot(data = SCIAT_data_outliers_removed, aes(rt, fill = "trimmed")) + 
+  geom_density(alpha=0.50) +
+  geom_density(data = SCIAT_data, 
+               aes(rt, fill = "all"),
+               alpha=0.50) +
+  apatheme
+```
+
+### Density plot split by factor
+
+```{r cache = TRUE}
+ggplot(SCIAT_data_outliers_removed, 
+       aes(rt, colour = exp_factor, fill = exp_factor)) + 
+  geom_density(alpha=0.50) +
+  apatheme
+```
+
+### Distribution and inference plot
+Black squares are means, horizontal lines are 95% CIs, coloured shapes are distributions.
+I've chosen to omit presenting jittered raw data as it looks overplotted. NB scale was limited to 250 to 1250ms to make it more informative, although (non-outlier) values extend beyond the visible plot (and are included in the analysis).
+
+```{r cache = TRUE}
+ggplot(data = SCIAT_summary_data,
+       aes(x = IAT_condition, y = mean_rt, fill = block)) +
+  geom_point(data = SCIAT_data_outliers_removed,
+             aes(x = IAT_condition, y = rt, fill = block),
+             size = 1,
+             shape = 16,
+             alpha = 0.1,
+             position = position_jitterdodge(dodge.width = .5)) +
+  geom_violin(data = SCIAT_data_outliers_removed,
+              aes(x = IAT_condition, y = rt, fill = block),
+              alpha = 0.5,
+              position = position_dodge(width = .5)) +
+  geom_crossbar(aes(ymax = mean_rt + (1.96*se_rt),
+                    ymin = mean_rt + (-1.96*se_rt)),
+                alpha = 0.5,
+                fatten = 0) +
+  geom_point(size = 4,
+             shape = 15,
+             position = position_dodge(width = .5)) +
+  apatheme +
+  ylab("RT") +
+  ylim(250,1250) +
+  coord_flip()
+```
+
+## Preregistered hypothesis test
+Frequentist mixed linear effects model with participant as a random effect. Entering participant as a random effect acknowledges the non-independence of the multiple data points for each participants. Specifically, allowing for a random intercept allows for differences in general responding speed between participants, therefore controlling for age, IQ, etc., as the *D*1 score does. Using a LMM here therefore serves a dual purpose of controlling for within-subject variation (traditionally served by *D*1 scoring) and between subject analysis, while making use of all data points rather than collapsing the IAT's 80 RTs into just one score.
+
+Two important considerations:
+
+1. Production of *p* values (over LRs, etc.) is contentious, but cite the following as recent evidence for the use of Kenward Roger method estimation: http://link.springer.com/article/10.3758%2Fs13428-016-0809-y
+
+2. No effect sizes are produced due to contention over how to use the random factor error. 
+See http://stats.stackexchange.com/questions/95054/how-to-get-an-overall-p-value-and-effect-size-for-a-categorical-factor-in-a-mi
+
+The model is `rt ~ block * IAT_condition + modern_racism_scale_total + (1 | participant)`. That is, RT is predicted by the interaction between SCIAT block and training IAT condition, after controlling for differences in racism, and while allowing for participants to have a random intercept (i.e., variable mean RT). 
+
+Our preregistered *a priori* hypothesis, that SCIAT effects would differ between conditions, relates to the interaction effect and not the main effects. We therefore employ type 3 sum of squares and examine only the results of the interaction.
+
+```{r cache = TRUE, message=FALSE, warning=FALSE}
+# Check that variables that should be factors are indeed factors
+sapply(SCIAT_data_outliers_removed, class)
+
+# LME analysis
+model_1 <- afex::mixed(rt ~ block * IAT_condition + modern_racism_scale_total + (1 | participant), 
+                       contrasts = TRUE,  
+                       data = SCIAT_data_outliers_removed,
+                       type = 3,  
+                       method = "KR",
+                       progress = TRUE, 
+                       return = "mixed")
+
+print(model_1)
+```
+
+# H2: Differences in self-reported ratings between contrast pair conditions
+## Descriptive statistics
+
+```{r}
+# get data
+setwd(params$location_of_data)
+
+# exclude participants who had more than 10% of trials in less than 300ms, and make variables factors
+ratings_data <- 
+  read.csv("processed data/long ratings data.csv") %>%
+  mutate(participant = as.factor(participant),
+         IAT_condition = as.factor(IAT_condition)) %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE & SCIAT_exclude_based_on_fast_trials == FALSE)  
+
+ratings_summary_data <-
+  ratings_data %>%
+  group_by(IAT_condition) %>%
+  dplyr::summarize(mean_rating = round(mean(rating), 2),
+                   sd_rating = round(sd(rating), 2),
+                   se_rating = round(std.error(rating), 2))
+
+ratings_summary_data
+```
+
+## Plots
+### Density plot split by factor
+
+```{r cache = TRUE}
+ggplot(ratings_data, 
+       aes(rating, colour = IAT_condition, fill = IAT_condition)) + 
+  geom_density(alpha=0.50) +
+  apatheme
+```
+
+### Distribution and inference plot
+Black squares are means, horizontal lines are 95% CIs, coloured shapes are distributions.
+I've chosen to omit presenting jittered raw data as it looks overplotted. NB scale was limited to 250 to 1250ms to make it more informative, although (non-outlier) values extend beyond the visible plot (and are included in the analysis).
+
+```{r cache = TRUE}
+ggplot(data = ratings_summary_data,
+       aes(x = IAT_condition, y = mean_rating, fill = IAT_condition)) +
+  geom_point(data = ratings_data,
+             aes(x = IAT_condition, y = rating, fill = IAT_condition),
+             size = 1,
+             shape = 16,
+             alpha = 0.1,
+             position = position_jitterdodge(dodge.width = .5)) +
+  geom_violin(data = ratings_data,
+              aes(x = IAT_condition, y = rating, fill = IAT_condition),
+              alpha = 0.5,
+              position = position_dodge(width = .5)) +
+  geom_crossbar(aes(ymax = mean_rating + (1.96*se_rating),
+                    ymin = mean_rating + (-1.96*se_rating)),
+                alpha = 0.5,
+                fatten = 0) +
+  geom_point(size = 4,
+             shape = 15,
+             position = position_dodge(width = .5)) +
+  apatheme +
+  ylab("Rating") +
+  #ylim(250,1250) +
+  coord_flip()
+```
+
+## Preregistered hypothesis test
+Frequentist mixed linear effects model with participant as a random effect. Entering participant as a random effect acknowledges the non-independence of the multiple data points for each participants. Specifically, allowing for a random intercept allows for differences in general responding speed between participants, therefore controlling for age, IQ, etc., as the *D*1 score does. Using a LMM here therefore serves a dual purpose of controlling for within-subject variation (traditionally served by *D*1 scoring) and between subject analysis, while making use of all data points rather than collapsing the IAT's 80 RTs into just one score.
+
+Two important considerations:
+
+1. Production of *p* values (over LRs, etc.) is contentious, but cite the following as recent evidence for the use of Kenward Roger method estimation: http://link.springer.com/article/10.3758%2Fs13428-016-0809-y
+
+2. No effect sizes are produced due to contention over how to use the random factor error. 
+See http://stats.stackexchange.com/questions/95054/how-to-get-an-overall-p-value-and-effect-size-for-a-categorical-factor-in-a-mi
+
+The model is `rating ~ IAT_condition + (1 | participant)`. That is, rating is predicted by training IAT condition, after controlling for racism and while allowing participants to have a random intercept (i.e., acknowledgin the non-independence of participants ratings of the images). 
+
+Our preregistered *a priori* hypothesis, that ratings would differ between conditions, relates to the main effect for IAT_condition. We therefore examine only the results of this main effect.
+
+```{r cache = TRUE, message=FALSE, warning=FALSE}
+# Check that variables that should be factors are indeed factors
+sapply(ratings_data, class)
+
+# LME analysis
+model_1 <- afex::mixed(rating ~ IAT_condition + modern_racism_scale_total + (1 | participant), 
+                       contrasts = TRUE,  
+                       data = ratings_data,
+                       type = 3,  
+                       method = "KR",
+                       progress = TRUE, 
+                       return = "mixed")
+
+print(model_1)
+```

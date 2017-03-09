@@ -62,7 +62,7 @@ cleaned_df <- dplyr::inner_join(cleaned_df, inclusion_df, by = "participant")
 
 
 ###########################################################################
-# wide D1 scored data data from here
+# wide data from here
 ###########################################################################
 
 
@@ -234,7 +234,7 @@ wide_D1_scored_data_df <-
 # print N
 wide_D1_scored_data_df %>% dplyr::summarize(condition_count = n())
 
-wide_D1_scored_data_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/wide D1 scored data.csv", row.names = FALSE)
+wide_D1_scored_data_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/wide all tasks data.csv", row.names = FALSE)
 
 
 
@@ -250,7 +250,7 @@ wide_D1_scored_data_df %>% write.csv(file = "~/Dropbox/Work/Projects/Analogy/1 a
 other_tasks_df <- 
   wide_D1_scored_data_df %>%
   dplyr::select(participant, IAT_condition, block_order, 
-                task_order, gender, age, modern_racism_scale_total)
+                task_order, gender, age, modern_racism_scale_total, IAT_exclude_based_on_fast_trials, SCIAT_exclude_based_on_fast_trials)
 
 
 # long format SC-IAT rts --------------------------------------------------
