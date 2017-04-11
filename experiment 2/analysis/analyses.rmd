@@ -1,0 +1,416 @@
+---
+title: "Analysis of learning via the IAT using race stimuli II - Experiment 2"
+author: "Ian Hussey"
+params:
+  location_of_data: /Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 2/data/
+  location_of_exp_1_data: /Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/
+output:
+  pdf_document:
+    highlight: haddock
+    toc: yes
+---
+
+Conceptual replication of Experiment 1. Employs AMP as DV rather than SC-IAT.
+
+## Hypotheses
+
+H1: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative implicit evaluations of the outgroup (black people) on the AMP than participants who completed a control (flowers-insects) IAT.  
+
+H2: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
+
+H3: H2 will also be applied to a combination analysis of all self report ratings collected in both Experiments 1 and 2. 
+
+```{r}
+# dependencies
+library(tidyverse)
+library(psych)
+library(afex)
+library(effsize)
+library(weights)  # for rd(), a round() alternative
+library(plotrix)  # for std.error
+library(lme4)
+library(effects)
+```
+
+# Descriptive statistics
+
+## All participants
+Descriptive data for sample.
+
+```{r}
+setwd(params$location_of_data)
+
+data_df <- 
+  read.csv("processed data/wide data.csv") %>%
+  mutate(gender = as.factor(gender))
+
+colnames(data_df)
+
+data_df %>% dplyr::count(gender)
+
+data_df %>% 
+  dplyr::select(age) %>%
+  psych::describe(fast = TRUE,  # subset of descriptive stats
+                  ranges = FALSE,
+                  trim = 0) %>%
+  dplyr::select(-vars, -se)
+```
+
+## Sample descriptive statistics
+
+```{r}
+passers_df <- 
+  data_df %>%
+  dplyr::filter(exclude == FALSE) 
+
+passers_df %>% dplyr::count(IAT_condition)
+
+passers_df %>% 
+  dplyr::select(IAT_mean_RT,
+                IAT_perc_acc,
+                AMP_mean_RT,
+                AMP_perc_acc) %>%
+  psych::describe(fast = TRUE,  # subset of descriptive stats
+                  ranges = FALSE,
+                  trim = 0) %>%
+  dplyr::select(-vars, -se)
+```
+
+# H1: Differences in IAT effects between contrast pair conditions
+
+```{r warning = FALSE, message = FALSE}
+# get data
+setwd(params$location_of_data)
+
+AMP_data <- 
+  read.csv("processed data/long AMP data.csv") %>%
+  dplyr::filter(exclude == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                rating_factor = as.factor(ifelse(accuracy == 0, "negative", 
+                                                 ifelse(accuracy == 1, "positive", NA)))) %>%
+  dplyr::rename(prime_type = trialcode,
+                rating = accuracy)
+```
+
+## Descriptive statistics
+
+```{r}
+AMP_summary_data <-
+  AMP_data %>%
+  group_by(IAT_condition, prime_type) %>%
+  dplyr::summarize(mean_rating = round(mean(rating), 2),
+                   sd_rating = round(sd(rating), 2),
+                   se_rating = round(std.error(rating), 2))
+
+AMP_summary_data
+```
+
+## Plots
+
+```{r cache = TRUE}
+# apa theme for all plots
+apatheme <- 
+  theme_bw() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        #text = element_text(family='Arial'),  # doesn't play nice with knittr
+        legend.title = element_blank(),
+        legend.position = c(.9,.9),
+        axis.line.x = element_line(color='black'),
+        axis.line.y = element_line(color='black'))
+
+# reshape and add a combined condition*IAT block variable for plotting
+AMP_participant_summary_data <-
+  AMP_data %>%
+  group_by(participant, IAT_condition, prime_type) %>%
+  dplyr::summarize(perc_rating = round(mean(rating), 2)) %>%
+  ungroup() %>%
+  group_by(IAT_condition, prime_type) %>%
+  dplyr::mutate(mean_rating = round(mean(perc_rating), 2),
+                sd_rating = round(sd(perc_rating), 2),
+                se_rating = round(std.error(perc_rating), 2)) %>%
+  ungroup() %>%
+  dplyr::mutate(exp_factor = paste(IAT_condition, prime_type, sep = "_"))
+```
+
+### Density plot split by factor
+
+```{r cache = TRUE}
+ggplot(AMP_participant_summary_data, 
+       aes(perc_rating, colour = exp_factor, fill = exp_factor)) + 
+  geom_density(alpha=0.50) +
+  apatheme
+```
+
+### Distribution and inference plot
+Black squares are means, horizontal lines are 95% CIs, coloured shapes are distributions.
+I've chosen to omit presenting jittered raw data as it looks overplotted. NB scale was limited to 250 to 1250ms to make it more informative, although (non-outlier) values extend beyond the visible plot (and are included in the analysis).
+
+```{r cache = TRUE}
+ggplot(data = AMP_participant_summary_data, 
+       aes(x = IAT_condition, y = perc_rating, fill = prime_type)) +
+  geom_violin(alpha = 0.5,
+              position = position_dodge(width = .5)) +
+  geom_point(size = 1,
+             shape = 16,
+             alpha = 0.3,
+             position = position_jitterdodge(dodge.width = .5)) +
+  geom_crossbar(aes(ymax = mean_rating + (1.96*se_rating),
+                    ymin = mean_rating + (-1.96*se_rating)),
+                alpha = 0.5,
+                fatten = 0) +
+  geom_point(aes(y = mean_rating),
+             size = 4,
+             shape = 15,
+             position = position_dodge(width = .5)) +
+  apatheme +
+  ylab("Mean rating") +
+  #coord_cartesian(ylim = c(250,1250))
+  coord_flip()
+```
+
+### Greyscale inference plot - marginal means
+
+```{r, cache = TRUE, fig.height=3, fig.width=5}
+# calculate marginal means
+model_1_forplot <- lmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total + (1 | participant),
+                        contrasts = list(prime_type = "contr.sum", IAT_condition = "contr.sum"),  
+                        data = AMP_data)
+
+m1_marginal_means <- as.data.frame(effect("prime_type:IAT_condition", model_1_forplot))
+m1_marginal_means
+
+ggplot(data = m1_marginal_means,
+       aes(x = prime_type, y = fit, colour = IAT_condition)) +
+  geom_pointrange(aes(ymax = upper,
+                      ymin = lower),
+                  position = position_dodge(width = .1)) +
+  geom_line(aes(group = IAT_condition),
+            position = position_dodge(width = .1)) +
+  ylab("Rating") +
+  xlab("IAT condition") +
+  scale_colour_grey() +
+  theme_classic() 
+```
+
+## Preregistered hypothesis test
+Two important considerations:
+
+1. Production of *p* values is contentious. The following suggests that parametic bootstrapping and the kenward rogers method give better error control than liklihood ratios, however KR and PB both throw errors on binomial data (i.e., AMP rating is binary). We therefore employ LR throughout for the sake of consistency. http://link.springer.com/article/10.3758%2Fs13428-016-0809-y
+
+2. No effect sizes are produced due to contention over how to use the random factor error. 
+See http://stats.stackexchange.com/questions/95054/how-to-get-an-overall-p-value-and-effect-size-for-a-categorical-factor-in-a-mi
+
+The model is `rating_factor ~ prime_type * IAT_condition + modern_racism_scale_total + (1 | participant)`. That is, rating is predicted by the interaction between AMP prime type and training IAT condition, after controlling for differences in racism, and while allowing for participants to have a random intercept (i.e., acknowledging the non-independence of the mutliple ratings provided by each participant). 
+
+Our preregistered *a priori* hypothesis, that AMP effects will differ between conditions, relates to the interaction effect and not the main effects. We therefore employ type 3 sum of squares and examine only the results of the interaction.
+
+```{r cache = TRUE, message=FALSE, warning=FALSE}
+# Check that variables that should be factors are indeed factors
+sapply(AMP_data, class)
+
+# LME analysis
+model_1 <- afex::mixed(rating ~ prime_type * IAT_condition + modern_racism_scale_total + (1 | participant),
+                       data = AMP_data,
+                       family = binomial,
+                       method = "LR")
+model_1$anova_table
+
+# sigma/z scores
+H1_z_score <- qnorm(1-model_1$anova_table$`Pr(>Chisq)`[4]) # 4th member is interaction effect
+H1_z_score
+```
+
+# H2: Differences in self-reported ratings between contrast pair conditions
+
+## Descriptive statistics
+
+```{r}
+# get data
+setwd(params$location_of_data)
+
+ratings_data <- 
+  read.csv("processed data/long ratings data.csv") %>%
+  dplyr::filter(exclude == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                IAT_condition = as.factor(IAT_condition))
+  
+ratings_summary_data <-
+  ratings_data %>%
+  group_by(IAT_condition) %>%
+  dplyr::summarize(mean_rating = round(mean(rating), 2),
+                   sd_rating = round(sd(rating), 2),
+                   se_rating = round(std.error(rating), 2))
+
+ratings_summary_data
+```
+
+## Plots
+
+### Density plot split by factor
+
+```{r cache = TRUE}
+ggplot(ratings_data, 
+       aes(rating, colour = IAT_condition, fill = IAT_condition)) + 
+  geom_density(alpha=0.50) +
+  apatheme
+```
+
+### Distribution and inference plot
+Black squares are means, horizontal lines are 95% CIs, coloured shapes are distributions.
+I've chosen to omit presenting jittered raw data as it looks overplotted. NB scale was limited to 250 to 1250ms to make it more informative, although (non-outlier) values extend beyond the visible plot (and are included in the analysis).
+
+```{r cache = TRUE}
+ggplot(data = ratings_summary_data,
+       aes(x = IAT_condition, y = mean_rating, fill = IAT_condition)) +
+  geom_violin(data = ratings_data,
+              aes(x = IAT_condition, y = rating, fill = IAT_condition),
+              alpha = 0.5,
+              position = position_dodge(width = .5)) +
+  geom_crossbar(aes(ymax = mean_rating + (1.96*se_rating),
+                    ymin = mean_rating + (-1.96*se_rating)),
+                alpha = 0.5,
+                fatten = 0) +
+  geom_point(size = 4,
+             shape = 15,
+             position = position_dodge(width = .5)) +
+  apatheme +
+  ylab("Rating") +
+  #coord_cartesian(ylim = c(250,1250))
+  coord_flip()
+```
+
+#### Greyscale inference plot - marginal means
+
+```{r, cache = TRUE, fig.height=3, fig.width=3}
+# calculate marginal means
+model_2_forplot <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | participant), 
+                        contrasts = list(block = "contr.sum", IAT_condition = "contr.sum"),  
+                        data = ratings_data)
+
+m2_marginal_means <- as.data.frame(effect("IAT_condition", model_2_forplot))
+m2_marginal_means
+
+ggplot(data = m2_marginal_means,
+       aes(x = IAT_condition, y = fit)) +
+  geom_pointrange(aes(ymax = upper,
+                      ymin = lower)) +
+  ylab("Rating") +
+  xlab("IAT condition") +
+  scale_colour_grey() +
+  theme_classic() 
+```
+
+## Preregistered hypothesis test
+The model is `rating ~ IAT_condition + (1 | participant)`. That is, rating is predicted by training IAT condition, after controlling for racism and while allowing participants to have a random intercept (i.e., acknowledgin the non-independence of participants ratings of the images). 
+
+Our preregistered *a priori* hypothesis, that ratings would differ between conditions, relates to the main effect for IAT_condition. We therefore examine only the results of this main effect.
+
+```{r cache = TRUE, message=FALSE, warning=FALSE}
+# Check that variables that should be factors are indeed factors
+sapply(ratings_data, class)
+
+# LME analysis
+model_2 <- afex::mixed(rating ~ IAT_condition + modern_racism_scale_total + (1 | participant), 
+                       data = ratings_data,
+                       method = "LR")
+model_2$anova_table
+
+# sigma/z scores
+H2_z_score <- qnorm(1-model_2$anova_table$`Pr(>Chisq)`[1]) # 1st member is IAT condition
+H2_z_score
+```
+
+
+# H3: Differences in self-reported ratings between contrast pair conditions - combination analysis across Experiments 1 and 2
+## Descriptive statistics
+
+```{r}
+# trim exp 2 data
+ratings_data_exp2 <-
+  ratings_data %>%
+  dplyr::mutate(experiment = 2,
+                unique_id = as.factor(paste(experiment, participant, sep = "_"))) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+# get data from exp 1
+setwd(params$location_of_exp_1_data)
+
+ratings_data_exp1 <- 
+  read.csv("processed data/long ratings data.csv") %>%
+  #dplyr::filter(exclude == FALSE) %>%
+  dplyr::mutate(experiment = 1,
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, 
+                                 ifelse(SCIAT_exclude_based_on_fast_trials == TRUE, TRUE,
+                                        FALSE))) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+  
+combined_ratings_data <- rbind(ratings_data_exp1, ratings_data_exp2)
+
+
+combined_ratings_summary_data <-
+  combined_ratings_data %>%
+  group_by(IAT_condition) %>%
+  dplyr::summarize(mean_rating = round(mean(rating), 2),
+                   sd_rating = round(sd(rating), 2),
+                   se_rating = round(std.error(rating), 2))
+```
+
+## Plots
+
+### Density plot split by factor
+
+```{r cache = TRUE}
+ggplot(combined_ratings_data, 
+       aes(rating, colour = IAT_condition, fill = IAT_condition)) + 
+  geom_density(alpha=0.50) +
+  apatheme
+```
+
+### Distribution and inference plot
+Black squares are means, horizontal lines are 95% CIs, coloured shapes are distributions.
+I've chosen to omit presenting jittered raw data as it looks overplotted. NB scale was limited to 250 to 1250ms to make it more informative, although (non-outlier) values extend beyond the visible plot (and are included in the analysis).
+
+```{r cache = TRUE}
+ggplot(data = combined_ratings_summary_data,
+       aes(x = IAT_condition, y = mean_rating, fill = IAT_condition)) +
+  geom_violin(data = combined_ratings_data,
+              aes(x = IAT_condition, y = rating, fill = IAT_condition),
+              alpha = 0.5,
+              position = position_dodge(width = .5)) +
+  geom_crossbar(aes(ymax = mean_rating + (1.96*se_rating),
+                    ymin = mean_rating + (-1.96*se_rating)),
+                alpha = 0.5,
+                fatten = 0) +
+  geom_point(size = 4,
+             shape = 15,
+             position = position_dodge(width = .5)) +
+  apatheme +
+  ylab("Rating") +
+  #coord_cartesian(ylim = c(250,1250))
+  coord_flip()
+```
+
+## Preregistered hypothesis test
+The model is `rating ~ IAT_condition + (1 | participant)`. That is, rating is predicted by training IAT condition, after controlling for racism and while allowing participants to have a random intercept (i.e., acknowledgin the non-independence of participants ratings of the images). 
+
+Our preregistered *a priori* hypothesis, that ratings would differ between conditions, relates to the main effect for IAT_condition. We therefore examine only the results of this main effect.
+
+```{r cache = TRUE, message=FALSE, warning=FALSE}
+# Check that variables that should be factors are indeed factors
+sapply(ratings_data, class)
+
+# LME analysis
+model_3 <- afex::mixed(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id) + (1 | experiment), 
+                       data = combined_ratings_data,
+                       method = "LR")
+model_3$anova_table
+
+# sigma/z scores
+H3_z_score <- qnorm(1-model_3$anova_table$`Pr(>Chisq)`[1]) # 1st member is IAT condition
+H3_z_score
+```

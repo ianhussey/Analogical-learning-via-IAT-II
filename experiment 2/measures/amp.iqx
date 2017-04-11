@@ -1,0 +1,268 @@
+﻿****************************************************
+Affect Misatribution Procedure (AMP)
+****************************************************
+
+Updated for Inquisit 4.0 by K. Borchert (katjab@millisecond.com) for Millisecond Software LLC
+Copyright © 05-05-2015 Millisecond Software
+Modifications by Ian Hussey (ian.hussey@ugent.be)
+
+Notes
+
+1 Durations:
+500 ms fixation cross (changed from original which had no cross or ITI)
+100 ms prime (changed from the original 75ms, which is 4.5 frames and therefore not reliable between trials)
+100 ms target
+100 ms mask
+
+2 Block length
+100 trials, following Payne and Lundberg 2014.
+
+3 trial types and accuracies
+Task includes only black face primes and netural primes, no white face primes. 
+Accuracies are recorded as 0 = rated as negative and 1 rated as positive. So "accuracy" ratings are actually valence ratings.
+This makes it easier to caculate the AMP effect. (previously, neutral trials were always scored as correct)
+
+****************************************************
+defaults
+****************************************************
+
+<defaults>
+/ fontstyle = ("Arial", 3.5%)
+/ screencolor = black
+/ txbgcolor = black
+/ txcolor = white
+/ minimumversion = "4.0.0.0"
+/ canvasaspectratio = (4, 3)
+</defaults>
+
+****************************************************
+values
+****************************************************
+
+<values>
+/ completed = 0
+/ targetstim = 0
+/ primestim = 0
+</values>
+
+****************************************************
+expressions
+****************************************************
+
+<expressions>
+/ b = trial.primeRace.percentcorrect
+</expressions>
+
+****************************************************
+data
+****************************************************
+
+<data>
+/ file = "AMP.iqdat"
+/ columns = [date, time, subject, blockcode, blocknum, trialcode, trialnum, values.primestim, values.targetstim,
+			response, correct, latency, trial.primeRace.totalpercentcorrect, 
+			trial.primeNeutral.totalpercentcorrect]
+/ separatefiles = true
+</data>
+
+****************************************************
+instructions
+****************************************************
+
+<list instructions>
+/ items = (1, 2, 3, 4, 5, 6, 7)
+/ resetinterval = 20
+/ selectionmode = sequence
+</list>
+
+<trial instructions>
+/ stimulustimes = [1=instructions, spacebar]
+/ correctresponse = (" ")
+/ errormessage = false
+/ recorddata = false
+</trial>
+
+<text instructions>
+/ items = instructions
+/ hjustify = left
+/ size = (90%, 60%)
+/ position = (50%, 85%)
+/ valign = bottom
+/ select = sequence
+</text>
+
+<item instructions>
+/ 1 = "This task will presents pairs of pictures flashed one after the other. ~n~nThe first is a real-life image. The second is a Chinese character. ~n~nThe real-life image should be IGNORED. Your job is to judge the visual pleasantness of the Chinese characters."
+/ 2 = "Use the E and I keys to respond. ~n~nIf the Chinese character is less visually pleasing than average, press the E key on the left. ~n~nIf the Chinese character is more visually pleasing than average, press the I key on the right. ~n~nIMPORTANT: ~nThe real-life image can sometimes bias people’s judgments of the drawings. Because we are interested in how people can avoid being biased, please try your absolute best not to let the real-life images bias your judgment of the Chinese characters!"
+/ 3 = "First you'll be given 10 practice trials. ~n~nPlease rate the pleasantness of the Chinese characters."
+/ 4 = "You'll now complete the full task. This will take about 2 minutes. ~n~nPlease continue to rate the pleasantness of the Chinese characters."
+</item>
+
+<text spacebar>
+/ items = ("Press the SPACE BAR to begin.")
+/ position = (50%, 95%)
+/ valign = bottom
+</text>
+
+****************************************************
+stimuli
+****************************************************
+
+<item attributeAlabel>
+/ 1 = "Good"
+</item>
+
+<item attributeBlabel>
+/ 1 = "Bad"
+</item>
+
+<item primeRaceLabel>
+/ 1 = "Black people"
+</item>
+
+<item primeRace>
+/ 1 = "bf14_nc.jpg"
+/ 2 = "bf23_nc.jpg"
+/ 3 = "bf56_nc.jpg"
+/ 4 = "bm14_nc.jpg"
+/ 5 = "bm23_nc.jpg"
+/ 6 = "bm56_nc.jpg"
+</item>
+
+<picture primeNeutral>
+/ items = ("neutral.jpg")
+/ size = (20%, 20%)
+</picture>
+
+<item symbols>
+/ 1 = "pic1.jpg"
+/ 2 = "pic2.jpg"
+/ 3 = "pic3.jpg"
+/ 4 = "pic4.jpg"
+/ 5 = "pic5.jpg"
+/ 6 = "pic6.jpg"
+/ 7 = "pic7.jpg"
+/ 8 = "pic8.jpg"
+/ 9 = "pic9.jpg"
+/ 10 = "pic10.jpg"
+/ 11 = "pic11.jpg"
+/ 12 = "pic12.jpg"
+/ 13 = "pic13.jpg"
+/ 14 = "pic14.jpg"
+/ 15 = "pic15.jpg"
+/ 16 = "pic16.jpg"
+/ 17 = "pic17.jpg"
+/ 18 = "pic18.jpg"
+/ 19 = "pic19.jpg"
+/ 20 = "pic20.jpg"
+</item>
+
+<picture target>
+/ items = symbols
+/ select = noreplace
+/ size = (20%, 20%)
+</picture>
+
+<shape blank>
+/ shape = rectangle
+/ color = black
+/ size = (20%, 20%)
+</shape>
+
+<picture primeRace>
+/ items = primeRace
+/ size = (20%, 20%)
+</picture>
+
+<text attributeAlabel>
+/ items = attributeAlabel
+/ valign = top
+/ halign = right
+/ position = (95%, 5%)
+/ txcolor = green
+/ fontstyle = ("Arial", 5%)
+</text>
+
+<text attributeBlabel>
+/ items = attributeBlabel
+/ valign = top
+/ halign = left
+/ position = (5%, 5%)
+/ txcolor = green
+/ fontstyle = ("Arial", 5%)
+</text>
+
+<text cross>
+/ items = ("+")
+/ txcolor = white
+/ fontstyle = ("Arial", 5%)
+</text>
+
+<picture mask>
+/ items = ("mask.jpg")
+/ size = (23%, 23%)
+</picture>
+
+****************************************************
+trials
+****************************************************
+
+<trial primeRacepractice>
+/ validresponse = ("E", "I")
+/ correctresponse = ("E")
+/ stimulustimes = [0=cross; 500=primeRace; 600=blank; 700=target; 800=mask]
+</trial>
+
+<trial primeNeutralpractice>
+/ validresponse = ("E", "I")
+/ correctresponse = ("E", "I")
+/ stimulustimes = [0=cross; 500=primeNeutral; 600=blank; 700=target; 800=mask]
+</trial>
+
+"accuracy" is actually valence of rating: 0 = negative, 1 = positive
+<trial primeRace>
+/ validresponse = ("E", "I")
+/ correctresponse = ("I")  
+/ stimulustimes = [0=cross; 500=primeRace; 600=blank; 700=target; 800=mask]
+/ ontrialend = [values.primestim = picture.primeRace.currentitemnumber; values.targetstim = picture.target.currentitemnumber]
+</trial>
+
+<trial primeNeutral>
+/ validresponse = ("E", "I")
+/ correctresponse = ("I")
+/ stimulustimes = [0=cross; 500=primeNeutral; 600=blank; 700=target; 800=mask]
+/ ontrialend = [values.primestim = picture.primeneutral.currentitemnumber; values.targetstim = picture.target.currentitemnumber]
+</trial>
+
+****************************************************
+blocks
+****************************************************
+
+<block AMP_practice>
+/ bgstim = (attributeAlabel, attributeBlabel)
+/ trials = [1-3 = instructions; 4-13 = noreplace(primeRacepractice, primeNeutralpractice)]
+/ recorddata = true
+</block>
+
+<block AMP_test>
+/ bgstim = (attributeAlabel, attributeBlabel)
+/ trials = [1 = instructions; 2-101 = noreplace(primeRace, primeNeutral)]
+</block>
+
+****************************************************
+experiment
+****************************************************
+
+<expt>
+/ blocks = [1=AMP_practice; 2=AMP_test]
+/ onexptend = [values.completed = 1]
+</expt>
+
+****************************************************
+test monkey
+****************************************************
+
+<monkey>
+/ latencydistribution = normal(50, 10)
+/ percentcorrect = 90
+</monkey>

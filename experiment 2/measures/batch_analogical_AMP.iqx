@@ -1,0 +1,118 @@
+﻿************************************************
+Batch script for IAT as an analogical task II
+************************************************
+Ian Hussey (ian.hussey@ugent.be)
+GPLv3+ license
+
+************************************************
+overview 
+************************************************
+If participants do not agree to participate in the experiment, the entire batch file
+gets aborted via function script.abort() in the ConsentformScript.iqx script
+
+************************************************
+
+race IAT block order 1, ratings before AMP
+<batch>
+/ subjects=(1 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="ratings.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+race IAT block order 2, ratings before AMP
+<batch>
+/ subjects=(2 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="ratings.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+race IAT block order 1, ratings after AMP
+<batch>
+/ subjects=(3 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+
+race IAT block order 2, ratings after AMP
+<batch>
+/ subjects=(4 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+flowers insects IAT block order 1, ratings before AMP
+<batch>
+/ subjects=(5 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="ratings.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+flowers insects IAT block order 2, ratings before AMP
+<batch>
+/ subjects=(6 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="ratings.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+flowers insects IAT block order 1, ratings after AMP
+<batch>
+/ subjects=(7 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+flowers insects IAT block order 2, ratings after AMP
+<batch>
+/ subjects=(8 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="amp.iqx"
+/ file="amp_recognition.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
