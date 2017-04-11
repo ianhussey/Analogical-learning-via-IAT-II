@@ -9,7 +9,7 @@ Measures, processing scripts, and analysis scripts for an experiment on the IAT 
 - Measures written in Inquisit (v4.0).
 - Processing scripts and analyses scripts written in R (v3.3) with additional packages.
 
-## License
+## Licenses
 
 ### Code
 
@@ -20,3 +20,16 @@ IAT and SC-IAT code is copyright (c) Millisecond Software (2015) with modificati
 ### Stimuli
 
 Stimuli from Xu, Nosek & Greenwald (2014)
+
+## Code usage
+
+Run in order:
+
+1. `Data screening.r`
+   1. Compares the number of trials on each task to the modal number for the sample and creates two lists of participants, those with complete vs incomplete data. Participants can be paid/rejected on prolific.ac appropriately.
+2. `Data processing`
+   1. Processes data into analysable format.
+3. `Analysis.rmd`
+   1. Applies exclusion criteria. If sample doesn't meet stopping rule, increase N on prolific.ac and iteratively rerun these scripts on the new, complete data. When sample has been reached, interpret analyses.
+4. `Remove prolific codes.r`
+   1. Once final sample has been completed, remove participants' prolific codes from data using this script. Ensure that the original demographics.csv file is either overwritten or deleted. This anonymised data can then be put online.
