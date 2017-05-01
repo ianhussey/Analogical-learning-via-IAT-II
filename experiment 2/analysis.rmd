@@ -192,8 +192,6 @@ ggplot(data = model_1_predicted_effects,
   xlab("AMP prime type") +
   scale_colour_grey() +
   theme_classic() 
-  # theme(legend.justification=c(0.5,1), legend.position=c(0.5,1),
-  #       legend.key = element_rect(colour = "transparent"))
 ```
 
 # Hypothesis test 2: Differences in self-reported ratings between contrast pair conditions
@@ -258,8 +256,7 @@ ggplot(data = model_2_predicted_effects,
   ylab("Rating") +
   xlab("IAT condition") +
   scale_colour_grey() +
-  theme_classic() +
-  scale_y_continuous(limits = c(1,7), breaks = c(1,2,3,4,5,6,7))
+  theme_classic()
 ```
 
 # Hypothesis test 3: Combination analysis of self-report data
@@ -343,6 +340,5 @@ ggplot(data = model_3_predicted_effects,
   ylab("Rating") +
   xlab("IAT condition") +
   scale_colour_grey() +
-  theme_classic() +
-  scale_y_continuous(limits = c(1,7), breaks = c(1,2,3,4,5,6,7))
+  theme_classic()
 ```

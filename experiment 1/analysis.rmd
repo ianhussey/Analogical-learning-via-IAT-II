@@ -114,7 +114,7 @@ SCIAT_data <-
 SCIAT_data_outliers_removed <-
   SCIAT_data %>%
   schoRsch::outlier(dv = "rt",
-                    todo="na", 
+                    todo="elim", 
                     upper.z = 2.5, 
                     lower.z = -2.5)
 ```
@@ -279,6 +279,5 @@ ggplot(data = model_2_predicted_effects,
   ylab("Rating") +
   xlab("IAT condition") +
   scale_colour_grey() +
-  theme_classic() +
-  scale_y_continuous(limits = c(1,7), breaks = c(1,2,3,4,5,6,7))
+  theme_classic() 
 ```
