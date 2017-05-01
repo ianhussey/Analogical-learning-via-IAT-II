@@ -1,0 +1,123 @@
+---
+title: "Post hoc analysis"
+author: "Ian Hussey"
+output:
+  html_document:
+    highlight: haddock
+    toc: yes
+---
+
+In the pre-registered hypothesis tests self reported racism was employed as a covariate. Here, three post-hoc analyses explore whether racism functions as a moderator of performance on the three DVs (i.e., SC-IAT, AMP, and the combined data from the self report ratings across the two experiments).
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# dependencies
+library(tidyverse)
+library(psych)
+library(weights)  # for rd(), a round() alternative
+library(plotrix)  # for std.error
+library(lme4)
+library(effects)
+library(knitr)
+library(sjPlot)
+```
+
+# Exploratory hypothesis 1: Interaction between racism and condition on the SC-IAT effect
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# exclude participants who had more than 10% of trials in less than 300ms, and make variables factors
+SCIAT_data <- 
+  read.csv("experiment 1/data/processed/processed SCIAT data - long format.csv") %>%
+  dplyr::mutate(participant = as.factor(participant),
+         block = as.factor(ifelse(block == "compatible", "black-positive", 
+                        ifelse(block == "incompatible", "black-negative", NA))),
+         IAT_condition = as.factor(IAT_condition)) %>%
+  dplyr::rename(SCIAT_block = block) %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE & 
+           SCIAT_exclude_based_on_fast_trials == FALSE)  
+
+# exclude outlier rts
+SCIAT_data_outliers_removed <-
+  SCIAT_data %>%
+  schoRsch::outlier(dv = "rt",
+                    todo="elim", 
+                    upper.z = 2.5, 
+                    lower.z = -2.5)
+
+# mixed model
+model_1 <- lmer(rt ~ SCIAT_block * IAT_condition * modern_racism_scale_total + (1 | participant), 
+                contrasts = list(SCIAT_block = "contr.sum", IAT_condition = "contr.sum"),  
+                data = SCIAT_data_outliers_removed)
+
+# effects table
+sjt.lmer(model_1, 
+         show.std = TRUE,
+         p.kr = FALSE)
+```
+
+Hypothesis refers to the the three way interaction effect.
+
+# Exploratory hypothesis 2: Interaction between racism and condition on the AMP effect
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# get data
+AMP_data <- 
+  read.csv("experiment 2/data/processed/processed AMP data - long format.csv") %>%
+  dplyr::filter(exclude == FALSE,
+                IAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                rating_factor = as.factor(ifelse(accuracy == 0, "negative", 
+                                                 ifelse(accuracy == 1, "positive", NA))),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  dplyr::rename(prime_type = item,
+                rating = accuracy) 
+
+# generalised linear mixed model
+model_2 <- glmer(rating ~ prime_type * IAT_condition * modern_racism_scale_total + (1 | participant), 
+                 family = "binomial",
+                 contrasts = list(prime_type = "contr.sum", IAT_condition = "contr.sum"),  
+                 data = AMP_data)
+
+# effects table
+sjt.glmer(model_2,
+          digits.p = 9)
+```
+
+Hypothesis refers to the three way interaction effect.
+
+# Exploratory hypothesis 3: Interaction between racism and condition on self report ratings of the black faces (combination analysis across Experiments 1 & 2)
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# get exp 1 data
+ratings_data_exp1 <- 
+  read.csv("experiment 1/data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = 1,
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  dplyr::filter(IAT_exclude_based_on_fast_trials == FALSE,
+                SCIAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, rating, modern_racism_scale_total)
+
+# get exp 2 data
+ratings_data_exp2 <- 
+  read.csv("experiment 2/data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = 2,
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  dplyr::filter(IAT_exclude_based_on_fast_trials == FALSE & 
+                  exclude == FALSE) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, rating, modern_racism_scale_total)
+
+combined_ratings_data <- rbind(ratings_data_exp1, ratings_data_exp2)
+
+# linear mixed model
+model_3 <- lmer(rating ~ IAT_condition * modern_racism_scale_total + (1 | experiment) + (1 | unique_id), 
+                contrasts = list(IAT_condition = "contr.sum"),  
+                data = combined_ratings_data)
+
+# effects table
+sjt.lmer(model_3, 
+         show.std = TRUE,
+         p.kr = FALSE)
+```
+
+Hypothesis relates to the two way interaction effect.

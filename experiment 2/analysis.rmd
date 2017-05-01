@@ -138,7 +138,8 @@ ggplot(AMP_participant_summary_data,
 ```{r, message=FALSE, warning=FALSE}
 model_1 <- glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total + (1 | participant), 
                  family = "binomial",
-                 contrasts = list(prime_type = "contr.sum", IAT_condition = "contr.sum"),  
+                 contrasts = list(prime_type = "contr.sum", 
+                                  IAT_condition = "contr.sum"),  
                  data = AMP_data)
 ```
 
@@ -150,13 +151,7 @@ model_1 <- glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total
 sjt.glmer(model_1, 
           emph.p = FALSE,
           digits.p = 7)
-
-# precise p value
-temp <- summary(model_1)$coefficients %>% as.tibble()
-precise_interaction_p_value <- temp$`Pr(>|z|)`[5]
 ```
-
-NB Precise *p* value for interaction = `r precise_interaction_p_value`.
 
 ### Plot effects
 
