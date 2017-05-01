@@ -29,15 +29,22 @@ setwd("/Users/Ian/git/Analogical learning via the IAT II/experiment 1/data/proce
 # Make some variable names more transparent
 trimmed_df <- 
   input_df %>%
-  dplyr::select(subject,
-                response,
-                trialcode,
-                blockcode) %>%
+  dplyr::select(subject, #participant
+                blocknum,  #block_n
+                trialnum,  #trial_n
+                blockcode, #task
+                trialcode,  #item
+                response,  
+                correct, #accuracy
+                latency) %>%  #rt
   dplyr::rename(participant = subject,
-                task = blockcode) %>%
-  dplyr::mutate(participant = as.numeric(participant))
-
-trimmed_df %>% distinct(task)
+                block_n = blocknum,
+                trial_n = trialnum,
+                task = blockcode,
+                item = trialcode,
+                accuracy = correct,
+                rt = latency) %>%
+  dplyr::mutate(participant = as.factor(participant))
 
 
 # complete data per task --------------------------------------------------
@@ -96,11 +103,11 @@ participants_with_full_data <-
 
 modern_racism_scale <-
   trimmed_df %>%
-  dplyr::filter(grepl("modern_racism_scale", trialcode)) %>%  # filter rows where the block_name includes string
+  dplyr::filter(grepl("racism_scale", task)) %>%  # filter rows where the block_name includes string
   dplyr::group_by(participant) %>%
   dplyr::summarize(racism_scale_rows = n()) %>%  # count the number of trials per participant
   dplyr::ungroup() %>%
-  dplyr::mutate(modal_racism_scale_rows = modal_value(modal_racism_scale_rows)) %>%  # find modal n of trials
+  dplyr::mutate(modal_racism_scale_rows = modal_value(racism_scale_rows)) %>%  # find modal n of trials
   dplyr::rowwise() %>%
   dplyr::filter(racism_scale_rows == modal_racism_scale_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
   dplyr::select(-modal_racism_scale_rows)

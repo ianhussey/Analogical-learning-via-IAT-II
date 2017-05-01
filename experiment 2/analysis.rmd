@@ -15,8 +15,6 @@ Conceptual replication of Experiment 1. Employs AMP as DV rather than SC-IAT.
 # dependencies
 library(tidyverse)
 library(psych)
-library(afex)
-library(effsize)
 library(weights)  # for rd(), a round() alternative
 library(plotrix)  # for std.error
 library(lme4)
@@ -41,7 +39,7 @@ round_df <- function(df, digits) {
 ```{r, message=FALSE, warning=FALSE, echo = FALSE}
 # get data
 data_df <- 
-  read.csv("data/processed/wide all tasks data.csv") %>%
+  read.csv("data/processed/processed summary data - wide format.csv") %>%
   mutate(gender = as.factor(gender))
 
 #colnames(data_df)
@@ -103,14 +101,14 @@ H1: Completing an IAT serves to train attitudes as well as test them. Participan
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 AMP_data <- 
-  read.csv("data/processed/long AMP data.csv") %>%
+  read.csv("data/processed/processed AMP data - long format.csv") %>%
   dplyr::filter(exclude == FALSE,
                 IAT_exclude_based_on_fast_trials == FALSE) %>%
   dplyr::mutate(participant = as.factor(participant),
                 rating_factor = as.factor(ifelse(accuracy == 0, "negative", 
                                                  ifelse(accuracy == 1, "positive", NA))),
                 IAT_condition = as.factor(IAT_condition)) %>%
-  dplyr::rename(prime_type = trialcode,
+  dplyr::rename(prime_type = item,
                 rating = accuracy) 
 
 # Check that variables that should be factors are indeed factors
@@ -145,20 +143,26 @@ model_1 <- glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total
 ```
 
 - Hypothesis refers to the IAT_condition*AMP_prime_type interaction effect.
-- Confidence intervals via Wald estimation.
 
 ### Summary
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 sjt.glmer(model_1, 
-          emph.p = FALSE)
+          emph.p = FALSE,
+          digits.p = 7)
+
+# precise p value
+temp <- summary(model_1)$coefficients %>% as.tibble()
+precise_interaction_p_value <- temp$`Pr(>|z|)`[5]
 ```
+
+NB Precise *p* value for interaction = `r precise_interaction_p_value`.
 
 ### Plot effects
 
 ```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 sjp.glmer(model_1, 
-         type = "fe")
+          type = "fe")
 ```
 
 ### Table predictions
@@ -184,10 +188,10 @@ ggplot(data = model_1_predicted_effects,
                   position = position_dodge(width = .1)) +
   geom_line(aes(group = `IAT condition`),
             position = position_dodge(width = .1)) +
-  ylab("Rating") +
+  ylab("Mean rating of Chinese characters") +
   xlab("AMP prime type") +
   scale_colour_grey() +
-  theme_classic()
+  theme_classic() 
   # theme(legend.justification=c(0.5,1), legend.position=c(0.5,1),
   #       legend.key = element_rect(colour = "transparent"))
 ```
@@ -198,7 +202,7 @@ H2: Completing an IAT serves to train attitudes as well as test them. Participan
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 ratings_data <- 
-  read.csv("data/processed/long ratings data.csv") %>%
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
   mutate(participant = as.factor(participant)) %>%
   filter(IAT_exclude_based_on_fast_trials == FALSE & 
            exclude == FALSE)
@@ -214,12 +218,15 @@ model_2 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | partic
                 data = ratings_data)
 ```
 
+- Hypothesis refers to main effect for IAT condition.
+- *p* values estimated via Wald method.
+
 ### Summary
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 sjt.lmer(model_2, 
          emph.p = FALSE, 
-         #p.kr = TRUE,  # doesn't seem to be working
+         p.kr = FALSE,
          show.std = TRUE)
 ```
 
@@ -227,6 +234,7 @@ sjt.lmer(model_2,
 
 ```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 sjp.lmer(model_2, 
+         p.kr = FALSE,
          type = "fe")
 ```
 
@@ -250,7 +258,8 @@ ggplot(data = model_2_predicted_effects,
   ylab("Rating") +
   xlab("IAT condition") +
   scale_colour_grey() +
-  theme_classic() 
+  theme_classic() +
+  scale_y_continuous(limits = c(1,7), breaks = c(1,2,3,4,5,6,7))
 ```
 
 # Hypothesis test 3: Combination analysis of self-report data
@@ -271,7 +280,7 @@ ratings_data_exp2 <-
 setwd(params$location_of_exp_1_data)
 
 ratings_data_exp1 <- 
-  read.csv("data/processed/long ratings data.csv") %>%
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
   #dplyr::filter(exclude == FALSE) %>%
   dplyr::mutate(experiment = 1,
                 unique_id = as.factor(paste(experiment, participant, sep = "_")),
@@ -294,12 +303,15 @@ model_3 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | experi
                 data = combined_ratings_data)
 ```
 
+- Hypothesis refers to main effect for IAT condition.
+- *p* values estimated via Wald method.
+
 ### Summary
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 sjt.lmer(model_3, 
          emph.p = FALSE, 
-         #p.kr = TRUE,  # doesn't seem to be working
+         p.kr = FALSE,
          show.std = TRUE)
 ```
 
@@ -307,6 +319,7 @@ sjt.lmer(model_3,
 
 ```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 sjp.lmer(model_3, 
+         p.kr = FALSE,
          type = "fe")
 ```
 
@@ -330,5 +343,6 @@ ggplot(data = model_3_predicted_effects,
   ylab("Rating") +
   xlab("IAT condition") +
   scale_colour_grey() +
-  theme_classic() 
+  theme_classic() +
+  scale_y_continuous(limits = c(1,7), breaks = c(1,2,3,4,5,6,7))
 ```

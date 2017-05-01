@@ -11,8 +11,6 @@ output:
 # dependencies
 library(tidyverse)
 library(psych)
-library(afex)
-library(effsize)
 library(weights)  # for rd(), a round() alternative
 library(plotrix)  # for std.error
 library(lme4)
@@ -37,8 +35,8 @@ round_df <- function(df, digits) {
 ```{r, message=FALSE, warning=FALSE, echo = FALSE}
 # get data
 data_df <- 
-  read.csv("data/processed/wide all tasks data.csv") %>%
-  mutate(gender = as.factor(gender))
+  read.csv("data/processed/processed summary data - wide format.csv") %>%
+  dplyr::mutate(gender = as.factor(gender))
 
 #colnames(data_df)
 
@@ -87,7 +85,7 @@ passers_df %>%
                   ranges = FALSE,
                   trim = 0) %>%
   dplyr::select(-vars, -se) %>%
-  mutate(mean = round(mean, 2),
+  dplyr::mutate(mean = round(mean, 2),
          sd = round(sd, 2)) %>%
   kable()
 ```
@@ -103,13 +101,15 @@ Exclude data points > 2.5 SD from mean.
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 # exclude participants who had more than 10% of trials in less than 300ms, and make variables factors
 SCIAT_data <- 
-  read.csv("data/processed/long SCIAT data.csv") %>%
-  mutate(participant = as.factor(participant),
+  read.csv("data/processed/processed SCIAT data - long format.csv") %>%
+  dplyr::mutate(participant = as.factor(participant),
          block = as.factor(ifelse(block == "compatible", "black-positive", 
                         ifelse(block == "incompatible", "black-negative", NA))),
          IAT_condition = as.factor(IAT_condition)) %>%
-  rename(SCIAT_block = block) %>%
-  filter(IAT_exclude_based_on_fast_trials == FALSE & SCIAT_exclude_based_on_fast_trials == FALSE)  
+  dplyr::rename(SCIAT_block = block) %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE & 
+           SCIAT_exclude_based_on_fast_trials == FALSE)  
+
 # exclude outlier rts
 SCIAT_data_outliers_removed <-
   SCIAT_data %>%
@@ -140,7 +140,7 @@ ggplot(data = SCIAT_data_outliers_removed) +
 
 ```{r, message=FALSE, warning=FALSE}
 model_1 <- lmer(rt ~ SCIAT_block * IAT_condition + modern_racism_scale_total + (1 | participant), 
-                contrasts = list(block = "contr.sum", IAT_condition = "contr.sum"),  
+                contrasts = list(SCIAT_block = "contr.sum", IAT_condition = "contr.sum"),  
                 data = SCIAT_data_outliers_removed)
 ```
 
@@ -152,7 +152,7 @@ model_1 <- lmer(rt ~ SCIAT_block * IAT_condition + modern_racism_scale_total + (
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 sjt.lmer(model_1, 
          emph.p = FALSE, 
-         #p.kr = TRUE,  # doesn't seem to be working
+         p.kr = FALSE,
          show.std = TRUE)
 ```
 
@@ -160,6 +160,7 @@ sjt.lmer(model_1,
 
 ```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 sjp.lmer(model_1, 
+         p.kr = FALSE,
          type = "fe")
 ```
 
@@ -168,7 +169,7 @@ sjp.lmer(model_1,
 ```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 model_1_predicted_effects <- 
   as.data.frame(effect("SCIAT_block:IAT_condition", model_1)) %>%
-  rename(`IAT condition` = IAT_condition,
+  dplyr::rename(`IAT condition` = IAT_condition,
          `SCIAT block` = SCIAT_block)
 
 model_1_predicted_effects %>% 
@@ -225,8 +226,8 @@ H2: Completing an IAT serves to train attitudes as well as test them. Participan
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 ratings_data <- 
-  read.csv("data/processed/long ratings data.csv") %>%
-  mutate(participant = as.factor(participant)) %>%
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(participant = as.factor(participant)) %>%
   filter(IAT_exclude_based_on_fast_trials == FALSE & 
            SCIAT_exclude_based_on_fast_trials == FALSE)
 ```
@@ -246,7 +247,7 @@ model_2 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | partic
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 sjt.lmer(model_2, 
          emph.p = FALSE, 
-         #p.kr = TRUE,  # doesn't seem to be working
+         p.kr = FALSE,
          show.std = TRUE)
 ```
 
@@ -254,6 +255,7 @@ sjt.lmer(model_2,
 
 ```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
 sjp.lmer(model_2, 
+         p.kr = FALSE,
          type = "fe")
 ```
 
@@ -277,5 +279,6 @@ ggplot(data = model_2_predicted_effects,
   ylab("Rating") +
   xlab("IAT condition") +
   scale_colour_grey() +
-  theme_classic() 
+  theme_classic() +
+  scale_y_continuous(limits = c(1,7), breaks = c(1,2,3,4,5,6,7))
 ```

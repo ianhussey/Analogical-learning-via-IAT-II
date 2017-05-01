@@ -20,41 +20,21 @@ library(schoRsch)
 # Data acquisition and cleaning -------------------------------------------
 
 
-## Set the working directory
+# set the working directory
 setwd("/Users/Ian/git/Analogical learning via the IAT II/experiment 1/data/processed")
 
+# get screened data
 input_df <- read.csv("screened data.csv")
 
-# Make some variable names more transparent
+# make some variable names more transparent
 cleaned_df <- 
   input_df %>%
-  dplyr::select(subject,
-                date,
-                time,
-                blockcode,  # name of block
-                blocknum,
-                trialnum,
-                response,  # for string responses
-                correct,
-                latency,
-                trialcode) %>%
-  dplyr::rename(participant = subject,
-                block_name = blockcode,
-                block_n = blocknum,
-                trial_n = trialnum,
-                accuracy = correct,
-                rt = latency) %>%
   dplyr::mutate(participant = as.numeric(participant),
                 block_n = as.numeric(block_n),
                 trial_n = as.numeric(trial_n),
                 accuracy = as.numeric(accuracy),
-                rt = as.numeric(rt))
-  
-# MANUAL INCLUSIONS HERE - ONLY THOSE WITH COMPLETE DATA
-inclusion_df <- read.csv("/Users/Ian/Dropbox/Work/Projects/Analogy/1 analogical learning via IAT with known stimuli/Experiment 1/data/processed data/inclusion list.csv")
-
-cleaned_df <- dplyr::inner_join(cleaned_df, inclusion_df, by = "participant")
-
+                rt = as.numeric(rt),
+                response = as.character(response))
 
 
 ###########################################################################
@@ -69,8 +49,8 @@ cleaned_df <- dplyr::inner_join(cleaned_df, inclusion_df, by = "participant")
 demo_temp_1_df <-
   cleaned_df %>%
   dplyr::group_by(participant) %>%
-  dplyr::filter(grepl("demographics", block_name),
-                trialcode == "age") %>%  # filter rows where the block_name includes string
+  dplyr::filter(grepl("demographics", task),
+                item == "age") %>%  # filter rows where the task includes string
   dplyr::rename(age = response) %>%
   dplyr::mutate(age = as.numeric(age)) %>%
   dplyr::select(participant, age) %>% # select only necessary columns
@@ -79,8 +59,8 @@ demo_temp_1_df <-
 demo_temp_2_df <-
   cleaned_df %>%
   dplyr::group_by(participant) %>%
-  dplyr::filter(grepl("demographics", block_name),
-                trialcode == "gender") %>%  # filter rows where the block_name includes string
+  dplyr::filter(grepl("demographics", task),
+                item == "gender") %>%  # filter rows where the task includes string
   dplyr::rename(gender = response) %>%
   dplyr::select(participant, gender) %>% # select only necessary columns
   dplyr::distinct(participant, .keep_all = TRUE) %>%
@@ -91,7 +71,7 @@ demo_temp_2_df <-
 
 demographics_df <-
   cleaned_df %>%
-  dplyr::filter(grepl("demographics", block_name)) %>%
+  dplyr::filter(grepl("demographics", task)) %>%
   dplyr::distinct(participant) %>%
   dplyr::group_by(participant) %>%
   dplyr::mutate(condition = participant %% 8,
@@ -108,11 +88,11 @@ demographics_df <-
 
 ratings_df <-
   cleaned_df %>%
-  dplyr::filter(grepl("ratings", block_name)) %>%  # filter rows where the trialcode includes string
+  dplyr::filter(grepl("ratings", task)) %>%  # filter rows where the item includes string
   dplyr::rename(ratings = response) %>%
   dplyr::select(participant, ratings) %>%
+  dplyr::mutate(ratings = as.numeric(ratings)) %>%
   dplyr::group_by(participant) %>%
-  dplyr::mutate(ratings = as.integer(ratings)) %>%
   dplyr::summarize(mean_rating = round(mean(ratings), 2))
 
 
@@ -121,7 +101,7 @@ ratings_df <-
 
 racism_scale_df <-
   cleaned_df %>%
-  dplyr::filter(grepl("racism_scale", block_name)) %>%  # filter rows where the trialcode includes string
+  dplyr::filter(grepl("racism_scale", task)) %>%  # filter rows where the item includes string
   dplyr::select(participant, response) %>%
   dplyr::group_by(participant) %>%
   dplyr::mutate(response = as.integer(response)) %>%
@@ -134,22 +114,22 @@ racism_scale_df <-
 # select relevant data
 IAT_data_df <-  
   cleaned_df %>%
-  dplyr::filter(block_name == "compatibletest1" | 
-                  block_name == "compatibletest2" | 
-                  block_name == "incompatibletest1" |
-                  block_name == "incompatibletest2",  # Test IAT only, and test blocks only
+  dplyr::filter(task == "compatibletest1" | 
+                  task == "compatibletest2" | 
+                  task == "incompatibletest1" |
+                  task == "incompatibletest2",  # Test IAT only, and test blocks only
                 rt <= 10000)  # rts less than 10,000 only            
 
 # D1 and mean rt
 IAT_D1_df <-
   IAT_data_df %>%
   dplyr::group_by(participant) %>%
-  dplyr::summarize(rt_mean_compatible_1 = mean(rt[block_name == "compatibletest1"], na.rm = TRUE),
-                   rt_mean_incompatible_1 = mean(rt[block_name == "incompatibletest1"], na.rm = TRUE),
-                   rt_mean_compatible_2 = mean(rt[block_name == "compatibletest2"], na.rm = TRUE),
-                   rt_mean_incompatible_2 = mean(rt[block_name == "incompatibletest2"], na.rm = TRUE),
-                   rt_sd_1 = sd(rt[block_name == "compatibletest1" | block_name == "incompatibletest1"]),
-                   rt_sd_2 = sd(rt[block_name == "compatibletest2" | block_name == "incompatibletest2"])) %>%
+  dplyr::summarize(rt_mean_compatible_1 = mean(rt[task == "compatibletest1"], na.rm = TRUE),
+                   rt_mean_incompatible_1 = mean(rt[task == "incompatibletest1"], na.rm = TRUE),
+                   rt_mean_compatible_2 = mean(rt[task == "compatibletest2"], na.rm = TRUE),
+                   rt_mean_incompatible_2 = mean(rt[task == "incompatibletest2"], na.rm = TRUE),
+                   rt_sd_1 = sd(rt[task == "compatibletest1" | task == "incompatibletest1"]),
+                   rt_sd_2 = sd(rt[task == "compatibletest2" | task == "incompatibletest2"])) %>%
   dplyr::mutate(diff_1 = rt_mean_incompatible_1 - rt_mean_compatible_1, # this is effectively a rowwise() calculation as we have group_by() participant and then summarize()'d. rowwise() not included for brevity.
                 diff_2 = rt_mean_incompatible_2 - rt_mean_compatible_2,
                 D1a = diff_1 / rt_sd_1,
@@ -180,17 +160,17 @@ IAT_summary_stats_df <-
 # select relevant data
 SCIAT_data_df <-  
   cleaned_df %>%
-  dplyr::filter(block_name == "compatibletest" | 
-                  block_name == "incompatibletest",
+  dplyr::filter(task == "compatibletest" | 
+                  task == "incompatibletest",
                 rt <= 10000)  # rts less than 10,000 only            
 
 # D1 and mean rt
 SCIAT_D1_df <-
   SCIAT_data_df %>%
   dplyr::group_by(participant) %>%
-  dplyr::summarize(rt_mean_compatible = mean(rt[block_name == "compatibletest"], na.rm = TRUE),
-                   rt_mean_incompatible = mean(rt[block_name == "incompatibletest"], na.rm = TRUE),
-                   rt_sd = sd(rt[block_name == "compatibletest" | block_name == "incompatibletest"])) %>%
+  dplyr::summarize(rt_mean_compatible = mean(rt[task == "compatibletest"], na.rm = TRUE),
+                   rt_mean_incompatible = mean(rt[task == "incompatibletest"], na.rm = TRUE),
+                   rt_sd = sd(rt[task == "compatibletest" | task == "incompatibletest"])) %>%
   dplyr::mutate(diff = rt_mean_incompatible - rt_mean_compatible, # this is effectively a rowwise() calculation as we have group_by() participant and then summarize()'d. rowwise() not included for brevity.
                 SCIAT_D1 = round(diff / rt_sd, 3)) %>%
   dplyr::select(participant, 
@@ -230,7 +210,7 @@ wide_D1_scored_data_df <-
 # print N
 wide_D1_scored_data_df %>% dplyr::summarize(condition_count = n())
 
-wide_D1_scored_data_df %>% write.csv(file = "wide all tasks data.csv", row.names = FALSE)
+wide_D1_scored_data_df %>% write.csv(file = "processed summary data - wide format.csv", row.names = FALSE)
 
 
 
@@ -254,9 +234,9 @@ other_tasks_df <-
 
 SCIAT_long_format_df <-  
   cleaned_df %>%
-  dplyr::filter(block_name == "compatibletest" | 
-                  block_name == "incompatibletest") %>%
-  dplyr::mutate(block = ifelse(block_name == "compatibletest", "compatible", "incompatible")) %>%
+  dplyr::filter(task == "compatibletest" | 
+                  task == "incompatibletest") %>%
+  dplyr::mutate(block = ifelse(task == "compatibletest", "compatible", "incompatible")) %>%
   dplyr::select(participant, 
                 block,
                 trial_n,
@@ -264,7 +244,7 @@ SCIAT_long_format_df <-
                 accuracy) %>%
   dplyr::left_join(other_tasks_df, by = "participant")
 
-SCIAT_long_format_df %>% write.csv(file = "long SCIAT data.csv", row.names = FALSE)
+SCIAT_long_format_df %>% write.csv(file = "processed SCIAT data - long format.csv", row.names = FALSE)
 
 
 # long format ratings rts -------------------------------------------------
@@ -272,12 +252,12 @@ SCIAT_long_format_df %>% write.csv(file = "long SCIAT data.csv", row.names = FAL
 
 ratings_long_format_df <-  
   cleaned_df %>%
-  dplyr::filter(block_name == "ratings") %>%
+  dplyr::filter(task == "ratings") %>%
   dplyr::mutate(rating = as.integer(response)) %>%
   dplyr::select(participant, 
                 trial_n,
                 rating) %>%
   dplyr::left_join(other_tasks_df, by = "participant")
 
-ratings_long_format_df %>% write.csv(file = "long ratings data.csv", row.names = FALSE)
+ratings_long_format_df %>% write.csv(file = "processed ratings data - long format.csv", row.names = FALSE)
 

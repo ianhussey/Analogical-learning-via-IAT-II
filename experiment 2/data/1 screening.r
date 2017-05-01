@@ -29,16 +29,23 @@ setwd("/Users/Ian/git/Analogical learning via the IAT II/experiment 2/data/proce
 # Make some variable names more transparent
 trimmed_df <- 
   input_df %>%
-  dplyr::select(subject,
-                response,
-                trialcode,
-                blockcode,
-                amp_recognition_response) %>%
+  dplyr::select(subject, #participant
+                blocknum,  #block_n
+                trialnum,  #trial_n
+                blockcode, #task
+                trialcode,  #item
+                response,  
+                correct, #accuracy
+                latency,
+                amp_recognition_response) %>%  #rt
   dplyr::rename(participant = subject,
-                task = blockcode) %>%
+                block_n = blocknum,
+                trial_n = trialnum,
+                task = blockcode,
+                item = trialcode,
+                accuracy = correct,
+                rt = latency) %>%
   dplyr::mutate(participant = as.numeric(participant))
-
-trimmed_df %>% distinct(task)
 
 
 # complete data per task --------------------------------------------------
@@ -47,11 +54,6 @@ trimmed_df %>% distinct(task)
 ## find participants who have data in each task, 
 ## then for each check if they had data in all the previous tasks
 ## return those participants who had data in all tasks
-
-##assess what tasks are there - used for the grepl later (as we don't necessarially need to employ all block names)
-#tasks <-
-#  trimmed_df %>%
-#  dplyr::distinct(task)
 
 # no base funciton for mode, so define one
 modal_value <- function(x) {
@@ -159,7 +161,7 @@ screened_data %>% write.csv("screened data.csv", row.names = FALSE)
 # 1. prolific codes for participants with complete data so that they can be paid
 prolific_codes_for_complete_participants <-
   dplyr::inner_join(trimmed_df, participants_with_full_data, by = "participant") %>%
-  dplyr::filter(trialcode == "ProlificCode") %>%
+  dplyr::filter(item == "ProlificCode") %>%
   dplyr::select(participant, response) %>%
   dplyr::distinct(participant, .keep_all = TRUE) 
 
@@ -173,7 +175,7 @@ prolific_codes_for_complete_participants %>% dplyr::summarize(participant = n())
 # 2. prolific codes for participants with incomplete data so that they can be rejected
 prolific_codes_for_incomplete_participants <-
   dplyr::inner_join(trimmed_df, participants_with_incomplete_data, by = "participant") %>%
-  dplyr::filter(trialcode == "ProlificCode") %>%
+  dplyr::filter(item == "ProlificCode") %>%
   dplyr::select(participant, response) %>%
   dplyr::distinct(participant, .keep_all = TRUE) 
 
