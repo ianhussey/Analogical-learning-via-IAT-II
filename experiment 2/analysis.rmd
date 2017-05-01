@@ -1,0 +1,334 @@
+---
+title: "Changing established atttiudes via the IAT: Experiment 2"
+author: "Ian Hussey"
+params:
+  location_of_exp_1_data: ~/git/Analogical learning via the IAT II/experiment 1/
+output:
+  html_document:
+    highlight: haddock
+    toc: yes
+---
+
+Conceptual replication of Experiment 1. Employs AMP as DV rather than SC-IAT.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# dependencies
+library(tidyverse)
+library(psych)
+library(afex)
+library(effsize)
+library(weights)  # for rd(), a round() alternative
+library(plotrix)  # for std.error
+library(lme4)
+library(effects)
+library(knitr)
+library(sjPlot)
+
+# rounds all numerics in a df
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+  df[,nums] <- round(df[,nums], digits = digits)
+  (df)
+}
+```
+
+# Descriptive statistics
+
+## Full sample
+
+### Age
+
+```{r, message=FALSE, warning=FALSE, echo = FALSE}
+# get data
+data_df <- 
+  read.csv("data/processed/wide all tasks data.csv") %>%
+  mutate(gender = as.factor(gender))
+
+#colnames(data_df)
+
+data_df %>% 
+  dplyr::select(age) %>%
+  psych::describe(fast = TRUE,  # subset of descriptive stats
+                  ranges = FALSE,
+                  trim = 0) %>%
+  dplyr::select(-vars, -se) %>%
+  kable()
+```
+
+### Gender
+
+```{r, message=FALSE, warning=FALSE, echo = FALSE}
+data_df %>% 
+  dplyr::count(gender) %>%
+  kable()
+```
+
+## Analytic sample
+
+I.e., after applying inclusion/exclusion criteria.
+
+### Conditions
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+passers_df <- 
+  data_df %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE & 
+           exclude == FALSE) 
+
+passers_df %>% 
+  dplyr::count(IAT_condition) %>%
+  kable()
+```
+
+### Performance on the IAT and SC-IAT
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+passers_df %>% 
+  dplyr::select(IAT_mean_RT,
+                IAT_perc_acc,
+                AMP_mean_RT,
+                AMP_perc_acc) %>%
+  psych::describe(fast = TRUE,  # subset of descriptive stats
+                  ranges = FALSE,
+                  trim = 0) %>%
+  dplyr::select(-vars, -se) %>%
+  mutate(mean = round(mean, 2),
+         sd = round(sd, 2)) %>%
+  kable()
+```
+
+# Hypothesis test 1: Differences in IAT effects between contrast pair conditions
+
+H1: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative implicit evaluations of the outgroup (black people) on the AMP than participants who completed a control (flowers-insects) IAT.  
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+AMP_data <- 
+  read.csv("data/processed/long AMP data.csv") %>%
+  dplyr::filter(exclude == FALSE,
+                IAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                rating_factor = as.factor(ifelse(accuracy == 0, "negative", 
+                                                 ifelse(accuracy == 1, "positive", NA))),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  dplyr::rename(prime_type = trialcode,
+                rating = accuracy) 
+
+# Check that variables that should be factors are indeed factors
+sapply(AMP_data, class)
+```
+
+### Plot distribution
+
+Distribution of AMP ratings.
+
+```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+AMP_participant_summary_data <-
+  AMP_data %>%
+  group_by(participant) %>%
+  dplyr::summarize(perc_rating = round(mean(rating), 2))
+
+ggplot(AMP_participant_summary_data, 
+       aes(perc_rating)) + 
+  geom_density(alpha=0.50) +
+  theme_classic()
+```
+
+## Generalised linear mixed model
+
+### Model
+
+```{r, message=FALSE, warning=FALSE}
+model_1 <- glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total + (1 | participant), 
+                 family = "binomial",
+                 contrasts = list(prime_type = "contr.sum", IAT_condition = "contr.sum"),  
+                 data = AMP_data)
+```
+
+- Hypothesis refers to the IAT_condition*AMP_prime_type interaction effect.
+- Confidence intervals via Wald estimation.
+
+### Summary
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+sjt.glmer(model_1, 
+          emph.p = FALSE)
+```
+
+### Plot effects
+
+```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+sjp.glmer(model_1, 
+         type = "fe")
+```
+
+### Table predictions
+
+```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+model_1_predicted_effects <- 
+  as.data.frame(effect("prime_type:IAT_condition", model_1)) %>%
+  rename(`IAT condition` = IAT_condition,
+         `AMP prime type` = prime_type)
+
+model_1_predicted_effects %>% 
+  round_df(2) %>%
+  kable()
+```
+  
+### Plot predictions
+
+```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+ggplot(data = model_1_predicted_effects,
+       aes(x = `AMP prime type`, y = fit, colour = `IAT condition`)) +
+  geom_pointrange(aes(ymax = upper,
+                      ymin = lower),
+                  position = position_dodge(width = .1)) +
+  geom_line(aes(group = `IAT condition`),
+            position = position_dodge(width = .1)) +
+  ylab("Rating") +
+  xlab("AMP prime type") +
+  scale_colour_grey() +
+  theme_classic()
+  # theme(legend.justification=c(0.5,1), legend.position=c(0.5,1),
+  #       legend.key = element_rect(colour = "transparent"))
+```
+
+# Hypothesis test 2: Differences in self-reported ratings between contrast pair conditions
+
+H2: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+ratings_data <- 
+  read.csv("data/processed/long ratings data.csv") %>%
+  mutate(participant = as.factor(participant)) %>%
+  filter(IAT_exclude_based_on_fast_trials == FALSE & 
+           exclude == FALSE)
+```
+
+## Linear mixed model
+
+### Model 
+
+```{r, message=FALSE, warning=FALSE}
+model_2 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | participant), 
+                contrasts = list(IAT_condition = "contr.sum"),  
+                data = ratings_data)
+```
+
+### Summary
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+sjt.lmer(model_2, 
+         emph.p = FALSE, 
+         #p.kr = TRUE,  # doesn't seem to be working
+         show.std = TRUE)
+```
+
+### Plot effects
+
+```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+sjp.lmer(model_2, 
+         type = "fe")
+```
+
+### Table predictions
+
+```{r, message=FALSE, fig.height=3, fig.width=5, warning=FALSE, echo=FALSE}
+model_2_predicted_effects <- as.data.frame(effect("IAT_condition", model_2))
+
+model_2_predicted_effects %>% 
+  round_df(2) %>%
+  kable()
+```
+  
+### Plot predictions
+
+```{r, message=FALSE, fig.height=3, fig.width=4, warning=FALSE, echo=FALSE}
+ggplot(data = model_2_predicted_effects,
+       aes(x = IAT_condition, y = fit)) +
+  geom_pointrange(aes(ymax = upper,
+                      ymin = lower)) +
+  ylab("Rating") +
+  xlab("IAT condition") +
+  scale_colour_grey() +
+  theme_classic() 
+```
+
+# Hypothesis test 3: Combination analysis of self-report data
+
+H3: H2 will also be applied to a combination analysis of all self-report ratings data collected in both Experiments 1 and 2.
+
+## Descriptive statistics
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# trim exp 2 data
+ratings_data_exp2 <-
+  ratings_data %>%
+  dplyr::mutate(experiment = 2,
+                unique_id = as.factor(paste(experiment, participant, sep = "_"))) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+# get data from exp 1
+setwd(params$location_of_exp_1_data)
+
+ratings_data_exp1 <- 
+  read.csv("data/processed/long ratings data.csv") %>%
+  #dplyr::filter(exclude == FALSE) %>%
+  dplyr::mutate(experiment = 1,
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, 
+                                 ifelse(SCIAT_exclude_based_on_fast_trials == TRUE, TRUE,
+                                        FALSE))) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+combined_ratings_data <- rbind(ratings_data_exp1, ratings_data_exp2)
+```
+
+## Linear mixed model
+
+### Model 
+
+```{r, message=FALSE, warning=FALSE}
+model_3 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | experiment) + (1 | unique_id), 
+                contrasts = list(IAT_condition = "contr.sum"),  
+                data = combined_ratings_data)
+```
+
+### Summary
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+sjt.lmer(model_3, 
+         emph.p = FALSE, 
+         #p.kr = TRUE,  # doesn't seem to be working
+         show.std = TRUE)
+```
+
+### Plot effects
+
+```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+sjp.lmer(model_3, 
+         type = "fe")
+```
+
+### Table predictions
+
+```{r, message=FALSE, fig.height=3, fig.width=5, warning=FALSE, echo=FALSE}
+model_3_predicted_effects <- as.data.frame(effect("IAT_condition", model_3))
+
+model_3_predicted_effects %>% 
+  round_df(2) %>%
+  kable()
+```
+  
+### Plot predictions
+
+```{r, message=FALSE, fig.height=3, fig.width=4, warning=FALSE, echo=FALSE}
+ggplot(data = model_3_predicted_effects,
+       aes(x = IAT_condition, y = fit)) +
+  geom_pointrange(aes(ymax = upper,
+                      ymin = lower)) +
+  ylab("Rating") +
+  xlab("IAT condition") +
+  scale_colour_grey() +
+  theme_classic() 
+```
