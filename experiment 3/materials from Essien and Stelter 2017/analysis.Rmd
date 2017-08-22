@@ -1,0 +1,230 @@
+---
+title: "Analysis of shooter task"
+output:
+  html_document:
+    code_folding: hide
+    highlight: haddock
+    theme: flatly
+    toc: yes
+    toc_float: yes
+---
+
+Code modified from https://osf.io/rq6h2/
+
+```{r, include=FALSE}
+# knitr options
+knitr::opts_chunk$set(echo = TRUE, echo=FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+# dependencies
+library(plyr)
+library(ez)
+library(schoRsch)
+library(tidyverse)
+library(timesavers)
+library(broom)
+library(knitr)
+library(kableExtra)
+
+# get data
+shooter <- read.csv("shooter task data.csv", head = T)
+```
+
+# RT analysis
+
+```{r}
+# aggregate
+shooter.latency <- ddply(shooter[shooter$correct == 1,], 
+                         .(subject, Ethnicity, gun), 
+                         summarize, 
+                         ntrials = length(subject), 
+                         latency = mean(latency))
+
+# Statistical tests
+Model <- ezANOVA(data = shooter.latency, 
+                 dv = .(latency), 
+                 wid = .(subject), 
+                 within = .list (Ethnicity, gun),  
+                 detailed = TRUE, 
+                 type = 3)
+
+Output <- anova_out(Model, 
+                    sph.cor = "GG", 
+                    mau.p = 0.05,
+                    etasq = "partial", 
+                    dfsep = ", ",
+                    print = FALSE)
+
+Output$`--- FORMATTED RESULTS ------------------------------------` %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+ezPlot(data = shooter.latency, 
+       dv = .(latency), 
+       wid = .(subject), 
+       within = .list (gun, Ethnicity), 
+       x = .list(gun), 
+       split = .(Ethnicity))
+
+# follow up tests
+t.test(shooter.latency[shooter.latency$gun == "Object",]$latency~ shooter.latency[shooter.latency$gun == "Object",]$Ethnicity, paired = TRUE) %>%
+  tidy()
+
+t.test(shooter.latency[shooter.latency$gun == "Gun",]$latency~ shooter.latency[shooter.latency$gun == "Gun",]$Ethnicity, paired = TRUE) %>%
+  tidy()
+
+# descriptives
+ddply(shooter.latency, 
+      .(Ethnicity, gun), 
+      summarize, 
+      RT = mean(latency), 
+      sd.RT = sd(latency),
+      RT.lower.ci = RT - (1.96*sd.RT), 
+      RT.upper.ci= RT + (1.96*sd.RT), 
+      n = length(subject), 
+      RT.lower.sem= RT - (sd.RT/sqrt(n)), 
+      RT.upper.sem= RT + (sd.RT/sqrt(n))) %>%
+  round_df(2) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+```
+
+
+# Signal detection analysis
+
+## Process hit and false alarm data
+
+```{r}
+# find number of trials after removing nonresponses
+shooter.bias.temp <- ddply(shooter[shooter$values.result != "Noresponse",],   # remove non responses
+                           .(subject, Ethnicity, gun),  # subset vars
+                           mutate, 
+                           totaltrials = length(gun)) 
+
+# summarize n trials after removing nonresponses, split by trial type
+shooter.bias.temp <- ddply(shooter.bias.temp, 
+                           .(subject, Ethnicity, gun, values.result, totaltrials), 
+                           summarize, 
+                           ntrials = length(values.result))
+
+# find percent per trial type
+shooter.bias.temp <- transform(shooter.bias.temp,
+                               percentage = ntrials/totaltrials)
+
+# reshape
+shooter.bias.temp <- reshape(shooter.bias.temp, 
+                             idvar = c("subject", "Ethnicity", "totaltrials", "gun"), 
+                             timevar = "values.result", 
+                             drop = c("ntrials"), 
+                             direction = "wide")
+
+# fill empty cells with 0
+shooter.bias.temp[is.na(shooter.bias.temp)] <- 0
+
+# invert Hits
+shooter.bias.temp <- transform(shooter.bias.temp, 
+                               percentage.Hit = ifelse(shooter.bias.temp$gun=="Gun" & shooter.bias.temp$percentage.Hit == 1,
+                                                       (1-(1/(2*totaltrials))), 
+                                                       percentage.Hit))
+# invert FAs
+shooter.bias.temp <- transform (shooter.bias.temp, 
+                                percentage.FA = ifelse(shooter.bias.temp$gun=="Object" & shooter.bias.temp$percentage.FA == 0,
+                                                       (1/(2*totaltrials)), 
+                                                       percentage.FA))
+
+# summarize across trial types
+shooter.bias.temp <- ddply(shooter.bias.temp, 
+                           .(subject, Ethnicity), 
+                           summarize, 
+                           percentage.Hit = sum(percentage.Hit), 
+                           percentage.FA = sum(percentage.FA))
+
+# compute d' and c
+shooter.bias <- transform(shooter.bias.temp, 
+                          d = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3),
+                          c = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3),
+                          percentage.Hit = round(percentage.Hit, 3),
+                          percentage.FA = round(percentage.FA, 3))
+```
+
+## d' between conditions
+
+```{r}
+t.test(shooter.bias$d ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+  tidy()
+```
+
+## c between conditions
+
+```{r}
+t.test(shooter.bias$c ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+  tidy()
+```
+
+## Descriptives
+
+```{r}
+ddply(shooter.bias, 
+      .(Ethnicity), 
+      summarize, 
+      mean.d = mean(d), 
+      sd.d = sd(d),
+      mean.c = mean(c), 
+      sd.c = sd(c), 
+      d.lower.ci = mean.d - (1.96*sd.d), 
+      d.upper.ci = mean.d + (1.96*sd.d), 
+      c.lower.ci = mean.c - (1.96*sd.c), 
+      c.upper.ci = mean.c + (1.96*sd.c), 
+      n = length(subject)) %>%
+  round_df(2) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+```
+
+# Errors analysis
+
+```{r}
+shooter.errors <- ddply(shooter[shooter$values.result != "Noresponse",], 
+                        .(subject,Ethnicity, gun), 
+                        summarize, 
+                        error = 1-mean(correct))
+
+# Statistical tests
+Model <- ezANOVA(data = shooter.errors, 
+                 dv = .(error), 
+                 wid = .(subject), 
+                 within = .list (Ethnicity, gun), 
+                 detailed = TRUE, 
+                 type = 3)
+
+Output <- anova_out(Model, 
+                    sph.cor = "GG", 
+                    mau.p = 0.05,
+                    etasq = "partial", 
+                    dfsep = ", ",
+                    print = FALSE)
+
+Output$`--- FORMATTED RESULTS ------------------------------------` %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+ezPlot(data = shooter.errors, 
+       dv = .(error), 
+       wid = .(subject), 
+       within = .list(gun, Ethnicity), 
+       x = .list(gun), 
+       split = .(Ethnicity))
+
+# descriptives
+ddply(shooter.errors, 
+      .(Ethnicity, gun), 
+      summarize, 
+      mean.error = mean(error), 
+      sd.error = sd(error), 
+      error.lower.ci = mean.error - (1.96*sd.error), 
+      error.upper.ci = mean.error + (1.96*sd.error), 
+      n = length(subject)) %>%
+  round_df(2)
+```
+
