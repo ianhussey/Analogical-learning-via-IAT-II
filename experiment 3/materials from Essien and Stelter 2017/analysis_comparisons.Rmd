@@ -1,0 +1,249 @@
+---
+title: "Analysis of shooter task"
+output:
+  html_document:
+    code_folding: hide
+    highlight: haddock
+    theme: flatly
+    toc: yes
+    toc_float: yes
+---
+
+Code modified from https://osf.io/rq6h2/
+
+```{r, include=FALSE}
+# knitr options
+knitr::opts_chunk$set(echo = TRUE, echo=FALSE, message=FALSE, warning=FALSE)
+```
+
+```{r}
+# dependencies
+library(plyr)
+library(ez)
+library(schoRsch)
+library(tidyverse)
+library(timesavers)
+library(broom)
+library(knitr)
+library(kableExtra)
+
+# get data
+shooter <- read.csv("shooter task data.csv", head = T)
+```
+
+# Signal detection analysis
+
+## Process hit and false alarm data
+
+### Stelter's original implementation in ddply
+
+Code has been reshaped and commented but not altered.
+
+```{r}
+# find number of trials after removing nonresponses
+shooter.bias.temp <- ddply(shooter[shooter$values.result != "Noresponse",],   # remove non responses
+                           .(subject, Ethnicity, gun),  # group_by
+                           mutate,
+                           totaltrials = length(gun))
+
+# summarize n trials after removing nonresponses, split by trial type
+shooter.bias.temp <- ddply(shooter.bias.temp,
+                           .(subject, Ethnicity, gun, values.result, totaltrials),
+                           summarize,
+                           ntrials = length(values.result))
+
+# find percent per trial type
+shooter.bias.temp <- transform(shooter.bias.temp,
+                               percentage = ntrials/totaltrials)
+
+# reshape
+shooter.bias.temp <- reshape(shooter.bias.temp,
+                             idvar = c("subject", "Ethnicity", "totaltrials", "gun"),
+                             timevar = "values.result",
+                             drop = c("ntrials"),
+                             direction = "wide")
+
+# fill empty cells with 0
+shooter.bias.temp[is.na(shooter.bias.temp)] <- 0
+
+
+
+
+# Differences between the implementations emerge here
+# -start
+
+# invert Hits
+shooter.bias.temp <- transform(shooter.bias.temp,
+                               percentage.Hit = ifelse(shooter.bias.temp$gun=="Gun" & shooter.bias.temp$percentage.Hit == 1,
+                                                       (1-(1/(2*totaltrials))),
+                                                       percentage.Hit))
+# invert FAs
+shooter.bias.temp <- transform(shooter.bias.temp,
+                               percentage.FA = ifelse(shooter.bias.temp$gun=="Object" & shooter.bias.temp$percentage.FA == 0,
+                                                      (1/(2*totaltrials)),
+                                                      percentage.FA))
+
+# -end
+
+
+
+# summarize across trial types
+shooter.bias.temp <- ddply(shooter.bias.temp,
+                           .(subject, Ethnicity),
+                           summarize,
+                           percentage.Hit = sum(percentage.Hit),
+                           percentage.FA = sum(percentage.FA))
+
+# compute d' and c
+shooter.bias <- transform(shooter.bias.temp,
+                          d = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3),
+                          c = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3),
+                          percentage.Hit = round(percentage.Hit, 3),
+                          percentage.FA = round(percentage.FA, 3))
+```
+
+#### d' between conditions
+
+```{r}
+t.test(shooter.bias$d ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+  tidy()
+```
+
+#### c between conditions
+
+```{r}
+t.test(shooter.bias$c ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+  tidy()
+```
+
+#### Descriptives
+
+```{r}
+ddply(shooter.bias, 
+      .(Ethnicity), 
+      summarize, 
+      mean.d = mean(d), 
+      sd.d = sd(d),
+      mean.c = mean(c), 
+      sd.c = sd(c), 
+      d.lower.ci = mean.d - (1.96*sd.d), 
+      d.upper.ci = mean.d + (1.96*sd.d), 
+      c.lower.ci = mean.c - (1.96*sd.c), 
+      c.upper.ci = mean.c + (1.96*sd.c), 
+      n = length(subject)) %>%
+  round_df(2) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+```
+
+
+### Ian's refactored dplyr solution
+
+```{r}
+## dplyr conversion
+
+# exclude trials with no response
+trimmed <- shooter %>%
+  dplyr::filter(values.result != "Noresponse")
+
+# total trials per subject per trial type
+temp1 <- trimmed %>%
+  dplyr::count(subject, Ethnicity, gun) %>%
+  dplyr::rename(totaltrials = n)
+
+# n trials per subject per trial type per response type
+temp2 <- trimmed %>%
+  dplyr::count(subject, Ethnicity, gun, values.result) %>%
+  dplyr::rename(ntrials = n)
+
+shooter.bias <- 
+  # join dfs
+  left_join(temp1, temp2, by = c("subject", "Ethnicity", "gun")) %>%
+  # calculate percentages
+  dplyr::mutate(percentage = ntrials/totaltrials) %>%
+  # reshape
+  spread(values.result, percentage) %>%
+  dplyr::rename(percentage.Hit  = Hit, 
+                percentage.Miss = Miss, 
+                percentage.FA   = FA, 
+                percentage.CR   = CR) %>%
+  dplyr::mutate(
+    # add zeros where data NAs are present
+    percentage.Hit   = ifelse(is.na(percentage.Hit), 0, percentage.Hit),
+    percentage.Miss  = ifelse(is.na(percentage.Miss), 0, percentage.Miss),
+    percentage.FA    = ifelse(is.na(percentage.FA), 0, percentage.FA),
+    percentage.CR    = ifelse(is.na(percentage.CR), 0, percentage.CR)
+  ) %>%
+  
+  
+  
+  # Differences between the implementations emerge here
+  # -start
+  
+  rowwise() %>%
+  dplyr::mutate(
+    # invert Hits
+    percentage.Hit = ifelse(gun == "Gun" & percentage.Hit == 1,      
+                            (1-(1/(2*totaltrials))), 
+                            percentage.Hit),
+    
+    # invert FAs
+    percentage.FA = ifelse(gun == "Object" & percentage.FA == 0,     
+                           (1/(2*totaltrials)), 
+                           percentage.FA)
+  ) %>%
+  ungroup() %>%
+  
+  # -end
+  
+  
+  group_by(subject, Ethnicity, gun) %>%
+  dplyr::summarize(percentage.Hit  = sum(percentage.Hit, na.rm = TRUE), 
+                   percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
+                   percentage.FA   = sum(percentage.FA, na.rm = TRUE), 
+                   percentage.CR   = sum(percentage.CR, na.rm = TRUE)) %>%
+
+  # summarize across trial types
+  group_by(subject, Ethnicity) %>%
+  dplyr::summarise(percentage.Hit = sum(percentage.Hit), 
+                   percentage.FA = sum(percentage.FA)) %>%
+
+  # compute d' and c
+  dplyr::mutate(d = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3),
+                c = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3),
+                percentage.Hit = round(percentage.Hit, 3),
+                percentage.FA  = round(percentage.FA, 3))
+```
+
+#### d' between conditions
+
+```{r}
+t.test(shooter.bias$d ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+  tidy()
+```
+
+#### c between conditions
+
+```{r}
+t.test(shooter.bias$c ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+  tidy()
+```
+
+#### Descriptives
+
+```{r}
+shooter.bias %>%
+  dplyr::group_by(Ethnicity) %>%
+  dplyr::summarize(mean.d = mean(d), 
+                   sd.d = sd(d),
+                   mean.c = mean(c), 
+                   sd.c = sd(c), 
+                   d.lower.ci = mean.d - (1.96*sd.d), 
+                   d.upper.ci = mean.d + (1.96*sd.d), 
+                   c.lower.ci = mean.c - (1.96*sd.c), 
+                   c.upper.ci = mean.c + (1.96*sd.c), 
+                   n = length(subject)) %>%
+  round_df(2) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+```
