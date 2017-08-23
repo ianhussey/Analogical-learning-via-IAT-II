@@ -1,19 +1,15 @@
 ﻿**************************************************************************************************************
-**************************************************************************************************************
-									POLICE OFFICER DILEMMA TASK (PODT)
+Shooter task
 *************************************************************************************************************
-**************************************************************************************************************
-														SCRIPT INFO
 
-Script Author: Katja Borchert, Ph.D. (katjab@millisecond.com) for Millisecond Software LLC
-Date: 04-12-2012
+Script Authors: 
+Katja Borchert, Ph.D. (katjab@millisecond.com) for Millisecond Software LLC
+Ian Hussey (ian.hussey@ugent.be), Ghent University, Belgium
 
-last updated: 08-14-2012
 **************************************************************************************************************
+SCRIPT DESCRIPTION/BACKGROUND INFO
 **************************************************************************************************************
-									SCRIPT DESCRIPTION/BACKGROUND INFO
-**************************************************************************************************************
-**************************************************************************************************************
+
 This script provides the Police Officer Dilemma Task (PODT)  as described in (Experiment1):
 
 Correll, J., Park, B., Judd, C.M., & Wittenbrink, B. (2002). The Police Officer's Dilemma:
@@ -23,7 +19,7 @@ and Social Psychology, 83, 1314-1329.
 All images used in this script are the originals. Millisecond Software thanks Dr. Correll et al for
 providing generous assistance!
 
-														Script Specifics:
+Script Specifics:
 (1) Design: 2 (ethnicity: black vs. white) x 2 (gun vs. no gun) = 4 experimental conditions, 
 all tested within participants (see Correll et al, 2002)
 (2) Counterbalanced for shootkey vs. no shootkey (Default: A and L keys, change
@@ -48,33 +44,28 @@ the latest instructions used by Correll et al (these later instructions are
 less detailed than the original 2002 instructions)
 (12) Script offers a practice block of 20 trial combos. Practice material, most trials, and blocks are
 separately coded from Experimental ones. 
+
 **************************************************************************************************************
+DEFAULT SCREEN SETTING
 **************************************************************************************************************
-												DEFAULT SCREEN SETTING
-**************************************************************************************************************
-**************************************************************************************************************
-requires Inquisit 4.0.0.0
 
 <defaults >
 / minimumversion = "4.0.0.0"
 </defaults>
 
 **************************************************************************************************************
-**************************************************************************************************************
-															VALUES
-**************************************************************************************************************
+VALUES
 **************************************************************************************************************
 
 ***************************
 editable (under values, see below)
 ***************************
-HitReward....FAPunish: 					amounts earned or lost depending on Hits, Misses, 
-													Correct Rejections (CR), False Alarms (FA)
-fixationduration:							the duration of the fixation cross (default: 500, original)
-key1/key2:									the scancodes of the shoot and noshoot keys
-													(keys are counterbalanced), default: "A" and "L"
-timeout:										timeout of main experimental trials, default = 850ms
-feedbackduration:							the duration of the feedback, default = 3000
+
+HitReward....FAPunish: 					amounts earned or lost depending on Hits, Misses, Correct Rejections (CR), False Alarms (FA)
+fixationduration:						the duration of the fixation cross (default: 500, original)
+key1/key2:								the scancodes of the shoot and noshoot keys (keys are counterbalanced), default: "E" and "I"
+timeout:								timeout of main experimental trials, default = 850ms
+feedbackduration:						the duration of the feedback, default = 3000
 
 changes can be made below under VALUES
 
@@ -85,31 +76,30 @@ changes can be made below under VALUES
 /FAPunish = 20
 /NoresponsePunish = 10
 /fixationduration = 500
-/key1 = 30
-/key2 = 38
-/timeout =850
+/key1 = 18
+/key2 = 23
+/timeout = 850
 /feedbackduration = 3000
 </values>
 
 *****************************
 automatically updated at runtime
 *****************************
-group:												counterbalanced shootkey groups (1/2)
-shootkey/noshootkey:							counterbalancing of key1 and key2
-															(final values assigned during runtime)
-selectbackground:									determines which background picture is selected
-condition:												1 = GunWhite; 2 = GunBlack; 3 = ObjectWhite; 4 = ObjectBlack
-itemnumber:											determines the itemnumber of the target image
-repetition:												determines how many background images areto be  presented
-Hit....CR:												codes whether the response was a HIT, a MISS, a FA, or a CR
-result:													either "Hit", "Miss", "CR", "FA" or "Noresponse"
-total:														keeps a running tab of the total money earned (or lost)
-backgroundduration:								determines how long each background slide is presented
-count_background:								counts how many background slides have been presented
-selectfeedback:										helper variable to display correct feedback
-SumWhiteHits....SumBlackCRs:				keeps a running total of Hits, Misses, FAs, CRs for each ethnicity
+group:									counterbalanced shootkey groups (1/2)
+shootkey/noshootkey:					counterbalancing of key1 and key2 (final values assigned during runtime)
+selectbackground:						determines which background picture is selected
+condition:								1 = GunWhite; 2 = GunBlack; 3 = ObjectWhite; 4 = ObjectBlack
+itemnumber:								determines the itemnumber of the target image
+repetition:								determines how many background images areto be  presented
+Hit....CR:								codes whether the response was a HIT, a MISS, a FA, or a CR
+result:									either "Hit", "Miss", "CR", "FA" or "Noresponse"
+total:									keeps a running tab of the total money earned (or lost)
+backgroundduration:						determines how long each background slide is presented
+count_background:						counts how many background slides have been presented
+selectfeedback:							helper variable to display correct feedback
+SumWhiteHits....SumBlackCRs:			keeps a running total of Hits, Misses, FAs, CRs for each ethnicity
 SumRTWhiteHits...SumRTBlackCRs:			keeps a running total of the reaction times for Hits, Misses, FAs, CRs for each ethnicity
-countGunWhite...countObjectBlack:			counts the trials in each condition
+countGunWhite...countObjectBlack:		counts the trials in each condition
 
 <values>
 /group = 0
@@ -152,17 +142,13 @@ countGunWhite...countObjectBlack:			counts the trials in each condition
 /count_ObjectBlack = 0
 /count_ObjectWhite = 0
 </values>
-**************************************************************************************************************
-**************************************************************************************************************
-													EXPRESSIONS
-**************************************************************************************************************
-**************************************************************************************************************
-MeanRT_WhiteHits...MeanRT_BlackCRs:				calculates the mean reaction times
-																			for Hits, Misses, FAs, CRs for each ethnicity
 
-%_WhiteHits...%_BlackCRs:									calculates the percentages of Hits-Misses and
-																			CRs-FAs for each ethnicity
+**************************************************************************************************************
+EXPRESSIONS
+**************************************************************************************************************
 
+MeanRT_WhiteHits...MeanRT_BlackCRs:				calculates the mean reaction times for Hits, Misses, FAs, CRs for each ethnicity
+%_WhiteHits...%_BlackCRs:						calculates the percentages of Hits-Misses and CRs-FAs for each ethnicity
 
 <expressions >
 /MeanRT_WhiteHits = values.SumRT_WhiteHits / values.Sum_WhiteHits
@@ -185,16 +171,15 @@ MeanRT_WhiteHits...MeanRT_BlackCRs:				calculates the mean reaction times
 </expressions>
 
 **************************************************************************************************************
-**************************************************************************************************************
-														DATA
-**************************************************************************************************************
+DATA
 **************************************************************************************************************
 
 ******************
 raw data
 ******************
+
 <data >
-/file = "PODT_rawdata.iqdat"
+/file = "shooter_taskiqdat"
 / separatefiles = true
 / columns = [date, time, subject, values.group, trialcode, values.itemnumber, values.selectbackground,
 values.repetition, values.backgroundduration, values.count_background,
@@ -210,36 +195,16 @@ values.SumRT_BlackFAs; values.Sum_BlackFAs; expressions.MeanRT_BlackFAs, express
 values.SumRT_BlackCRs; values.Sum_BlackCRs; expressions.MeanRT_BlackCRs, expressions.%_BlackCRs]
 </data>
 
-******************
-summary data
-******************
-<summarydata >
-/file = "PODT_summarydata.iqdat"
-/columns = [script.startdate, script.starttime, script.subjectid, values.group, values.total, 
-values.count_GunWhite, values.count_ObjectWhite, values.count_GunBlack, values.count_ObjectBlack,
-values.SumRT_WhiteHits; values.Sum_WhiteHits; expressions.MeanRT_WhiteHits, expressions.%_WhiteHits,
-values.SumRT_WhiteMisses; values.Sum_WhiteMisses; expressions.MeanRT_WhiteMisses, expressions.%_WhiteMisses,
-values.SumRT_WhiteFAs; values.Sum_WhiteFAs; expressions.MeanRT_WhiteFAs, expressions.%_WhiteFAs,
-values.SumRT_WhiteCRs; values.Sum_WhiteCRs; expressions.MeanRT_WhiteCRs, expressions.%_WhiteCRs,
-values.SumRT_BlackHits; values.Sum_BlackHits; expressions.MeanRT_BlackHits, expressions.%_BlackHits,
-values.SumRT_BlackMisses; values.Sum_BlackMisses; expressions.MeanRT_BlackMisses, expressions.%_BlackMisses,
-values.SumRT_BlackFAs; values.Sum_BlackFAs; expressions.MeanRT_BlackFAs, expressions.%_BlackFAs,
-values.SumRT_BlackCRs; values.Sum_BlackCRs; expressions.MeanRT_BlackCRs, expressions.%_BlackCRs]
-</summarydata>
+**************************************************************************************************************
+INSTRUCTIONS
+**************************************************************************************************************
 
-
-
-**************************************************************************************************************
-**************************************************************************************************************
-													INSTRUCTIONS
-**************************************************************************************************************
-**************************************************************************************************************
 <instruct >
 / fontstyle = ("Arial", 2.5%, false, false, false, false, 5, 0)
-/ lastlabel = "<LEERTASTE> um fortzufahren"
-/ nextlabel = "<LEERTASTE> um fortzufahren"
+/ lastlabel = "<Space Bar> to START"
+/ nextlabel = "<Space Bar> to Continue"
 / nextkey = (57)
-/ prevlabel = "<ENTER> um zurückzugehen"
+/ prevlabel = "<Enter> to go Back"
 / prevkey = (28)
 / windowsize = (90%, 80%)
 </instruct>
@@ -247,14 +212,17 @@ values.SumRT_BlackCRs; values.Sum_BlackCRs; expressions.MeanRT_BlackCRs, express
 ***********************************************
 General Intro
 ***********************************************
+
 Note: 
 Current Instructions modelled after
-the latest instructions used by Correll et al (these later  instructions are 
+the latest instructions used by Correll et al (these later instructions are 
 less detailed than the original 2002 instructions)
+
+<page intro1_A>
 ^^In this videogame, your task is to shoot any person who is holding
-a gun (the bad guys) by pressing the "A" button on your keyboard (A = shoot button). 
+a gun (the bad guys) by pressing the "E" key (E = Shoot key). 
 ^^If a person is holding something other than a gun he is a good guy, and
-you should press the the "L" button on your keyboard (L = NO shoot button).
+you should press the the "I" key (I = NO shoot key).
 ^^
 ^^You will have less than a second to make each decision.
 ^
@@ -262,197 +230,96 @@ you should press the the "L" button on your keyboard (L = NO shoot button).
 ^
 ^^The first round of the game is for practice.
 ^
-^^If you have any questions, call the experimenter now.
-^
 ^^If you are ready to begin the practice round, press the SPACE BAR.
-
-<page Intro>
-^^^^Vielen Dank für Ihre Teilnahme an dieser Untersuchung!
-^^^Auf der nächsten Seite wird Ihnen erläutert, worum es sich dabei im Detail handelt.
 </page>
-
-<page intro1_A>
-^^Im folgenden Videospiel ist es Ihre Aufgabe auf jede Person zu schießen die eine Waffe in der Hand hält ("die Bösen"),
-^indem sie die linke Antworttaste drücken (links = schießen). 
-^^Wenn eine Person einen anderen Gegenstand in der Hand hält, gehört sie zu den "Guten" und sie müssen die 
-^rechte Antworttaste drücken (rechts = NICHT schießen).
-^^
-^^Sie haben jeweils weniger als eine Sekunde Zeit um zu entscheiden.
-^
-^^Basierend auf Ihrer Leistung erhalten Sie pro Durchgang Punkte.
-^
-^^Die erste Runde des Spiels dient der Übung.
-^
-^^Falls Sie noch Fragen haben, wenden Sich bitte jetzt an den Versuchsleiter/ die Versuchsleiterin.
-^
-^^Wenn Sie bereit sind mit dem Übungsdurchgang zu beginnen, dann drücken sie nun die LEERTASTE.
-</page>
-
 
 <page intro1_B>
-^^Im folgenden Videospiel ist es Ihre Aufgabe auf jede Person zu schießen die eine Waffe in der Hand hält ("die Bösen"),
-^indem sie die rechte Antworttaste drücken (rechts = schießen). 
-^^Wenn eine Person einen anderen Gegenstand in der Hand hält, gehört sie zu den "Guten" und sie müssen die 
-^linke Antworttaste drücken (links = NICHT schießen).
+^^In this videogame, your task is to shoot any person who is holding
+a gun (the bad guys) by pressing the "I" key (I = Shoot key). 
+^^If a person is holding something other than a gun he is a good guy, and
+you should press the the "E" key (E = NO shoot key).
 ^^
-^^Sie haben jeweils weniger als eine Sekunde Zeit um zu entscheiden.
+^^You will have less than a second to make each decision.
 ^
-^^Basierend auf Ihrer Leistung erhalten Sie pro Durchgang Punkte.
+^^You will receive points based on your performance.
 ^
-^^Die erste Runde des Spiels dient der Übung.
+^^The first round of the game is for practice.
 ^
-^^Falls Sie noch Fragen haben, wenden Sich bitte jetzt an den Versuchsleiter/ die Versuchsleiterin.
-^
-^^Wenn Sie bereit sind mit dem Übungsdurchgang zu beginnen, dann drücken sie nun die LEERTASTE.
+^^If you are ready to begin the practice round, press the SPACE BAR.
 </page>
-
 
 ***********************************************
 Practice Block Instructions
 ***********************************************
-                             This is a PRACTICE SESSION. 
-^^^^Reminder:
-^^                                                        YOUR TASK IS:
-^^To decide as quickly and accurately as possible to shoot or not to shoot. 
-^^(1) If the person holds a GUN you need to SHOOT: 
-^                                                           press "L" on the keyboard. (L = shoot button) 
-^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot:  
-^                                                           press "A" on your keyboard (A = No shoot button)
-^^
-^^IMPORTANT: use fingers of different hands for each response key.
-
 
 <page practiceA>
-                           Dies ist ein ÜBUNGSDURCHGANG.
-^^^^Zur Erinnerung:
-^^                                                         Ihre Aufgabe:
-^^Entscheiden Sie so schnell und akkurat wie möglich zu schießen oder nicht zu schießen. 
-^^(1) Wenn die Person eine WAFFE in der Hand hält müssen sie SCHIEßEN: 
-^                                                           Drücken Sie die linke Antworttaste (links = schießen) 
-^^(2) Wenn die Person einen HARMLOSEN GEGENSTAND in der Hand hält sollen sie NICHT schießen:  
-^                                                           Drücken Sie die rechte Antworttaste (rechts = nicht schießen)
+This is a PRACTICE block. 
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (E = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (I = No shoot button)
 ^^
-^^Wichtig: Benutzen Sie bitte die Finger beider Hände für die Aufgabe.
+^^IMPORTANT: use fingers of different hands for each response key.
 </page>
 
 <page practiceB>
-                           Dies ist ein ÜBUNGSDURCHGANG.
-^^^^Zur Erinnerung:
-^^                                                         Ihre Aufgabe:
-^^Entscheiden Sie so schnell und akkurat wie möglich zu schießen oder nicht zu schießen. 
-^^(1) Wenn die Person eine WAFFE in der Hand hält müssen sie SCHIEßEN: 
-^                                                           Drücken Sie die rechte Antworttaste (rechts = schießen) 
-^^(2) Wenn die Person einen HARMLOSEN GEGENSTAND in der Hand hält sollen sie NICHT schießen:  
-^                                                           Drücken Sie die linke Antworttaste (links = nicht schießen)
+This is a PRACTICE block. 
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (I = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (E = No shoot button)
 ^^
-^^Wichtig: Benutzen Sie bitte die Finger beider Hände für die Aufgabe.
+^^IMPORTANT: use fingers of different hands for each response key.
 </page>
 
 ***********************************************
 Experimental Block Instructions
 ***********************************************
-You are done with practice. If you have anymore questions, please ask them now.
-^^^^Reminder:
-^^                                                        YOUR TASK IS:
-^^To decide as quickly and accurately as possible to shoot or not to shoot. 
-^^(1) If the person holds a GUN you need to SHOOT: 
-^                                                           press "A" on the keyboard. (A = shoot button) 
-^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot:  
-^                                                           press "L" on your keyboard (L = No shoot button)
-^^
-^^IMPORTANT: use fingers of different hands for each response key.
-^^If you are ready, start now.
-
 
 <page taskA>
-Der Übungsdurchgang ist nun beendet. Wenn Sie noch Fragen haben, stellen Sie sie bitte jetzt.
-^^^^Zur Erinnerung:
-^^                                                         Ihre Aufgabe:
-^^Entscheiden Sie so schnell und akkurat wie möglich zu schießen oder nicht zu schießen. 
-^^(1) Wenn die Person eine WAFFE in der Hand hält müssen sie SCHIEßEN: 
-^                                                           Drücken Sie die linke Antworttaste (links = schießen) 
-^^(2) Wenn die Person einen HARMLOSEN GEGENSTAND in der Hand hält sollen sie NICHT schießen:  
-^                                                           Drücken Sie die Taste rechte Antworttaste (rechts = nicht schießen)
+You are done with practice.
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (E = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (I = No shoot button)
 ^^
-^^Wichtig: Benutzen Sie bitte die Finger beider Hände für die Aufgabe.
-^^Wenn Sie bereit sind, dann fangen sie jetzt an.
+^^IMPORTANT: use fingers of different hands for each response key.
 </page>
 
 <page taskB>
-Der Übungsdurchgang ist nun beendet. Wenn Sie noch Fragen haben, stellen Sie sie bitte jetzt.
-^^^^Zur Erinnerung:
-^^                                                         Ihre Aufgabe:
-^^Entscheiden Sie so schnell und akkurat wie möglich zu schießen oder nicht zu schießen. 
-^^(1) Wenn die Person eine WAFFE in der Hand hält müssen sie SCHIEßEN: 
-^                                                           Drücken Sie die rechte Antworttaste (rechts = schießen) 
-^^(2) Wenn die Person einen HARMLOSEN GEGENSTAND in der Hand hält sollen sie NICHT schießen:  
-^                                                           Drücken Sie die linke Antworttaste (links = nicht schießen)
+You are done with practice.
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (I = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (E = No shoot button)
 ^^
-^^Wichtig: Benutzen Sie bitte die Finger beider Hände für die Aufgabe.
-^^Wenn Sie bereit sind, dann fangen sie jetzt an.
-</page>
-
-<page end>
-Der erste Aufgabenblock ist nun beendet!
+^^IMPORTANT: use fingers of different hands for each response key.
 </page>
 
 <page results>
-^^Ihre individuellen Ergebnisse:
-^Akkuratheit:
-^~tBei bewaffneten Personen: <%(expressions.%_WhiteHits+expressions.%_BlackHits)/2%>%.
-^~tBei unbewaffneten Personen: <%(expressions.%_WhiteCRs+expressions.%_BlackCRs)/2%>%.^^^
-^Reaktionsgeschwindigkeit (der korrekten Reaktionen):^
-^~tBei bewaffneten Personen: <%(expressions.MeanRT_WhiteHits+expressions.MeanRT_BlackHits)/2%>ms.
-^~tBei unbewaffneten Personen: <%(expressions.MeanRT_WhiteCRs+expressions.MeanRT_BlackCRs)/2%>ms.
+^^Your individual results:
+^Accuracy:^
+^~People with guns: <%(expressions.%_WhiteHits+expressions.%_BlackHits)/2%>%.
+^~Unarmed people: <%(expressions.%_WhiteCRs+expressions.%_BlackCRs)/2%>%.^^^
+^Reaction times:^
+^~People with guns: <%(expressions.MeanRT_WhiteHits+expressions.MeanRT_BlackHits)/2%>ms.
+^~Unarmed people: <%(expressions.MeanRT_WhiteCRs+expressions.MeanRT_BlackCRs)/2%>ms.
 </page>
-
-****************ALTERNATIVE INSTRUCTION TEXTS: more detailed******************************************
-Alternative Instructions: not original
-
-^^PERCEPTUAL VIGILANCE STUDY - Ability to quickly respond to a variety of stimuli
-
-^^In this study, you will be shown a variety of slides depicting a wide range of scenes, such as a park
-or a store front. At some unpredictable time, a man will appear in one of the scenes holding an object. 
-This object can either be a gun or a harmless object such as a cellphone or a soda can.
-
-^^^^                                                         YOUR TASK IS:
-^^To decide as quickly and accurately as possible to shoot or not to shoot. 
-^^(1) If the man holds a GUN you need to SHOOT: 
-^                                                          press "A" on the keyboard. (A = shoot button) 
-^^(2) If the man holds a HARMLESS OBJECT, do NOT shoot:  
-^                                                           press "L" on your keyboard (L = No shoot button)
-^^
-
-
-
-Note: 
-*original experiment used detailed instructions including a summary of the reward matrix.
-In later studies this information was dropped from the instructions
-*these are not the original instructions but include the reward matrix info
 
 <page intro2>
-Wir zeigen Ihnen einen Zwischenpunktestand, damit Sie sehen, wie gut Sie in der Aufgabe abschneiden.
-^^***************************************************************************************************
-^Die Entscheidungen, die Sie treffen, führen dazu, dass Sie entweder Punkte gewinnen oder Punkte verlieren:
-^^Sie SCHIEßEN, wenn die Person eine Waffe hält:                                 Sie erhalten <%values.HitReward%>  Punkte (+<%values.HitReward%>)
-^^Sie schießen NICHT, wenn die Person eine Waffe hält:                      Sie verlieren <%values.MissPunish%>  points (-<%values.MissPunish%>)
-^^Sie schießen NICHT, wenn die Person UNBEWAFFNET ist:                     Sie gewinnen <%values.CRReward%>  points (+<%values.CRReward%>) 
-^^Sie schießen, wenn die Person UNBEWAFFNET ist:                                Sie verlieren <%values.FAPunish%> points (-<%values.FAPunish%>)
-^^Wenn Sie nicht schnell genug reagieren, werden Ihnen <%values.NoresponsePunish%>  Punkte abgezogen (-<%values.NoresponsePunish%>)
-
-^^WICHTIG: Sie bekommen unmittelbar nach jeder Entscheidung ein Feedback und Ihren aktuellen Punktestand mitgeteilt.
-^**************************************************************************************************
-
-
-^^Damit Sie sich mit der Aufgabe vertraut machen können, beginnen Sie bitte mit dem Übungsblock.
+^Your responses will affect your score.
+^^^If you SHOOT when there is a GUN:			+<%values.HitReward%> points
+^^If you do NOT shoot when there is a GUN:		-<%values.MissPunish%> points
+^^If you do NOT shoot when there is NO gun:		+<%values.CRReward%> points
+^^If you SHOOT when there is NO gun:			-<%values.FAPunish%> points
+^^If you don't react fast enough:				-<%values.NoresponsePunish%> points
+^^^You'll be given the opportunity to practice the task.  
 </page>
- 
 
 **************************************************************************************************************
+PRACTICE STIMULI
 **************************************************************************************************************
-													  PRACTICE STIMULI
-**************************************************************************************************************
-**************************************************************************************************************
+
 <item backgrounds_practice>
 /1 = "wu01.jpg"
 /2 = "wu02.jpg"
@@ -502,26 +369,26 @@ Wir zeigen Ihnen einen Zwischenpunktestand, damit Sie sehen, wie gut Sie in der 
 **********************************************
 Practice Stimuli
 **********************************************
+
 <picture background_practice>
 / items = backgrounds_practice
-/select =  values.selectbackground
+/ select =  values.selectbackground
 / position = (50%, 50%)
 / size = (80%, 80%)
-/erase = false
+/ erase = false
 </picture>
 
 <picture object>
 / items = objects_practice
-/select = values.itemnumber
+/ select = values.itemnumber
 / position = (50%, 50%)
 / size = (80%, 80%)
 </picture>
 
 **************************************************************************************************************
+EXPERIMENTAL STIMULI
 **************************************************************************************************************
-													   EXPERIMENTAL STIMULI
-**************************************************************************************************************
-**************************************************************************************************************
+
 <item backgrounds>
 /1 = "bg01.jpg"
 /2 = "bg02.jpg"
@@ -680,6 +547,7 @@ Main Stimuli
 **********************************************
 Fixation Cross
 **********************************************
+
 <text fixation>
 / items = ("+")
 / position = (50%, 50%)
@@ -690,19 +558,20 @@ Fixation Cross
 **********************************************
 Feedback Stimuli
 **********************************************
+
 <text totalreport>
-/ items = ("Punktestand: <%values.total%> Punkte")
+/ items = ("Total: <%values.total%> points")
 / fontstyle = ("Arial", 3%, false, false, false, false, 5, 0)
 / position = (50%, 50%)
 / txcolor = (black)
 </text>
 
 <item feedback>
-/1 = "Guter Schuss!"
-/2 = "Gute Entscheidung!"
-/3 = "Sie sind tot!!!"
-/4 = "Sie haben einen der Guten erschossen!"
-/5 = "Zu langsam"
+/1 = "Good Shot!"
+/2 = "Wise Choice!"
+/3 = "You're Dead!!!"
+/4 = "You shot a good guy!"
+/5 = "Too Slow"
 </item>
 
 <text feedback>
@@ -714,24 +583,23 @@ Feedback Stimuli
 </text>
 
 <item result>
-/1 = "Sie gewinnen <%values.HitReward%> Punkte "
-/2 = "Sie gewinnen <%values.CRReward%> Punkte "
-/3 = "Sie verlieren <%values.MissPunish%> Punkte "
-/4 = "Sie verlieren <%values.FAPunish%> Punkte "
-/5 = "Sie verlieren <%values.NoresponsePunish%> Punkte "
+/1 = "You win <%values.HitReward%> points"
+/2 = "You win <%values.CRReward%> points"
+/3 = "You lose <%values.MissPunish%> points"
+/4 = "You lose <%values.FAPunish%> points"
+/5 = " You lose <%values.NoresponsePunish%> points"
 </item>
 
 <text result>
-/items = result
+/ items = result
 / fontstyle = ("Arial", 5%, false, false, false, false, 5, 0)
 / position = (50%, 30%)
 / txcolor = (black)
-/select = values.selectfeedback
+/ select = values.selectfeedback
 </text>
+
 **************************************************************************************************************
-**************************************************************************************************************
-													LISTS
-**************************************************************************************************************
+LISTS
 **************************************************************************************************************
 
 *********************************
@@ -750,6 +618,7 @@ list.condition selects next experimental condition randomly without replacement
 the following four lists select the item number for each condition
 without replacement => all items will be used
 ***********************************
+
 <list itemnumber1>
 /items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 / replace = false
@@ -773,6 +642,7 @@ without replacement => all items will be used
 ***********************************
 list.repetition selects randomly how many background pictures are presented
 ***********************************
+
 <list repetition>
 / items = (1, 2, 3, 4)
 / replace = true
@@ -781,6 +651,7 @@ list.repetition selects randomly how many background pictures are presented
 ***********************************
 list.duration selects randomly the duration of a background picture
 ***********************************
+
 <list duration>
 / items = (500, 600, 700, 800, 900, 1000)
 /replace = true
@@ -792,16 +663,16 @@ background itemnumbers (unless it's the last background presented)
 
 Backgrounds are selected randomly with replacement by default
 ***********************************
+
 <list selectbackground>
 /items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 /replace = true
 </list>
 
 **************************************************************************************************************
+EXPERIMENTAL TRIALS
 **************************************************************************************************************
-											EXPERIMENTAL TRIALS
-**************************************************************************************************************
-**************************************************************************************************************
+
 Trial Combo:
 trial.fixation -> trial.background (loop) -> trial.maintrials (4 of them) -> trial.feedback
 
@@ -841,6 +712,7 @@ selected as the target background (no repeating backgrounds)
 experimental condition
 *resets list.selectbackground at the end of the loop
 ***********************************************************
+
 <trial background>
 / ontrialbegin = [values.backgroundduration = list.duration.nextvalue]
 / ontrialbegin = [values.count_background += 1]
@@ -865,12 +737,12 @@ experimental condition
 
 ***************************************************************
 Main Trials: 4 experimental conditions
-
 *show target picture
 *calculate total based on Hit (+10), Miss (-40), FA (-20), CR (+5)
-* times out after 850ms (default) if no response made (-10)
+*times out after 850ms (default) if no response made (-10)
 *calls feedback
 **************************************************************
+
 <trial GunWhite>
 / ontrialbegin = [values.count_GunWhite += 1]
 / stimulusframes = [1 = GunWhite]
@@ -893,7 +765,6 @@ Main Trials: 4 experimental conditions
 					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
 / branch = [trial.feedback]
 </trial>
-
 
 <trial GunBlack>
 / ontrialbegin = [values.count_GunBlack += 1]
@@ -966,10 +837,11 @@ Main Trials: 4 experimental conditions
 
 *****************************************
 feedback trial:
-* presents accuracy feedback 
-* explains how much was won/lost
+*presents accuracy feedback 
+*explains how much was won/lost
 *displays the total
 ****************************************
+
 <trial feedback>
 / ontrialbegin = [if (values.Hit == 1) {text.feedback.textcolor = green; values.selectfeedback = 1}]
 / ontrialbegin = [if (values.CR == 1) {text.feedback.textcolor = green;values.selectfeedback = 2}]
@@ -982,13 +854,14 @@ feedback trial:
 / recorddata = false
 / timeout = (values.feedbackduration)
 </trial>
+
 **************************************************************************************************************
+PRACTICE  TRIALS
 **************************************************************************************************************
-											PRACTICE  TRIALS
-**************************************************************************************************************
-**************************************************************************************************************
+
 Note:
 *calls the 20 practice backgrounds in sequence
+
 <trial fixation_practice>
 / ontrialbegin = [values.count_background = 0; values.Hit = 0; values.Miss = 0; values.FA = 0; values.CR = 0]
 / ontrialbegin = [values.itemnumber += 1]
@@ -999,7 +872,6 @@ Note:
 / branch = [trial.background_practice]
 / recorddata = false
 </trial>
-
 
 <trial background_practice>
 / ontrialbegin = [values.backgroundduration = list.duration.nextvalue]
@@ -1054,39 +926,36 @@ Note:
 / branch = [trial.feedback]
 </trial>
 
+**************************************************************************************************************
+EXPERIMENTAL BLOCKS
+**************************************************************************************************************
 
-
-**************************************************************************************************************
-**************************************************************************************************************
-											EXPERIMENTAL BLOCKS
-**************************************************************************************************************
-**************************************************************************************************************
 Note: 
 *runs 80 of the trial-combos
-* counterbalanced for shootkey/noshootkey  (see EXPERIMENT)
+*counterbalanced for shootkey/noshootkey  (see EXPERIMENT)
 
 <block POD_A>
 / preinstructions = (taskA)
 / onblockbegin = [values.total = 0]
 / trials = [1-80 = fixation]
-/ postinstructions = (end, results)
+/ postinstructions = (results)
 </block>
 
 <block POD_B>
 / preinstructions = (taskB)
 / onblockbegin = [values.total = 0]
 / trials = [1-80 = fixation]
-/ postinstructions = (end, results)
+/ postinstructions = (results)
 </block>
+
 **************************************************************************************************************
+PRACTICE BLOCKS
 **************************************************************************************************************
-											PRACTICE BLOCKS
-**************************************************************************************************************
-**************************************************************************************************************
+
 Note: 
 *runs 20 of the practice trial-combos
-* counterbalanced for shootkey/noshootkey  (see EXPERIMENT)
-* data recorded, set to /recorddata = false to change
+*counterbalanced for shootkey/noshootkey (see EXPERIMENT)
+*data recorded, set to /recorddata = false to change
 
 <block POD_practiceA>
 / preinstructions = (practiceA)
@@ -1102,587 +971,24 @@ Note:
 / recorddata = true
 </block>
 
-
-**********************************************************************************************
-HYPOTHESEN
-**********************************************************************************************
-<textbox H1>
-/ caption = "Bitte beschreiben Sie kurz, worum es Ihrer Meinung nach in dieser Untersuchung ging:"
-/ fontstyle = ("Verdana", 24, false, false, false, false, 5, 0)
-/ multiline = true
-/ textboxsize=(50,50)
-</textbox>
-
-<surveypage H1>
-/ caption = ""
-/ fontstyle = ("Verdana", -20, true, false, false, false, 5, 0)
-/ questions = [1=H1]
-/ nextlabel = "Weiter"
-/finishlabel ="Weiter"
-/ navigationbuttonsize = (250px, 50px)
-/ showquestionnumbers = false
-</surveypage>
-
-<surveypage H2>
-/ showpagenumbers = false
-/ caption = "In der vorherigen Aufgabe ging es darum zu untersuchen wie Menschen unter Zeitdruck entscheiden. Hierbei ist es jedoch denkbar, dass bestimmte Eigenschaften der Personen beeinflussen, ob wir ihnen eher ausweichen oder auf Sie zugehen.
-
-Um hinsichtlich dieser Einflussgröße kontrollieren zu können, bitten wir Sie im Folgenden einige Fragen zu Personen und sozialen Gruppen in dieser Gesellschaft zu beantworten. Bitte beachten Sie, dass es hierbei keine richtigen oder falschen Antworten gibt. Es ist wichtig, dass Sie jede der Fragen offen und ehrlich beantworten.
-"
-/ nextlabel = "Weiter"
- /finishlabel ="Weiter"
-/ fontstyle = ("Verdana", 24, false, false, false, false, 5, 0)
-</surveypage>
-
-<survey VP_Hypothesen>
-/ pages = [1=H1; 2 = H2]
-/ responsefontstyle = ("Verdana", -20, false, false, false, false, 5, 0)
-/ itemfontstyle = ("Verdana", -13, false, false, false, false, 5, 0)
-/ itemspacing = 10%
-/ showpagenumbers = false
-</survey>
-
-
-**********************************************************************************************
-FEELING THERMOMETER
-**********************************************************************************************
-
-<surveypage intro1>
-/ showpagenumbers = false
-/ caption = "Wir bitten Sie im Folgenden verschiedene soziale Gruppen in unserer Gesellschaft auf einer Thermometer-Skala danach zu beurteilen, wie warm bzw. kalt Sie sich ihnen gegenüber fühlen."
-/ fontstyle = ("Verdana", 24, false, false, false, false, 5, 0)
-</surveypage>
-
-<text warm>
-/ fontstyle = ("Verdana", 20, false, false, false, false, 5, 0)
-/ items = ("sehr warm")
-/ txcolor = (255, 0, 0)
-/ txbgcolor = (255, 255, 255)
-/ position = (10, 24)
-/ erase = false
-</text>
-
-<text cold>
-/ fontstyle = ("Verdana", 20, false, false, false, false, 5, 0)
-/ items = ("sehr kalt")
-/ txcolor = (0, 0, 255)
-/ txbgcolor = (255, 255, 255)
-/ position = (10, 73)
-/ erase = false
-</text>
-
-<picture arrow>
-/ items = ("arrow.png")
-/ position = (10, 49)
-/ size = (80, 488)
-/ erase = false
-</picture>
-
-<surveypage thermometer>
-/ showpagenumbers = false
-/ stimulusframes = [1=warm, cold, arrow]
-/ caption = "Im Folgenden sehen Sie verschiedene soziale Gruppen. Wir bitten Sie diese Gruppen auf Thermometer-Skalen danach zu beurteilen, wie warm bzw. kalt Sie sich ihnen gegenüber fühlen. Für Ihre Beurteilung können Sie die Schieberegler nach oben (warm) und nach unten (kalt) ziehen."
-/ fontstyle = ("Verdana", 24, false, false, false, false, 5, 0)
-/ questions = [1=Buddhisten; 2=Christen; 3=Atheisten; 4=Muslime; 5=Russen; 6=Türken; 7=Deutsche; 8 = Italiener] 
-</surveypage>
-
-<slider Buddhisten>
-/ increment = 1
-/ orientation = vertical
-/ position = (15, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Buddhisten"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<slider Christen>
-/ increment = 1
-/ orientation = vertical
-/ position = (25, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Christen"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<slider Atheisten>
-/ increment = 1
-/ orientation = vertical
-/ position = (35, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Atheisten"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<slider Muslime>
-/ increment = 1
-/ orientation = vertical
-/ position = (45, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Muslime"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<slider Russen>
-/ increment = 1
-/ orientation = vertical
-/ position = (55, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Russen"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<slider Türken>
-/ increment = 1
-/ orientation = vertical
-/ position = (65, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Türken"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<slider Deutsche>
-/ increment = 1
-/ orientation = vertical
-/ position = (75, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Deutsche"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<slider Italiener>
-/ increment = 1
-/ orientation = vertical
-/ position = (85, 20)
-/ showticks = true
-/ showtooltips = false
-/ labels = ("+50", "0", "-50")
-/ caption = "Italiener"
-/ fontstyle = ("Verdana", 13pt, false, false, false, false, 5, 0)
-/ slidersize = (2, 50)
-/ range = (0, 100)
-</slider>
-
-<survey feeling>
-/ pages = [1=intro1; 2 = thermometer; 3 = traitintro]
-/ responsefontstyle = ("Verdana", -13, false, false, false)
-/ itemfontstyle = ("Verdana", -16, true, false, false)
-/ itemspacing = 4%
-/ showpagenumbers = false
-/ finishlabel = "weiter per Mausclick"
-/ nextlabel = "weiter per Mausclick"
-</survey>
-
-
-
-**********************************************************************************************
-TRAIT RATINGS
-**********************************************************************************************
-
-* wird im survey feeling aufgerufen
-
-<surveypage traitintro>
-/ showpagenumbers = false
-/ caption = "So wie wir Menschen häufig mit bestimmten Eigenschaften beschreiben, werden auch sozialen Gruppen in der Gesellschaft auf unterschiedliche Art beschrieben. Im Folgenden sind wir an Ihrer persönlichen Einschätzung interessiert. Bitte geben Sie an, wie sehr Ihrer Meinung nach bestimmte Eigenschaften auf verschiedene soziale Gruppen in der Gesellschaft zutreffen.
-
-Bitte beachten Sie, dass es hierbei keine richtigen oder falschen Antworten gibt. Es ist wichtig, dass Sie jede der Fragen offen und ehrlich beantworten."
-/ fontstyle = ("Verdana", 24, false, false, false, false, 5, 0)
-</surveypage>
-
-<page muslim_intro>Bitte geben Sie nun an, auf wieviel Prozent aller MUSLIMISCHEN MÄNNER in Deutschland die folgenden Eigenschaften zutreffen.
-</page>
-
-<text bglab_in>
-/ numitems = 1
-/ items = ("Auf wieviel Prozent aller DEUTSCHEN trifft die folgende Eigenschaft zu?")
-/ fontstyle = ("Verdana", 20pt, true, false, false, false, 5, 0)
-/ position = (50, 40)
-</text>
-
-<text bglab_out>
-/ numitems = 1
-/ items = ("Auf wieviel Prozent aller MUSLIMISCHEN MÄNNER in Deutschland trifft die folgende Eigenschaft zu?")
-/ fontstyle = ("Verdana", 20pt, true, false, false, false, 5, 0)
-/ position = (50, 40)
-</text>
-
-<text threat>
-/ numitems = 18
-/ items = ("gefährlich", "kriminell", "bedrohlich", "Täter", "terroristisch", 
-			"gewalttätig", "aggressiv", "radikal", "fanatisch", "ungefährlich", 
-			"gesetzestreu", "harmlos", "Opfer", "friedfertig", "friedlich", 
-			"ausgeglichen", "gemäßigt", "besonnen")
-/ select = noreplacenorepeat
-/ resetinterval = 2
-/ fontstyle = ("Verdana", 30pt, true, false, false, false, 5, 0)
-/ position = (50,60)
-</text>
-
-<text other>
-/ numitems = 20
-/ items = ("schmarotzend", "barbarisch", "irrational", "primitiv", "sexistisch", 
-			"fremdartig", "undemokratisch", "traditionell", "ungebildet", "intolerant", 
-			"beitragend", "zivilisiert", "rational", "kultiviert", "geschlechtergerecht", 
-			"vertraut", "demokratisch", "fortschrittlich", "gebildet", "tolerant")
-/ select = noreplacenorepeat
-/ resetinterval = 2
-/ fontstyle = ("Verdana", 30pt, true, false, false, false, 5, 0)
-/ position = (50,60)
-</text>
-
-<likert rating>
-/ stimulusframes = [1 = noreplacenorepeat(threat, other)]
-/ numpoints = 11
-/ anchorwidth=100
-/ buttonvalues = [1 = "0", 2 = "10", 3 = "20", 4= "30", 5 = "40", 6 = "50", 7 = "60", 8 = "70", 9 = "80", 10 = "90", 11 = "100"]
-/ fontstyle = ("Verdana", 16pt, false, false, false, false, 5, 0)
-/ position = (50,80)
-/ mouse = true
-/ posttrialpause = 500
-</likert>
-
-<block traits_in>
-/ bgstim = (bglab_in)
-/ trials = [1-38 = noreplacenorepeat(rating)]
-</block>
-
-<block traits_out>
-/ preinstructions = (muslim_intro)
-/ bgstim = (bglab_out)
-/ trials = [1-38 = noreplacenorepeat(rating)]
-</block>
-
-
-**********************************************************************************************
-Kontakt
-**********************************************************************************************
-
-<page contactintro>Im Folgenden sind wir interessiert zu erfahren, inwiefern Sie in verschiedenen Lebensbereichen mit muslimischen Menschen Kontakt haben oder hatten. Bitte geben Sie dafür an, inwiefern verschiedene Arten von Beziehungen mit muslimischen Menschen auf Sie zutreffen.
-</page>
-
-<text c_items>
-/ numitems = 8
-/ items = ("Ich kenne viele muslimische Menschen.",
-			"Ich lebe oder habe in einer Gegend gelebt, in der hauptsächlich muslimische Menschen leben.",
-			"In meiner Freizeit habe ich Kontakt zu muslimischen Menschen.", 
-			"In meiner Schule hatte ich Kontakt mit muslimischen Mitschüler*innen.", 
-			"Ich unterhalte mich häufig mit muslimischen Menschen.", 
-			"Ich habe generell nur Kontakt zu muslimischen Menschen.", 
-			"In meinem Alltag habe ich Kontakt zu muslimischen Menschen.")
-/ select = noreplacenorepeat
-/ resetinterval = 2
-/ fontstyle = ("Verdana", 18pt, true, false, false, false, 5, 0)
-/ position = (50,50)
-</text>
-
-<likert contact>
-/ stimulusframes = [1 = noreplacenorepeat(c_items)]
-/ numpoints = 6
-/ anchorwidth=200
-/ anchors =  [1 = "stimme gar nicht zu"; 2 = "stimme nicht zu"; 3 = "stimme eher nicht zu"; 4 = "stimme eher zu"; 5 = "stimme zu" ; 6 = "stimme voll zu"]
-/ buttonvalues = [1 = "1", 2 = "2", 3 = "3", 4= "4", 5 = "5", 6 = "6"]
-/ position = (50,80)
-/ mouse = true
-/ posttrialpause = 500
-</likert>
-
-<block contact>
-/ preinstructions = (contactintro)
-/ trials = [1-8 = noreplacenorepeat(contact)]
-</block>
-
-
-******************************************************************************************
-					Stereotypikalitätsrating
-******************************************************************************************
-<picture st_rating>
-/ items = (
-"01a.jpg"
-"01c.jpg"
-"01d.jpg"
-"02a.jpg"
-"02b.jpg"
-"02c.jpg"
-"02d.jpg"
-"03a.jpg"
-"03b.jpg"
-"03c.jpg"
-"03d.jpg"
-"04a.jpg"
-"04b.jpg"
-"04c.jpg"
-"04d.jpg"
-"05a.jpg"
-"05b.jpg"
-"05c.jpg"
-"05d.jpg"
-"06a.jpg"
-"06b.jpg"
-"06c.jpg"
-"06d.jpg"
-"07a.jpg"
-"07b.jpg"
-"07c.jpg"
-"07d.jpg"
-"08a.jpg"
-"08b.jpg"
-"08c.jpg"
-"08d.jpg"
-"09a.jpg"
-"09b.jpg"
-"09c.jpg"
-"09d.jpg"
-"10a.jpg"
-"10b.jpg"
-"10c.jpg"
-"10d.jpg"
-"11a.jpg"
-"11b.jpg"
-"11c.jpg"
-"11d.jpg"
-"12a.jpg"
-"12b.jpg"
-"12c.jpg"
-"12d.jpg"
-"13a.jpg"
-"13b.jpg"
-"13c.jpg"
-"13d.jpg"
-"14a.jpg"
-"14b.jpg"
-"14c.jpg"
-"14d.jpg"
-"15a.jpg"
-"15b.jpg"
-"15c.jpg"
-"15d.jpg"
-"16a.jpg"
-"16b.jpg"
-"16c.jpg"
-"16d.jpg"
-"17a.jpg"
-"17b.jpg"
-"17c.jpg"
-"17d.jpg"
-"18a.jpg"
-"18b.jpg"
-"18c.jpg"
-"18d.jpg"
-"19a.jpg"
-"19b.jpg"
-"19c.jpg"
-"19d.jpg"
-"20a.jpg"
-"20b.jpg"
-"20c.jpg"
-"20d.jpg")
-/ select = noreplacenorepeat
-/ resetinterval = 1
-/ size = (20%, 20%)
-</picture>
-
-<likert typicality>
-/ stimulusframes = [1 = noreplacenorepeat(st_rating)]
-/ numpoints = 7
-/ anchorwidth=100
-/ anchors = [1 = "überhaupt nicht 
-muslimisch"; 7 = "sehr 
-muslimisch"]
-/ buttonvalues = [1 = "1", 2 = "2", 3= "3", 4 = "4", 5 = "5", 6 = "6", 7 = "7"]
-/ fontstyle = ("Verdana", 18pt, false, false, false, false, 5, 0)
-/ position = (50,85)
-/ mouse = true
-/ posttrialpause = 750
-</likert>
-
-<text bg_stereo>
-/ numitems = 1
-/ items = ("Wie muslimisch wirkt die gezeigte Person?")
-/ fontstyle = ("Verdana", 18pt, true, false, false, false, 5, 0)
-/ position = (50, 20)
-</text>
-
-<block stereo>
-/preinstructions = (stereo_intro)
-/ bgstim = (bg_stereo)
-/ trials = [1-80 = noreplacenorepeat(typicality)]
-</block>
-
-<page stereo_intro>Im Folgenden sehen Sie die Personen aus der Computerspiel-Aufgabe noch einmal. 
-Bitte beurteilen Sie die Personen nun auf einer Skala von 1 bis 7 danach, wie typisch muslimisch diese aussehen.
-Niedrige Werte bedeuten, dass die gezeigte Person überhaupt nicht muslimisch auf Sie wirkt. 
-Hohe Werte bedeuten, dass die gezeigte Person sehr muslimisch auf Sie wirkt.
-</page>
-
-**********************************************************************************************
-DEMOGRAFISCHE DATEN
-**********************************************************************************************
-
-<survey demo>
-/ pages = [1=demo1, demo2, demo3]
-/ itemspacing = 4%
-/ showpagenumbers = false
-/ finishlabel = "weiter per Mausclick"
-/ nextlabel = "weiter mit Mausclick"
-</survey>
-
-<surveypage demo1>
-/ caption = "Bitte beantworten Sie zum Abschluss noch einige demographische Fragen:"
-/ questions = [1=age; 2=sex; 3=hand; 4=education] 
-</surveypage>
-
-<surveypage demo2>
-/ questions = [1=language; 2=ger1; 3=nat1; 4=nat2; 5=ethnicity] 
-</surveypage>
-
-<surveypage demo3>
-/ questions = [1=experience; 2=comments] 
-</surveypage>
-
-<radiobuttons sex>
-/ caption = "Was ist Ihr Geschlecht?"
-/ options = ("weiblich", "männlich", "andere")
-/ required = false
-</radiobuttons>
-
-<textbox age>
-/ caption = "Wie alt sind Sie? Bitte tippen Sie die Zahl (in Jahren) ein."
-/ mask = positiveinteger
-/ range = (15, 99)
-/ required = false
-/ textboxsize = (4, 2)
-</textbox>
-
-<radiobuttons hand>
-/ caption = "Sind Sie links- oder rechtshändig?"
-/ options = ("linkshändig", "rechtshändig","beidhändig")
-/ required = false
-</radiobuttons>
-
-<radiobuttons education>
-/ caption = "Welchen höchsten allgemeinen Bildungsabschluss haben Sie?"
-/ options = ("(Noch) keinen Bildungsabschluss", "Hauptschulabschluss (Volksschulabschluss)", "Realschulabschluss (Mittlere Reife)", "Fachhochschulreife, Abschluss einer Fachoberschule", "Allgemeine Hochschulreife/Abitur")
-/ other = "Abgeschlossenes Studium, nämlich:"
-/ required = false
-</radiobuttons>
-
-
-<radiobuttons language>
-/ caption = "Ist Deutsch Ihre Muttersprache?"
-/ options = ("Ja - einsprachig aufgewachsen", "Ja - mehrsprachig aufgewachsen" )
-/ other = "Nein, meine Muttersprache ist:"
-/ required = false
-</radiobuttons>
-
-<radiobuttons ger1>
-/ caption = "Sind Sie in Deutschland geboren?"
-/ options = ("Ja")
-/ other = "Nein, in einem anderen Land, und zwar:"
-/ required = false
-</radiobuttons>
-
-<radiobuttons nat1>
-/ caption = "Haben Sie die deutsche Staatsangehörigkeit?"
-/ options = ("Ja", "Nein" )
-/ required = false
-</radiobuttons>
-
-<radiobuttons nat2>
-/ caption = "Haben Sie die Staatsangehörigkeit eines anderen Landes?"
-/ options = ("Nein")
-/ other = "Ja, und zwar:"
-/ required = false
-</radiobuttons>
-
-<radiobuttons ethnicity>
-/ caption = "Wie würden Sie Ihren ethnisch-kulturellen Hintergrund bezeichnen?"
-/ options = ("Deutsch")
-/ other = "Anders, nämlich:"
-/ required = false
-</radiobuttons>
-
-<textbox experience>
-/ caption = "Kennen Sie diese oder eine ähnliche 'Schieß-Aufgabe' bereits aus ihrem Studium oder auch aus einem anderen Kontext? Wenn ja, dann beschreiben Sie diese kurz:"
-/ multiline = false
-/ maxchars = 1000
-/ textboxsize = (80, 10)
-/ required = false
-</textbox>
-
-<textbox comments>
-/ caption = "Haben Sie noch weitere Anmerkungen zu dieser Studie?"
-/ multiline = false
-/ maxchars = 1000
-/ textboxsize = (80, 10)
-/ required = false
-</textbox>
-
-
-**********************************************************************************************
-DEBRIEFING
-**********************************************************************************************
-<page Debrief>INFORMATIONEN ZU DIESER STUDIE
-^^Das Ziel dieser Studie bestand darin, zu untersuchen wie gut Menschen auf die Schnelle erkennen können, ob eine Person bedrohlich ist (z.B. eine Waffe in der Hand hält), 
-oder ob eine Person nicht bedrohlich ist (d.h., einen harmlosen Gegenstand in der Hand hält). Wir möchten erforschen, ob das Erkennen von Bedrohlichkeit durch die ethnische oder religiöse Zugehörigkeit
-der Personen beeinflusst wird. Dabei ist es denkbar, dass die Situation häufiger (fälschlicherweise) als bedrohlich eingeschätzt wird, wenn die Person auf der Straße muslimisch oder arabisch aussieht.
-^^Wenn Sie noch Fragen zu der Studie haben, wenden Sie sich bitte an die Versuchsleitung.
-</page>
-
-
 **************************************************************************************************************
+EXPERIMENT 
 **************************************************************************************************************
-												 EXPERIMENT 
-**************************************************************************************************************
-**************************************************************************************************************
+
 Experiment counterbalanced for shootkey/noshootkey (assignment by subjectnumber)
 
 *odd subjectnumbers:
 <expt >
 / subjects = (1 of 2)
 / onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A; 3 = VP_Hypothesen; 4 = feeling; 5 = traits_in; 6=traits_out; 7 = contact; 8 = stereo; 9 = demo]
-/ preinstructions = (Intro, intro1_A, intro2)
-/ postinstructions = (Debrief)
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
 </expt>
 
 *even subjectnumbers:
 <expt >
 / subjects = (2 of 2)
 / onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B; 3 = VP_Hypothesen; 4 = feeling; 5 = traits_in; 6=traits_out; 7 = contact; 8 = stereo; 9 = demo]
-/ preinstructions = (Intro, intro1_B, intro2)
-/ postinstructions = (Debrief)
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
 </expt>
-
-**************************************************************************************************************
-**************************************************************************************************************
-													END OF FILE
-**************************************************************************************************************
-**************************************************************************************************************
