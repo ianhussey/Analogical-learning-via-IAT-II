@@ -66,12 +66,6 @@ shooter.bias.temp <- reshape(shooter.bias.temp,
 # fill empty cells with 0
 shooter.bias.temp[is.na(shooter.bias.temp)] <- 0
 
-
-
-
-# Differences between the implementations emerge here
-# -start
-
 # invert Hits
 shooter.bias.temp <- transform(shooter.bias.temp,
                                percentage.Hit = ifelse(shooter.bias.temp$gun=="Gun" & shooter.bias.temp$percentage.Hit == 1,
@@ -83,10 +77,6 @@ shooter.bias.temp <- transform(shooter.bias.temp,
                                                       (1/(2*totaltrials)),
                                                       percentage.FA))
 
-# -end
-
-
-
 # summarize across trial types
 shooter.bias.temp <- ddply(shooter.bias.temp,
                            .(subject, Ethnicity),
@@ -95,31 +85,31 @@ shooter.bias.temp <- ddply(shooter.bias.temp,
                            percentage.FA = sum(percentage.FA))
 
 # compute d' and c
-shooter.bias <- transform(shooter.bias.temp,
-                          d = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3),
-                          c = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3),
-                          percentage.Hit = round(percentage.Hit, 3),
-                          percentage.FA = round(percentage.FA, 3))
+original.shooter.bias <- transform(shooter.bias.temp,
+                                   d = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3),
+                                   c = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3),
+                                   percentage.Hit = round(percentage.Hit, 3),
+                                   percentage.FA = round(percentage.FA, 3))
 ```
 
 #### d' between conditions
 
 ```{r}
-t.test(shooter.bias$d ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+t.test(original.shooter.bias$d ~ original.shooter.bias$Ethnicity, paired = TRUE) %>%
   tidy()
 ```
 
 #### c between conditions
 
 ```{r}
-t.test(shooter.bias$c ~ shooter.bias$Ethnicity, paired = TRUE) %>%
+t.test(original.shooter.bias$c ~ original.shooter.bias$Ethnicity, paired = TRUE) %>%
   tidy()
 ```
 
 #### Descriptives
 
 ```{r}
-ddply(shooter.bias, 
+ddply(original.shooter.bias, 
       .(Ethnicity), 
       summarize, 
       mean.d = mean(d), 
@@ -140,8 +130,6 @@ ddply(shooter.bias,
 ### Ian's refactored dplyr solution
 
 ```{r}
-## dplyr conversion
-
 # exclude trials with no response
 trimmed <- shooter %>%
   dplyr::filter(values.result != "Noresponse")
@@ -175,33 +163,26 @@ shooter.bias <-
     percentage.CR    = ifelse(is.na(percentage.CR), 0, percentage.CR)
   ) %>%
   
-  
-  
-  # Differences between the implementations emerge here
-  # -start
-  
-  rowwise() %>%
-  dplyr::mutate(
-    # invert Hits
-    percentage.Hit = ifelse(gun == "Gun" & percentage.Hit == 1,      
-                            (1-(1/(2*totaltrials))), 
-                            percentage.Hit),
-    
-    # invert FAs
-    percentage.FA = ifelse(gun == "Object" & percentage.FA == 0,     
-                           (1/(2*totaltrials)), 
-                           percentage.FA)
-  ) %>%
-  ungroup() %>%
-  
-  # -end
-  
-  
   group_by(subject, Ethnicity, gun) %>%
-  dplyr::summarize(percentage.Hit  = sum(percentage.Hit, na.rm = TRUE), 
+  dplyr::summarize(totaltrials = sum(ntrials, na.rm = TRUE),
+                   percentage.Hit  = sum(percentage.Hit, na.rm = TRUE), 
                    percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
                    percentage.FA   = sum(percentage.FA, na.rm = TRUE), 
                    percentage.CR   = sum(percentage.CR, na.rm = TRUE)) %>%
+
+  rowwise() %>%
+  dplyr::mutate(
+    # invert Hits
+    percentage.Hit = ifelse(gun == "Gun" & percentage.Hit == 1,
+                            (1-(1/(2*totaltrials))),
+                            percentage.Hit),
+
+    # invert FAs
+    percentage.FA = ifelse(gun == "Object" & percentage.FA == 0,
+                           (1/(2*totaltrials)),
+                           percentage.FA)
+  ) %>%
+  ungroup() %>%
 
   # summarize across trial types
   group_by(subject, Ethnicity) %>%
@@ -213,6 +194,14 @@ shooter.bias <-
                 c = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3),
                 percentage.Hit = round(percentage.Hit, 3),
                 percentage.FA  = round(percentage.FA, 3))
+```
+
+Check if original code and refactored code produce identical output:
+
+```{r}
+
+all.equal(shooter.bias, original.shooter.bias)
+
 ```
 
 #### d' between conditions
