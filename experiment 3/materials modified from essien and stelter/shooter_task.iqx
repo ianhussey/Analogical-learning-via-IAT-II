@@ -19,8 +19,14 @@ and Social Psychology, 83, 1314-1329.
 All images used in this script are the originals. Millisecond Software thanks Dr. Correll et al for
 providing generous assistance!
 
+NB the measure's original implementation made a distinction between trials on which a black or white male was presented. 
+I (Ian) tried to remove this factor in a clean way, so that only black men are presented. 
+However, this caused unstable behaviour in the task, which I struggled to find the root of. 
+As a workaround, I simply replaced all image stimuli in both the black and white categories with the images of black men, and changed all references to "white" to "black2". 
+As such, the code and data still make an unnecessary distinction between "black" and "black2" trials. However, in data processing and analysis these are treated as one.
+
 Script Specifics:
-(1) Design: 2 (ethnicity: black vs. white) x 2 (gun vs. no gun) = 4 experimental conditions, 
+(1) Design: 2 (ethnicity: black vs. Black2) x 2 (gun vs. no gun) = 4 experimental conditions, 
 all tested within participants (see Correll et al, 2002)
 (2) Counterbalanced for shootkey vs. no shootkey (Default: A and L keys, change
 possible under values)
@@ -35,7 +41,7 @@ Fixation -> Background (variable number) -> Experimental Condition -> Feedback
 (6)  Duration of backgrounds btw 500-1000ms (increments of 100ms),
  randomly determined with replacement (see list.duration)
 (7) Duration of Fixation cross in this script: 500ms (change under values)
-(8) Duration of Feedback: 3000ms (change under values)
+(8) Duration of Feedback: 2000ms (change under values)
 (9) Rewards/Punishments: see  Correll et al. (2002), Experiment 1
 (changes possible under values)
 (10) Response Timeout: default 850ms see  Correll et al. (2002), (change under values)
@@ -63,9 +69,9 @@ editable (under values, see below)
 
 HitReward....FAPunish: 					amounts earned or lost depending on Hits, Misses, Correct Rejections (CR), False Alarms (FA)
 fixationduration:						the duration of the fixation cross (default: 500, original)
-key1/key2:								the scancodes of the shoot and noshoot keys (keys are counterbalanced), default: "E" and "I"
+key1/key2:								the scancodes of the shoot and noshoot keys (keys are counterbalanced), default: "e" and "i"
 timeout:								timeout of main experimental trials, default = 850ms
-feedbackduration:						the duration of the feedback, default = 3000
+feedbackduration:						the duration of the feedback, default = 2000ms
 
 changes can be made below under VALUES
 
@@ -88,7 +94,7 @@ automatically updated at runtime
 group:									counterbalanced shootkey groups (1/2)
 shootkey/noshootkey:					counterbalancing of key1 and key2 (final values assigned during runtime)
 selectbackground:						determines which background picture is selected
-condition:								1 = GunWhite; 2 = GunBlack; 3 = ObjectWhite; 4 = ObjectBlack
+condition:								1 = GunBlack2; 2 = GunBlack; 3 = ObjectBlack2; 4 = ObjectBlack
 itemnumber:								determines the itemnumber of the target image
 repetition:								determines how many background images areto be  presented
 Hit....CR:								codes whether the response was a HIT, a MISS, a FA, or a CR
@@ -97,9 +103,9 @@ total:									keeps a running tab of the total money earned (or lost)
 backgroundduration:						determines how long each background slide is presented
 count_background:						counts how many background slides have been presented
 selectfeedback:							helper variable to display correct feedback
-SumWhiteHits....SumBlackCRs:			keeps a running total of Hits, Misses, FAs, CRs for each ethnicity
-SumRTWhiteHits...SumRTBlackCRs:			keeps a running total of the reaction times for Hits, Misses, FAs, CRs for each ethnicity
-countGunWhite...countObjectBlack:		counts the trials in each condition
+SumBlack2Hits....SumBlackCRs:			keeps a running total of Hits, Misses, FAs, CRs for each ethnicity
+SumRTBlack2Hits...SumRTBlackCRs:			keeps a running total of the reaction times for Hits, Misses, FAs, CRs for each ethnicity
+countGunBlack2...countObjectBlack:		counts the trials in each condition
 
 <values>
 /group = 0
@@ -119,51 +125,51 @@ countGunWhite...countObjectBlack:		counts the trials in each condition
 /count_background = 0
 /selectfeedback = 0
 
-/Sum_WhiteHits = 0
-/Sum_WhiteMisses = 0
-/Sum_WhiteFAs = 0
-/Sum_WhiteCRs = 0
+/Sum_Black2Hits = 0
+/Sum_Black2Misses = 0
+/Sum_Black2FAs = 0
+/Sum_Black2CRs = 0
 /Sum_BlackHits = 0
 /Sum_BlackMisses = 0
 /Sum_BlackFAs = 0
 /Sum_BlackCRs = 0
 
-/SumRT_WhiteHits = 0
-/SumRT_WhiteMisses = 0
-/SumRT_WhiteFAs = 0
-/SumRT_WhiteCRs = 0
+/SumRT_Black2Hits = 0
+/SumRT_Black2Misses = 0
+/SumRT_Black2FAs = 0
+/SumRT_Black2CRs = 0
 /SumRT_BlackHits = 0
 /SumRT_BlackMisses = 0
 /SumRT_BlackFAs = 0
 /SumRT_BlackCRs = 0
 
-/count_GunWhite = 0
+/count_GunBlack2 = 0
 /count_GunBlack = 0
 /count_ObjectBlack = 0
-/count_ObjectWhite = 0
+/count_ObjectBlack2 = 0
 </values>
 
 **************************************************************************************************************
 EXPRESSIONS
 **************************************************************************************************************
 
-MeanRT_WhiteHits...MeanRT_BlackCRs:				calculates the mean reaction times for Hits, Misses, FAs, CRs for each ethnicity
-%_WhiteHits...%_BlackCRs:						calculates the percentages of Hits-Misses and CRs-FAs for each ethnicity
+MeanRT_Black2Hits...MeanRT_BlackCRs:				calculates the mean reaction times for Hits, Misses, FAs, CRs for each ethnicity
+%_Black2Hits...%_BlackCRs:						calculates the percentages of Hits-Misses and CRs-FAs for each ethnicity
 
 <expressions >
-/MeanRT_WhiteHits = values.SumRT_WhiteHits / values.Sum_WhiteHits
-/MeanRT_WhiteMisses = values.SumRT_WhiteMisses / values.Sum_WhiteMisses
-/MeanRT_WhiteFAs = values.SumRT_WhiteFAs / values.Sum_WhiteFAs
-/MeanRT_WhiteCRs = values.SumRT_WhiteCRs / values.Sum_WhiteCRs
+/MeanRT_Black2Hits = values.SumRT_Black2Hits / values.Sum_Black2Hits
+/MeanRT_Black2Misses = values.SumRT_Black2Misses / values.Sum_Black2Misses
+/MeanRT_Black2FAs = values.SumRT_Black2FAs / values.Sum_Black2FAs
+/MeanRT_Black2CRs = values.SumRT_Black2CRs / values.Sum_Black2CRs
 /MeanRT_BlackHits = values.SumRT_BlackHits / values.Sum_BlackHits
 /MeanRT_BlackMisses = values.SumRT_BlackMisses / values.Sum_BlackMisses
 /MeanRT_BlackFAs = values.SumRT_BlackFAs / values.Sum_BlackFAs
 /MeanRT_BlackCRs = values.SumRT_BlackCRs / values.Sum_BlackCRs
 
-/%_WhiteHits = 100* (values.Sum_WhiteHits /values.count_GunWhite)
-/%_WhiteMisses = 100 * (values.Sum_WhiteMisses /values.count_GunWhite)
-/%_WhiteFAs = 100 * (values.Sum_WhiteFAs /values.count_ObjectWhite)
-/%_WhiteCRs = 100 * (values.Sum_WhiteCRs /values.count_ObjectWhite)
+/%_Black2Hits = 100* (values.Sum_Black2Hits /values.count_GunBlack2)
+/%_Black2Misses = 100 * (values.Sum_Black2Misses /values.count_GunBlack2)
+/%_Black2FAs = 100 * (values.Sum_Black2FAs /values.count_ObjectBlack2)
+/%_Black2CRs = 100 * (values.Sum_Black2CRs /values.count_ObjectBlack2)
 /%_BlackHits = 100 * (values.Sum_BlackHits /values.count_GunBlack)
 /%_BlackMisses = 100 * (values.Sum_BlackMisses /values.count_GunBlack)
 /%_BlackFAs = 100 * (values.Sum_BlackFAs /values.count_ObjectBlack)
@@ -211,9 +217,9 @@ less detailed than the original 2002 instructions)
 
 <page intro1_A>
 ^^In this videogame, your task is to shoot any person who is holding
-a gun (the bad guys) by pressing the "E" key (E = Shoot key). 
+a gun (the bad guys) by pressing the "e" key (e = Shoot key). 
 ^^If a person is holding something other than a gun he is a good guy, and
-you should press the the "I" key (I = NO shoot key).
+you should press the the "i" key (i = NO shoot key).
 ^^
 ^^You will have less than a second to make each decision.
 ^
@@ -226,9 +232,9 @@ you should press the the "I" key (I = NO shoot key).
 
 <page intro1_B>
 ^^In this videogame, your task is to shoot any person who is holding
-a gun (the bad guys) by pressing the "I" key (I = Shoot key). 
+a gun (the bad guys) by pressing the "i" key (i = Shoot key). 
 ^^If a person is holding something other than a gun he is a good guy, and
-you should press the the "E" key (E = NO shoot key).
+you should press the the "e" key (e = NO shoot key).
 ^^
 ^^You will have less than a second to make each decision.
 ^
@@ -247,8 +253,8 @@ Practice Block Instructions
 This is a PRACTICE block. 
 ^^^^Reminder:
 ^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
-^^(1) If the person holds a GUN you need to SHOOT (E = Shoot button) 
-^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (I = No shoot button)
+^^(1) If the person holds a GUN you need to SHOOT (e = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (i = No shoot button)
 ^^
 ^^IMPORTANT: use fingers of different hands for each response key.
 </page>
@@ -257,8 +263,8 @@ This is a PRACTICE block.
 This is a PRACTICE block. 
 ^^^^Reminder:
 ^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
-^^(1) If the person holds a GUN you need to SHOOT (I = Shoot button) 
-^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (E = No shoot button)
+^^(1) If the person holds a GUN you need to SHOOT (i = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (e = No shoot button)
 ^^
 ^^IMPORTANT: use fingers of different hands for each response key.
 </page>
@@ -271,8 +277,8 @@ Experimental Block Instructions
 You are done with practice.
 ^^^^Reminder:
 ^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
-^^(1) If the person holds a GUN you need to SHOOT (E = Shoot button) 
-^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (I = No shoot button)
+^^(1) If the person holds a GUN you need to SHOOT (e = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (i = No shoot button)
 ^^
 ^^IMPORTANT: use fingers of different hands for each response key.
 </page>
@@ -281,8 +287,8 @@ You are done with practice.
 You are done with practice.
 ^^^^Reminder:
 ^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
-^^(1) If the person holds a GUN you need to SHOOT (I = Shoot button) 
-^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (E = No shoot button)
+^^(1) If the person holds a GUN you need to SHOOT (i = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (e = No shoot button)
 ^^
 ^^IMPORTANT: use fingers of different hands for each response key.
 </page>
@@ -290,11 +296,11 @@ You are done with practice.
 <page results>
 ^^Your individual results:
 ^Accuracy:^
-^~People with guns: <%(expressions.%_WhiteHits+expressions.%_BlackHits)/2%>%.
-^~Unarmed people: <%(expressions.%_WhiteCRs+expressions.%_BlackCRs)/2%>%.^^^
+^~People with guns: <%(expressions.%_Black2Hits+expressions.%_BlackHits)/2%>%.
+^~Unarmed people: <%(expressions.%_Black2CRs+expressions.%_BlackCRs)/2%>%.^^^
 ^Reaction times:^
-^~People with guns: <%(expressions.MeanRT_WhiteHits+expressions.MeanRT_BlackHits)/2%>ms.
-^~Unarmed people: <%(expressions.MeanRT_WhiteCRs+expressions.MeanRT_BlackCRs)/2%>ms.
+^~People with guns: <%(expressions.MeanRT_Black2Hits+expressions.MeanRT_BlackHits)/2%>ms.
+^~Unarmed people: <%(expressions.MeanRT_Black2CRs+expressions.MeanRT_BlackCRs)/2%>ms.
 </page>
 
 <page intro2>
@@ -314,7 +320,7 @@ PRACTICE STIMULI
 <item backgrounds_practice>
 /1 = "wu06.jpg"
 /2 = "wu09.jpg"
-/3 ="wu10.jpg"
+/3 = "wu10.jpg"
 /4 = "wu12.jpg"
 /5 = "wu13.jpg"
 /6 = "wu14.jpg"
@@ -324,7 +330,7 @@ PRACTICE STIMULI
 /10 = "wu20.jpg"
 /11 = "wu06.jpg"
 /12 = "wu09.jpg"
-/13 ="wu10.jpg"
+/13 = "wu10.jpg"
 /14 = "wu12.jpg"
 /15 = "wu13.jpg"
 /16 = "wu14.jpg"
@@ -403,7 +409,7 @@ EXPERIMENTAL STIMULI
 /20 = "bg20.jpg"
 </item>
 
-<item GunWhites>
+<item GunBlack2s>
 /1 = "bg01d.jpg"
 /2 = "bg02d.jpg"
 /3 = "bg03d.jpg"
@@ -449,7 +455,7 @@ EXPERIMENTAL STIMULI
 /20 = "bg20d.jpg"
 </item>
 
-<item ObjectWhites>
+<item ObjectBlack2s>
 /1 = "bg01c.jpg"
 /2 = "bg02c.jpg"
 /3 = "bg03c.jpg"
@@ -507,8 +513,8 @@ Main Stimuli
 /erase = false
 </picture>
 
-<picture GunWhite>
-/ items = GunWhites
+<picture GunBlack2>
+/ items = GunBlack2s
 /select = values.itemnumber
 / position = (50%, 50%)
 / size = (80%, 80%)
@@ -521,8 +527,8 @@ Main Stimuli
 / size = (80%, 80%)
 </picture>
 
-<picture ObjectWhite>
-/ items = ObjectWhites
+<picture ObjectBlack2>
+/ items = ObjectBlack2s
 /select = values.itemnumber
 / position = (50%, 50%)
 / size = (80%, 80%)
@@ -716,11 +722,11 @@ experimental condition
 
 / branch = [if (values.count_background  < values.repetition) trial.background]
 / branch = [if (values.count_background  >= values.repetition && values.condition == 1)
-					{reset(list.selectbackground); trial.GunWhite}]
+					{reset(list.selectbackground); trial.GunBlack2}]
 / branch = [if (values.count_background  >= values.repetition && values.condition == 2)
 					{reset(list.selectbackground); trial.GunBlack}]
 / branch = [if (values.count_background  >= values.repetition && values.condition == 3)
-					{reset(list.selectbackground); trial.ObjectWhite}]
+					{reset(list.selectbackground); trial.ObjectBlack2}]
 / branch = [if (values.count_background  >= values.repetition && values.condition == 4)
 					{reset(list.selectbackground); trial.ObjectBlack}]
 / recorddata = false
@@ -734,25 +740,25 @@ Main Trials: 4 experimental conditions
 *calls feedback
 **************************************************************
 
-<trial GunWhite>
-/ ontrialbegin = [values.count_GunWhite += 1]
-/ stimulusframes = [1 = GunWhite]
+<trial GunBlack2>
+/ ontrialbegin = [values.count_GunBlack2 += 1]
+/ stimulusframes = [1 = GunBlack2]
 
-/ isvalidresponse = [trial.GunWhite.response == values.shootkey ||
-							trial.GunWhite.response == values.noshootkey]
-/ iscorrectresponse = [trial.GunWhite.response == values.shootkey]
+/ isvalidresponse = [trial.GunBlack2.response == values.shootkey ||
+							trial.GunBlack2.response == values.noshootkey]
+/ iscorrectresponse = [trial.GunBlack2.response == values.shootkey]
 / timeout = (values.timeout)
-/ ontrialend = [if (trial.GunWhite.response == values.shootkey) 
+/ ontrialend = [if (trial.GunBlack2.response == values.shootkey) 
 					{values.Hit = 1; values.total += values.HitReward;
 					values.result = "Hit";
-					values.Sum_WhiteHits += 1;
-					values.SumRT_WhiteHits += trial.GunWhite.latency}]
-/ ontrialend = [if (trial.GunWhite.response == values.noshootkey) 
+					values.Sum_Black2Hits += 1;
+					values.SumRT_Black2Hits += trial.GunBlack2.latency}]
+/ ontrialend = [if (trial.GunBlack2.response == values.noshootkey) 
 					{values.Miss = 1; values.total -= values.MissPunish;
 					values.result = "Miss";
-					values.Sum_WhiteMisses += 1;
-					values.SumRT_WhiteMisses += trial.GunWhite.latency }]
-/ ontrialend = [if (trial.GunWhite.response == 0) 
+					values.Sum_Black2Misses += 1;
+					values.SumRT_Black2Misses += trial.GunBlack2.latency }]
+/ ontrialend = [if (trial.GunBlack2.response == 0) 
 					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
 / branch = [trial.feedback]
 </trial>
@@ -780,25 +786,25 @@ Main Trials: 4 experimental conditions
 / branch = [trial.feedback]
 </trial>
 
-<trial ObjectWhite>
-/ ontrialbegin = [values.count_ObjectWhite += 1]
-/ stimulusframes = [1 = ObjectWhite]
-/ isvalidresponse = [trial.ObjectWhite.response == values.shootkey ||
-							trial.ObjectWhite.response == values.noshootkey]
+<trial ObjectBlack2>
+/ ontrialbegin = [values.count_ObjectBlack2 += 1]
+/ stimulusframes = [1 = ObjectBlack2]
+/ isvalidresponse = [trial.ObjectBlack2.response == values.shootkey ||
+							trial.ObjectBlack2.response == values.noshootkey]
 
-/ iscorrectresponse = [trial.ObjectWhite.response == values.noshootkey]
+/ iscorrectresponse = [trial.ObjectBlack2.response == values.noshootkey]
 / timeout = (values.timeout)
-/ ontrialend = [if (trial.ObjectWhite.response == values.shootkey ) 
+/ ontrialend = [if (trial.ObjectBlack2.response == values.shootkey ) 
 					{values.FA = 1; values.total -= values.FAPunish;
 					values.result = "FA";
-					values.Sum_WhiteFAs += 1;
-					values.SumRT_WhiteFAs += trial.ObjectWhite.latency}]
-/ ontrialend = [if (trial.ObjectWhite.response == values.noshootkey ) 
+					values.Sum_Black2FAs += 1;
+					values.SumRT_Black2FAs += trial.ObjectBlack2.latency}]
+/ ontrialend = [if (trial.ObjectBlack2.response == values.noshootkey ) 
 					{values.CR = 1; values.total += values.CRReward;
 					values.result = "CR";
-					values.Sum_WhiteCRs += 1;
-					values.SumRT_WhiteCRs += trial.ObjectWhite.latency }]
-/ ontrialend = [if (trial.ObjectWhite.response == 0) 
+					values.Sum_Black2CRs += 1;
+					values.SumRT_Black2CRs += trial.ObjectBlack2.latency }]
+/ ontrialend = [if (trial.ObjectBlack2.response == 0) 
 					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
 / branch = [trial.feedback]
 </trial>
