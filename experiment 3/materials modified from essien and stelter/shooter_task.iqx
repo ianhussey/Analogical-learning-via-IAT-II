@@ -1,0 +1,985 @@
+﻿**************************************************************************************************************
+Shooter task
+*************************************************************************************************************
+
+Script Authors: 
+Katja Borchert, Ph.D. (katjab@millisecond.com) for Millisecond Software LLC
+Ian Hussey (ian.hussey@ugent.be), Ghent University, Belgium
+
+**************************************************************************************************************
+SCRIPT DESCRIPTION/BACKGROUND INFO
+**************************************************************************************************************
+
+This script provides the Police Officer Dilemma Task (PODT)  as described in (Experiment1):
+
+Correll, J., Park, B., Judd, C.M., & Wittenbrink, B. (2002). The Police Officer's Dilemma:
+Using Ethnicity to Disambiguate Potentially Threating Individuals. Journal of Personality 
+and Social Psychology, 83, 1314-1329.
+
+All images used in this script are the originals. Millisecond Software thanks Dr. Correll et al for
+providing generous assistance!
+
+Script Specifics:
+(1) Design: 2 (ethnicity: black vs. white) x 2 (gun vs. no gun) = 4 experimental conditions, 
+all tested within participants (see Correll et al, 2002)
+(2) Counterbalanced for shootkey vs. no shootkey (Default: A and L keys, change
+possible under values)
+(3) 1 Experimental Block that runs 80 trials:  20 trials in each of the 4 conditions,
+ conditions are randomly sampled without replacement (see list.condition for details)
+There are 20 slides for each condition, each slide is sampled once (see Correll et al, 2002)
+(see list.itemnumber1 and others for details)
+(4) Trials are set up as trial-combos:
+Fixation -> Background (variable number) -> Experimental Condition -> Feedback
+(5) Number of background images in background slideshow: randomly 
+(with replacement) determined, between 1-4 (see list.repetition) (-> Correll et al, 2002)
+(6)  Duration of backgrounds btw 500-1000ms (increments of 100ms),
+ randomly determined with replacement (see list.duration)
+(7) Duration of Fixation cross in this script: 500ms (change under values)
+(8) Duration of Feedback: 3000ms (change under values)
+(9) Rewards/Punishments: see  Correll et al. (2002), Experiment 1
+(changes possible under values)
+(10) Response Timeout: default 850ms see  Correll et al. (2002), (change under values)
+(11) Instructions easily adaptable under Instructions. Current Instructions modelled after
+the latest instructions used by Correll et al (these later instructions are 
+less detailed than the original 2002 instructions)
+(12) Script offers a practice block of 20 trial combos. Practice material, most trials, and blocks are
+separately coded from Experimental ones. 
+
+**************************************************************************************************************
+DEFAULT SCREEN SETTING
+**************************************************************************************************************
+
+<defaults >
+/ minimumversion = "4.0.0.0"
+</defaults>
+
+**************************************************************************************************************
+VALUES
+**************************************************************************************************************
+
+***************************
+editable (under values, see below)
+***************************
+
+HitReward....FAPunish: 					amounts earned or lost depending on Hits, Misses, Correct Rejections (CR), False Alarms (FA)
+fixationduration:						the duration of the fixation cross (default: 500, original)
+key1/key2:								the scancodes of the shoot and noshoot keys (keys are counterbalanced), default: "E" and "I"
+timeout:								timeout of main experimental trials, default = 850ms
+feedbackduration:						the duration of the feedback, default = 3000
+
+changes can be made below under VALUES
+
+<values>
+/HitReward = 10
+/MissPunish = 40
+/CRReward = 5
+/FAPunish = 20
+/NoresponsePunish = 10
+/fixationduration = 500
+/key1 = 18
+/key2 = 23
+/timeout = 850
+/feedbackduration = 2000
+</values>
+
+*****************************
+automatically updated at runtime
+*****************************
+group:									counterbalanced shootkey groups (1/2)
+shootkey/noshootkey:					counterbalancing of key1 and key2 (final values assigned during runtime)
+selectbackground:						determines which background picture is selected
+condition:								1 = GunWhite; 2 = GunBlack; 3 = ObjectWhite; 4 = ObjectBlack
+itemnumber:								determines the itemnumber of the target image
+repetition:								determines how many background images areto be  presented
+Hit....CR:								codes whether the response was a HIT, a MISS, a FA, or a CR
+result:									either "Hit", "Miss", "CR", "FA" or "Noresponse"
+total:									keeps a running tab of the total money earned (or lost)
+backgroundduration:						determines how long each background slide is presented
+count_background:						counts how many background slides have been presented
+selectfeedback:							helper variable to display correct feedback
+SumWhiteHits....SumBlackCRs:			keeps a running total of Hits, Misses, FAs, CRs for each ethnicity
+SumRTWhiteHits...SumRTBlackCRs:			keeps a running total of the reaction times for Hits, Misses, FAs, CRs for each ethnicity
+countGunWhite...countObjectBlack:		counts the trials in each condition
+
+<values>
+/group = 0
+/shootkey = values.key1
+/noshootkey = values.key2
+/selectbackground = 1
+/condition = 0
+/itemnumber = 0
+/repetition = 0
+/Hit = 0
+/Miss = 0
+/FA = 0
+/CR = 0
+/result = ""
+/total = 0
+/backgroundduration = 0
+/count_background = 0
+/selectfeedback = 0
+
+/Sum_WhiteHits = 0
+/Sum_WhiteMisses = 0
+/Sum_WhiteFAs = 0
+/Sum_WhiteCRs = 0
+/Sum_BlackHits = 0
+/Sum_BlackMisses = 0
+/Sum_BlackFAs = 0
+/Sum_BlackCRs = 0
+
+/SumRT_WhiteHits = 0
+/SumRT_WhiteMisses = 0
+/SumRT_WhiteFAs = 0
+/SumRT_WhiteCRs = 0
+/SumRT_BlackHits = 0
+/SumRT_BlackMisses = 0
+/SumRT_BlackFAs = 0
+/SumRT_BlackCRs = 0
+
+/count_GunWhite = 0
+/count_GunBlack = 0
+/count_ObjectBlack = 0
+/count_ObjectWhite = 0
+</values>
+
+**************************************************************************************************************
+EXPRESSIONS
+**************************************************************************************************************
+
+MeanRT_WhiteHits...MeanRT_BlackCRs:				calculates the mean reaction times for Hits, Misses, FAs, CRs for each ethnicity
+%_WhiteHits...%_BlackCRs:						calculates the percentages of Hits-Misses and CRs-FAs for each ethnicity
+
+<expressions >
+/MeanRT_WhiteHits = values.SumRT_WhiteHits / values.Sum_WhiteHits
+/MeanRT_WhiteMisses = values.SumRT_WhiteMisses / values.Sum_WhiteMisses
+/MeanRT_WhiteFAs = values.SumRT_WhiteFAs / values.Sum_WhiteFAs
+/MeanRT_WhiteCRs = values.SumRT_WhiteCRs / values.Sum_WhiteCRs
+/MeanRT_BlackHits = values.SumRT_BlackHits / values.Sum_BlackHits
+/MeanRT_BlackMisses = values.SumRT_BlackMisses / values.Sum_BlackMisses
+/MeanRT_BlackFAs = values.SumRT_BlackFAs / values.Sum_BlackFAs
+/MeanRT_BlackCRs = values.SumRT_BlackCRs / values.Sum_BlackCRs
+
+/%_WhiteHits = 100* (values.Sum_WhiteHits /values.count_GunWhite)
+/%_WhiteMisses = 100 * (values.Sum_WhiteMisses /values.count_GunWhite)
+/%_WhiteFAs = 100 * (values.Sum_WhiteFAs /values.count_ObjectWhite)
+/%_WhiteCRs = 100 * (values.Sum_WhiteCRs /values.count_ObjectWhite)
+/%_BlackHits = 100 * (values.Sum_BlackHits /values.count_GunBlack)
+/%_BlackMisses = 100 * (values.Sum_BlackMisses /values.count_GunBlack)
+/%_BlackFAs = 100 * (values.Sum_BlackFAs /values.count_ObjectBlack)
+/%_BlackCRs = 100 * (values.Sum_BlackCRs /values.count_ObjectBlack)
+</expressions>
+
+**************************************************************************************************************
+DATA
+**************************************************************************************************************
+
+******************
+raw data
+******************
+
+<data >
+/file = "shooter_task.iqdat"
+/ separatefiles = true
+/ columns = [date, time, subject, values.group, trialcode, values.itemnumber, values.selectbackground,
+values.repetition, values.backgroundduration, values.count_background,
+response, correct, values.result, latency, values.total]
+</data>
+
+**************************************************************************************************************
+INSTRUCTIONS
+**************************************************************************************************************
+
+<instruct >
+/ fontstyle = ("Arial", 2.5%, false, false, false, false, 5, 0)
+/ lastlabel = "<Space Bar> to START"
+/ nextlabel = "<Space Bar> to Continue"
+/ nextkey = (57)
+/ prevlabel = "<Enter> to go Back"
+/ prevkey = (28)
+/ windowsize = (90%, 80%)
+</instruct>
+
+***********************************************
+General Intro
+***********************************************
+
+Note: 
+Current Instructions modelled after
+the latest instructions used by Correll et al (these later instructions are 
+less detailed than the original 2002 instructions)
+
+<page intro1_A>
+^^In this videogame, your task is to shoot any person who is holding
+a gun (the bad guys) by pressing the "E" key (E = Shoot key). 
+^^If a person is holding something other than a gun he is a good guy, and
+you should press the the "I" key (I = NO shoot key).
+^^
+^^You will have less than a second to make each decision.
+^
+^^You will receive points based on your performance.
+^
+^^The first round of the game is for practice.
+^
+^^If you are ready to begin the practice round, press the SPACE BAR.
+</page>
+
+<page intro1_B>
+^^In this videogame, your task is to shoot any person who is holding
+a gun (the bad guys) by pressing the "I" key (I = Shoot key). 
+^^If a person is holding something other than a gun he is a good guy, and
+you should press the the "E" key (E = NO shoot key).
+^^
+^^You will have less than a second to make each decision.
+^
+^^You will receive points based on your performance.
+^
+^^The first round of the game is for practice.
+^
+^^If you are ready to begin the practice round, press the SPACE BAR.
+</page>
+
+***********************************************
+Practice Block Instructions
+***********************************************
+
+<page practiceA>
+This is a PRACTICE block. 
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (E = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (I = No shoot button)
+^^
+^^IMPORTANT: use fingers of different hands for each response key.
+</page>
+
+<page practiceB>
+This is a PRACTICE block. 
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (I = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (E = No shoot button)
+^^
+^^IMPORTANT: use fingers of different hands for each response key.
+</page>
+
+***********************************************
+Experimental Block Instructions
+***********************************************
+
+<page taskA>
+You are done with practice.
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (E = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (I = No shoot button)
+^^
+^^IMPORTANT: use fingers of different hands for each response key.
+</page>
+
+<page taskB>
+You are done with practice.
+^^^^Reminder:
+^^Your task is to decide as quickly and accurately as possible to shoot or not to shoot. 
+^^(1) If the person holds a GUN you need to SHOOT (I = Shoot button) 
+^^(2) If the person holds a HARMLESS OBJECT, do NOT shoot (E = No shoot button)
+^^
+^^IMPORTANT: use fingers of different hands for each response key.
+</page>
+
+<page results>
+^^Your individual results:
+^Accuracy:^
+^~People with guns: <%(expressions.%_WhiteHits+expressions.%_BlackHits)/2%>%.
+^~Unarmed people: <%(expressions.%_WhiteCRs+expressions.%_BlackCRs)/2%>%.^^^
+^Reaction times:^
+^~People with guns: <%(expressions.MeanRT_WhiteHits+expressions.MeanRT_BlackHits)/2%>ms.
+^~Unarmed people: <%(expressions.MeanRT_WhiteCRs+expressions.MeanRT_BlackCRs)/2%>ms.
+</page>
+
+<page intro2>
+^Your responses will affect your score.
+^^^If you SHOOT when there is a GUN:			+<%values.HitReward%> points
+^^If you do NOT shoot when there is a GUN:		-<%values.MissPunish%> points
+^^If you do NOT shoot when there is NO gun:		+<%values.CRReward%> points
+^^If you SHOOT when there is NO gun:			-<%values.FAPunish%> points
+^^If you don't react fast enough:				-<%values.NoresponsePunish%> points
+^^^You'll be given the opportunity to practice the task.  
+</page>
+
+**************************************************************************************************************
+PRACTICE STIMULI
+**************************************************************************************************************
+
+<item backgrounds_practice>
+/1 = "wu06.jpg"
+/2 = "wu09.jpg"
+/3 ="wu10.jpg"
+/4 = "wu12.jpg"
+/5 = "wu13.jpg"
+/6 = "wu14.jpg"
+/7 = "wu16.jpg"
+/8 = "wu17.jpg"
+/9 = "wu18.jpg"
+/10 = "wu20.jpg"
+/11 = "wu06.jpg"
+/12 = "wu09.jpg"
+/13 ="wu10.jpg"
+/14 = "wu12.jpg"
+/15 = "wu13.jpg"
+/16 = "wu14.jpg"
+/17 = "wu16.jpg"
+/18 = "wu17.jpg"
+/19 = "wu18.jpg"
+/20 = "wu20.jpg"
+</item>
+
+<item objects_practice>
+/1 = "wu06y.jpg"
+/2 = "wu09y.jpg"
+/3 = "wu10y.jpg"
+/4 = "wu12y.jpg"
+/5 = "wu13y.jpg"
+/6 = "wu14y.jpg"
+/7 = "wu16y.jpg"
+/8 = "wu17y.jpg"
+/9 = "wu18y.jpg"
+/10 = "wu20y.jpg"
+/11 = "wu06y.jpg"
+/12 = "wu09y.jpg"
+/13 = "wu10y.jpg"
+/14 = "wu12y.jpg"
+/15 = "wu13y.jpg"
+/16 = "wu14y.jpg"
+/17 = "wu16y.jpg"
+/18 = "wu17y.jpg"
+/19 = "wu18y.jpg"
+/20 = "wu20y.jpg"
+</item>
+
+**********************************************
+Practice Stimuli
+**********************************************
+
+<picture background_practice>
+/ items = backgrounds_practice
+/ select =  values.selectbackground
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+/ erase = false
+</picture>
+
+<picture object>
+/ items = objects_practice
+/ select = values.itemnumber
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+</picture>
+
+**************************************************************************************************************
+EXPERIMENTAL STIMULI
+**************************************************************************************************************
+
+<item backgrounds>
+/1 = "bg01.jpg"
+/2 = "bg02.jpg"
+/3 = "bg03.jpg"
+/4 = "bg04.jpg"
+/5 = "bg05.jpg"
+/6 = "bg06.jpg"
+/7 = "bg07.jpg"
+/8 = "bg08.jpg"
+/9 = "bg09.jpg"
+/10 ="bg10.jpg"
+/11 = "bg11.jpg"
+/12 = "bg12.jpg"
+/13 = "bg13.jpg"
+/14 = "bg14.jpg"
+/15 = "bg15.jpg"
+/16 = "bg16.jpg"
+/17 = "bg17.jpg"
+/18 = "bg18.jpg"
+/19 = "bg19.jpg"
+/20 = "bg20.jpg"
+</item>
+
+<item GunWhites>
+/1 = "bg01d.jpg"
+/2 = "bg02d.jpg"
+/3 = "bg03d.jpg"
+/4 = "bg04d.jpg"
+/5 = "bg05d.jpg"
+/6 = "bg06d.jpg"
+/7 = "bg07d.jpg"
+/8 = "bg08d.jpg"
+/9 = "bg09d.jpg"
+/10 ="bg10d.jpg"
+/11 = "bg11d.jpg"
+/12 = "bg12d.jpg"
+/13 = "bg13d.jpg"
+/14 = "bg14d.jpg"
+/15 = "bg15d.jpg"
+/16 = "bg16d.jpg"
+/17 = "bg17d.jpg"
+/18 = "bg18d.jpg"
+/19 = "bg19d.jpg"
+/20 = "bg20d.jpg"
+</item>
+
+<item GunBlacks>
+/1 = "bg01d.jpg"
+/2 = "bg02d.jpg"
+/3 = "bg03d.jpg"
+/4 = "bg04d.jpg"
+/5 = "bg05d.jpg"
+/6 = "bg06d.jpg"
+/7 = "bg07d.jpg"
+/8 = "bg08d.jpg"
+/9 = "bg09d.jpg"
+/10 ="bg10d.jpg"
+/11 = "bg11d.jpg"
+/12 = "bg12d.jpg"
+/13 = "bg13d.jpg"
+/14 = "bg14d.jpg"
+/15 = "bg15d.jpg"
+/16 = "bg16d.jpg"
+/17 = "bg17d.jpg"
+/18 = "bg18d.jpg"
+/19 = "bg19d.jpg"
+/20 = "bg20d.jpg"
+</item>
+
+<item ObjectWhites>
+/1 = "bg01c.jpg"
+/2 = "bg02c.jpg"
+/3 = "bg03c.jpg"
+/4 = "bg04c.jpg"
+/5 = "bg05c.jpg"
+/6 = "bg06c.jpg"
+/7 = "bg07c.jpg"
+/8 = "bg08c.jpg"
+/9 = "bg09c.jpg"
+/10 ="bg10c.jpg"
+/11 = "bg11c.jpg"
+/12 = "bg12c.jpg"
+/13 = "bg13c.jpg"
+/14 = "bg14c.jpg"
+/15 = "bg15c.jpg"
+/16 = "bg16c.jpg"
+/17 = "bg17c.jpg"
+/18 = "bg18c.jpg"
+/19 = "bg19c.jpg"
+/20 = "bg20c.jpg"
+</item>
+
+<item ObjectBlacks>
+/1 = "bg01c.jpg"
+/2 = "bg02c.jpg"
+/3 = "bg03c.jpg"
+/4 = "bg04c.jpg"
+/5 = "bg05c.jpg"
+/6 = "bg06c.jpg"
+/7 = "bg07c.jpg"
+/8 = "bg08c.jpg"
+/9 = "bg09c.jpg"
+/10 ="bg10c.jpg"
+/11 = "bg11c.jpg"
+/12 = "bg12c.jpg"
+/13 = "bg13c.jpg"
+/14 = "bg14c.jpg"
+/15 = "bg15c.jpg"
+/16 = "bg16c.jpg"
+/17 = "bg17c.jpg"
+/18 = "bg18c.jpg"
+/19 = "bg19c.jpg"
+/20 = "bg20c.jpg"
+</item>
+
+**********************************************
+Main Stimuli
+**********************************************
+
+<picture background>
+/ items = backgrounds
+/select = values.selectbackground
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+/erase = false
+</picture>
+
+<picture GunWhite>
+/ items = GunWhites
+/select = values.itemnumber
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+</picture>
+
+<picture GunBlack>
+/ items = GunBlacks
+/select = values.itemnumber
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+</picture>
+
+<picture ObjectWhite>
+/ items = ObjectWhites
+/select = values.itemnumber
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+</picture>
+
+<picture ObjectBlack>
+/ items = ObjectBlacks
+/select = values.itemnumber
+/ position = (50%, 50%)
+/ size = (80%, 80%)
+</picture>
+
+**********************************************
+Fixation Cross
+**********************************************
+
+<text fixation>
+/ items = ("+")
+/ position = (50%, 50%)
+/ fontstyle = ("Arial", 5%, false, false, false, false, 5, 0)
+/ txcolor = (black)
+</text>
+
+**********************************************
+Feedback Stimuli
+**********************************************
+
+<text totalreport>
+/ items = ("Total: <%values.total%> points")
+/ fontstyle = ("Arial", 3%, false, false, false, false, 5, 0)
+/ position = (50%, 50%)
+/ txcolor = (black)
+</text>
+
+<item feedback>
+/1 = "Good Shot!"
+/2 = "Wise Choice!"
+/3 = "You're Dead!!!"
+/4 = "You shot a good guy!"
+/5 = "Too Slow"
+</item>
+
+<text feedback>
+/ items = feedback
+/ fontstyle = ("Arial", 5%, false, false, false, false, 5, 0)
+/ position = (50%, 20%)
+/ txcolor = (black)
+/ select = values.selectfeedback
+</text>
+
+<item result>
+/1 = "You win <%values.HitReward%> points"
+/2 = "You win <%values.CRReward%> points"
+/3 = "You lose <%values.MissPunish%> points"
+/4 = "You lose <%values.FAPunish%> points"
+/5 = " You lose <%values.NoresponsePunish%> points"
+</item>
+
+<text result>
+/ items = result
+/ fontstyle = ("Arial", 5%, false, false, false, false, 5, 0)
+/ position = (50%, 30%)
+/ txcolor = (black)
+/ select = values.selectfeedback
+</text>
+
+**************************************************************************************************************
+LISTS
+**************************************************************************************************************
+
+*********************************
+list.condition selects next experimental condition randomly without replacement
+=> exactly 20 trials per experimental condition 
+*********************************
+
+<list condition>
+/ items = (
+1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4,
+1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)
+/ replace = false
+</list>
+
+***********************************
+the following four lists select the item number for each condition
+without replacement => all items will be used
+***********************************
+
+<list itemnumber1>
+/items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+/ replace = false
+</list>
+
+<list itemnumber2>
+/items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+/ replace = false
+</list>
+
+<list itemnumber3>
+/items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+/ replace = false
+</list>
+
+<list itemnumber4>
+/items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+/ replace = false
+</list>
+
+***********************************
+list.repetition selects randomly how many background pictures are presented
+***********************************
+
+<list repetition>
+/ items = (1, 2, 3, 4)
+/ replace = true
+</list>
+
+***********************************
+list.duration selects randomly the duration of a background picture
+***********************************
+
+<list duration>
+/ items = (500, 600, 700, 800, 900, 1000)
+/replace = true
+</list>
+
+***********************************
+the list selects the current 
+background itemnumbers (unless it's the last background presented)
+
+Backgrounds are selected randomly with replacement by default
+***********************************
+
+<list selectbackground>
+/items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
+/replace = true
+</list>
+
+**************************************************************************************************************
+EXPERIMENTAL TRIALS
+**************************************************************************************************************
+
+Trial Combo:
+trial.fixation -> trial.background (loop) -> trial.maintrials (4 of them) -> trial.feedback
+
+***********************************************************
+trial.fixation
+* presents fixation mark in the middle of the scree
+*resets important variables
+* determines randomly which experimental condition to present
+* determines the itemnumber of the target image depending on condition
+*determines the number of repititions of the background picture loop
+*calls the first of trial.background
+***********************************************************
+
+<trial fixation>
+/ ontrialbegin = [values.count_background = 0; values.Hit = 0; values.Miss = 0; values.FA = 0; values.CR = 0]
+/ ontrialbegin = [values.condition = list.condition.nextvalue]
+/ ontrialbegin = [if (values.condition == 1) values.itemnumber = list.itemnumber1.nextvalue]
+/ ontrialbegin = [if (values.condition == 2) values.itemnumber = list.itemnumber2.nextvalue]
+/ ontrialbegin = [if (values.condition == 3) values.itemnumber = list.itemnumber3.nextvalue]
+/ ontrialbegin = [if (values.condition == 4) values.itemnumber = list.itemnumber4.nextvalue]
+/ ontrialbegin = [values.repetition = list.repetition.nextvalue]
+
+/ stimulusframes = [1 = fixation]
+/ trialduration = values.fixationduration
+/ validresponse = (noresponse)
+/ branch = [trial.background]
+/ recorddata = false
+</trial>
+
+***********************************************************
+trial.background
+* presents a background picture
+=> if it is not the final background: it selects any background but the one
+selected as the target background (no repeating backgrounds)
+=> if it is the final background it selects the target background
+* either calls itself for another round or calls the target
+experimental condition
+*resets list.selectbackground at the end of the loop
+***********************************************************
+
+<trial background>
+/ ontrialbegin = [values.backgroundduration = list.duration.nextvalue]
+/ ontrialbegin = [values.count_background += 1]
+/ ontrialbegin = [if (values.count_background  < values.repetition) 
+							{ values.selectbackground = list.selectbackground.nextvalue}
+					else
+							values.selectbackground = values.itemnumber]
+/ stimulusframes = [1 = background]
+/timeout = (values.backgroundduration)
+
+/ branch = [if (values.count_background  < values.repetition) trial.background]
+/ branch = [if (values.count_background  >= values.repetition && values.condition == 1)
+					{reset(list.selectbackground); trial.GunWhite}]
+/ branch = [if (values.count_background  >= values.repetition && values.condition == 2)
+					{reset(list.selectbackground); trial.GunBlack}]
+/ branch = [if (values.count_background  >= values.repetition && values.condition == 3)
+					{reset(list.selectbackground); trial.ObjectWhite}]
+/ branch = [if (values.count_background  >= values.repetition && values.condition == 4)
+					{reset(list.selectbackground); trial.ObjectBlack}]
+/ recorddata = false
+</trial>
+
+***************************************************************
+Main Trials: 4 experimental conditions
+*show target picture
+*calculate total based on Hit (+10), Miss (-40), FA (-20), CR (+5)
+*times out after 850ms (default) if no response made (-10)
+*calls feedback
+**************************************************************
+
+<trial GunWhite>
+/ ontrialbegin = [values.count_GunWhite += 1]
+/ stimulusframes = [1 = GunWhite]
+
+/ isvalidresponse = [trial.GunWhite.response == values.shootkey ||
+							trial.GunWhite.response == values.noshootkey]
+/ iscorrectresponse = [trial.GunWhite.response == values.shootkey]
+/ timeout = (values.timeout)
+/ ontrialend = [if (trial.GunWhite.response == values.shootkey) 
+					{values.Hit = 1; values.total += values.HitReward;
+					values.result = "Hit";
+					values.Sum_WhiteHits += 1;
+					values.SumRT_WhiteHits += trial.GunWhite.latency}]
+/ ontrialend = [if (trial.GunWhite.response == values.noshootkey) 
+					{values.Miss = 1; values.total -= values.MissPunish;
+					values.result = "Miss";
+					values.Sum_WhiteMisses += 1;
+					values.SumRT_WhiteMisses += trial.GunWhite.latency }]
+/ ontrialend = [if (trial.GunWhite.response == 0) 
+					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
+/ branch = [trial.feedback]
+</trial>
+
+<trial GunBlack>
+/ ontrialbegin = [values.count_GunBlack += 1]
+/ stimulusframes = [1 = GunBlack]
+/ isvalidresponse = [trial.GunBlack.response == values.shootkey || 
+							trial.GunBlack.response == values.noshootkey]
+
+/ iscorrectresponse = [trial.GunBlack.response == values.shootkey]
+/ timeout = (values.timeout)
+/ ontrialend = [if (trial.GunBlack.response == values.shootkey ) 
+					{values.Hit = 1; values.total += values.HitReward;
+					values.result = "Hit";
+					values.Sum_BlackHits += 1;
+					values.SumRT_BlackHits += trial.GunBlack.latency}]
+/ ontrialend = [if (trial.GunBlack.response == values.noshootkey ) 
+					{values.Miss = 1; values.total -= values.MissPunish;
+					values.result = "Miss";
+					values.Sum_BlackMisses += 1;
+					values.SumRT_BlackMisses += trial.GunBlack.latency }]
+/ ontrialend = [if (trial.GunBlack.response == 0) 
+					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
+/ branch = [trial.feedback]
+</trial>
+
+<trial ObjectWhite>
+/ ontrialbegin = [values.count_ObjectWhite += 1]
+/ stimulusframes = [1 = ObjectWhite]
+/ isvalidresponse = [trial.ObjectWhite.response == values.shootkey ||
+							trial.ObjectWhite.response == values.noshootkey]
+
+/ iscorrectresponse = [trial.ObjectWhite.response == values.noshootkey]
+/ timeout = (values.timeout)
+/ ontrialend = [if (trial.ObjectWhite.response == values.shootkey ) 
+					{values.FA = 1; values.total -= values.FAPunish;
+					values.result = "FA";
+					values.Sum_WhiteFAs += 1;
+					values.SumRT_WhiteFAs += trial.ObjectWhite.latency}]
+/ ontrialend = [if (trial.ObjectWhite.response == values.noshootkey ) 
+					{values.CR = 1; values.total += values.CRReward;
+					values.result = "CR";
+					values.Sum_WhiteCRs += 1;
+					values.SumRT_WhiteCRs += trial.ObjectWhite.latency }]
+/ ontrialend = [if (trial.ObjectWhite.response == 0) 
+					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
+/ branch = [trial.feedback]
+</trial>
+
+<trial ObjectBlack>
+/ ontrialbegin = [values.count_ObjectBlack += 1]
+/ stimulusframes = [1 = ObjectBlack]
+/ isvalidresponse = [trial.ObjectBlack.response == values.shootkey || 
+							trial.ObjectBlack.response == values.noshootkey]
+
+/ iscorrectresponse = [trial.ObjectBlack.response == values.noshootkey]
+/ timeout = (values.timeout)
+/ ontrialend = [if (trial.ObjectBlack.response == values.shootkey ) 
+					{values.FA = 1; values.total -= values.FAPunish;
+					values.result = "FA";
+					values.Sum_BlackFAs += 1;
+					values.SumRT_BlackFAs += trial.ObjectBlack.latency}]
+/ ontrialend = [if (trial.ObjectBlack.response == values.noshootkey ) 
+					{values.CR = 1; values.total += values.CRReward;
+					values.result = "CR";
+					values.Sum_BlackCRs += 1;
+					values.SumRT_BlackCRs += trial.ObjectBlack.latency }]
+/ ontrialend = [if (trial.ObjectBlack.response == 0) 
+					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
+/ branch = [trial.feedback]
+</trial>
+
+*****************************************
+feedback trial:
+*presents accuracy feedback 
+*explains how much was won/lost
+*displays the total
+****************************************
+
+<trial feedback>
+/ ontrialbegin = [if (values.Hit == 1) {text.feedback.textcolor = green; values.selectfeedback = 1}]
+/ ontrialbegin = [if (values.CR == 1) {text.feedback.textcolor = green;values.selectfeedback = 2}]
+/ ontrialbegin = [if (values.Miss == 1) {text.feedback.textcolor = red; values.selectfeedback = 3}]
+/ ontrialbegin = [if (values.FA == 1) {text.feedback.textcolor = red; values.selectfeedback = 4}]
+/ ontrialbegin = [if (values.Miss != 1 && values.Hit != 1 && values.CR != 1 && values.FA !=1)
+						{text.feedback.textcolor = blue; values.selectfeedback = 5}]
+
+/ stimulusframes = [1 = feedback, result, totalreport]
+/ recorddata = false
+/ timeout = (values.feedbackduration)
+</trial>
+
+**************************************************************************************************************
+PRACTICE  TRIALS
+**************************************************************************************************************
+
+Note:
+*calls the 20 practice backgrounds in sequence
+
+<trial fixation_practice>
+/ ontrialbegin = [values.count_background = 0; values.Hit = 0; values.Miss = 0; values.FA = 0; values.CR = 0]
+/ ontrialbegin = [values.itemnumber += 1]
+/ ontrialbegin = [values.repetition = list.repetition.nextvalue]
+/ stimulusframes = [1 = fixation]
+/ trialduration = values.fixationduration
+/ validresponse = (noresponse)
+/ branch = [trial.background_practice]
+/ recorddata = false
+</trial>
+
+<trial background_practice>
+/ ontrialbegin = [values.backgroundduration = list.duration.nextvalue]
+/ ontrialbegin = [values.count_background += 1]
+/ ontrialbegin = [if (values.count_background  < values.repetition) 
+							{
+							values.selectbackground = list.selectbackground.nextvalue}
+					else
+							values.selectbackground = values.itemnumber]
+/ stimulusframes = [1 = background_practice]
+/timeout = (values.backgroundduration)
+/ branch = [if (values.count_background  < values.repetition) trial.background_practice else trial.practiceobject]
+</trial>
+
+<trial practiceobject>
+/ontrialbegin = [reset(list.selectbackground)]
+/ stimulusframes = [1 = object]
+
+/ isvalidresponse = [trial.practiceobject.response == values.shootkey ||
+							trial.practiceobject.response == values.noshootkey]
+/ timeout = (values.timeout)
+/ iscorrectresponse = [
+									((values.itemnumber == 4 || values.itemnumber == 7  || values.itemnumber == 8 ||
+									values.itemnumber == 11 ||  values.itemnumber == 13 ||  values.itemnumber == 16 || 
+									values.itemnumber == 17 ||  values.itemnumber == 18 ||  values.itemnumber == 19 || 
+									values.itemnumber == 20)  && trial.practiceobject.response == values.shootkey) ||
+									((values.itemnumber != 4 &&  values.itemnumber !=7  && values.itemnumber !=8 &&
+									values.itemnumber != 11 &&  values.itemnumber != 13 &&  values.itemnumber != 16 &&
+									values.itemnumber!=17 &&  values.itemnumber != 18 &&  values.itemnumber != 19 &&
+									values.itemnumber != 20)  && trial.practiceobject.response == values.noshootkey) ]
+/ ontrialend = [if ((values.itemnumber == 4 || values.itemnumber == 7  || values.itemnumber == 8 ||
+									values.itemnumber == 11 ||  values.itemnumber == 13 ||  values.itemnumber == 16 || 
+									values.itemnumber == 17 ||  values.itemnumber == 18 ||  values.itemnumber == 19 || 
+									values.itemnumber == 20)  && trial.practiceobject.response == values.shootkey) 
+									{values.Hit = 1; values.total += values.HitReward}]
+/ ontrialend = [if ((values.itemnumber == 4 || values.itemnumber == 7  || values.itemnumber == 8 ||
+									values.itemnumber == 11 ||  values.itemnumber == 13 ||  values.itemnumber == 16 || 
+									values.itemnumber == 17 ||  values.itemnumber == 18 ||  values.itemnumber == 19 || 
+									values.itemnumber == 20)  && trial.practiceobject.response == values.noshootkey) 
+									{values.Miss = 1; values.total -= values.MissPunish}]
+/ ontrialend = [if ((values.itemnumber != 4 &&  values.itemnumber !=7  && values.itemnumber !=8 &&
+									values.itemnumber != 11 &&  values.itemnumber != 13 &&  values.itemnumber != 16 &&
+									values.itemnumber!=17 &&  values.itemnumber != 18 &&  values.itemnumber != 19 &&
+									values.itemnumber != 20)  && trial.practiceobject.response == values.noshootkey) 
+									{values.CR = 1; values.total += values.CRReward}]
+/ ontrialend = [if ((values.itemnumber != 4 &&  values.itemnumber !=7  && values.itemnumber !=8 &&
+									values.itemnumber != 11 &&  values.itemnumber != 13 &&  values.itemnumber != 16 &&
+									values.itemnumber!=17 &&  values.itemnumber != 18 &&  values.itemnumber != 19 &&
+									values.itemnumber != 20)  && trial.practiceobject.response == values.shootkey) 
+									{values.FA = 1; values.total = values.total - values.FAPunish}]
+/ ontrialend = [if (trial.practiceobject.response == 0) values.total -= values.NoresponsePunish]
+/ branch = [trial.feedback]
+</trial>
+
+**************************************************************************************************************
+EXPERIMENTAL BLOCKS
+**************************************************************************************************************
+
+Note: 
+*runs 80 of the trial-combos
+*counterbalanced for shootkey/noshootkey  (see EXPERIMENT)
+
+<block POD_A>
+/ preinstructions = (taskA)
+/ onblockbegin = [values.total = 0]
+/ trials = [1-80 = fixation]
+/ postinstructions = (results)
+</block>
+
+<block POD_B>
+/ preinstructions = (taskB)
+/ onblockbegin = [values.total = 0]
+/ trials = [1-80 = fixation]
+/ postinstructions = (results)
+</block>
+
+**************************************************************************************************************
+PRACTICE BLOCKS
+**************************************************************************************************************
+
+Note: 
+*runs 20 of the practice trial-combos
+*counterbalanced for shootkey/noshootkey (see EXPERIMENT)
+*data recorded, set to /recorddata = false to change
+
+<block POD_practiceA>
+/ preinstructions = (practiceA)
+/ onblockbegin = [values.total = 0]
+/ trials = [1-20 = fixation_practice]
+/ recorddata = true
+</block>
+
+<block POD_practiceB>
+/ preinstructions = (practiceB)
+/ onblockbegin = [values.total = 0]
+/ trials = [1-20 = fixation_practice]
+/ recorddata = true
+</block>
+
+**************************************************************************************************************
+EXPERIMENT 
+**************************************************************************************************************
+
+Experiment counterbalanced for shootkey/noshootkey (assignment by subjectnumber)
+
+*odd subjectnumbers:
+<expt >
+/ subjects = (1 of 2)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+*even subjectnumbers:
+<expt >
+/ subjects = (2 of 2)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
