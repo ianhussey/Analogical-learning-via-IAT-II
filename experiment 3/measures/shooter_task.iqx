@@ -187,7 +187,7 @@ raw data
 <data >
 /file = "shooter_task.iqdat"
 / separatefiles = true
-/ columns = [date, time, subject, values.group, trialcode, values.itemnumber, values.selectbackground,
+/ columns = [date, time, subject, blockcode, values.group, trialcode, values.itemnumber, values.selectbackground,
 values.repetition, values.backgroundduration, values.count_background,
 response, correct, values.result, latency, values.total]
 </data>

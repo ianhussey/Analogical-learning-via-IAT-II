@@ -1,0 +1,94 @@
+﻿***************************************************************
+DEBRIEFING
+***************************************************************
+Author: 		Ian Hussey (ian.hussey@ugent.be)
+License:        GPLv3+
+
+*********************
+general variables
+*********************
+
+<defaults>
+/ screencolor = black
+/ txcolor = white
+/ fontstyle = ("Arial", 5.00%)
+/ inputdevice = keyboard
+/ validkeys = (" ", "t")
+/ halign = center
+/ Com1BaudRate = 9600
+</defaults>
+
+<expt>
+/ blocks = [1 = debriefing]
+</expt>
+
+*********************
+text
+*********************
+
+<text debriefing_text>
+/ numitems = 1
+/ items = 
+("
+DEBRIEFING
+
+If you're interested in the purpose of the study you can read here. 
+Otherwise, press SPACEBAR to finish.
+
+Heisenburg's observer problem in physics refers to the idea that, 
+by measuring something we sometimes change the thing we are 
+interested in measuring. This also applies in many areas of 
+psychology. One of the reaction time tasks you completed (the 
+Implicit Association Test) is often used as a measure of implicit 
+racial bias. In this experiment, we are examining whether the act 
+of completing a race IAT serves to change the racial biases it 
+seeks to measure. This may have implications for the interpretation
+and use of these measures in the future.
+")
+/ fontstyle = ("Arial", 3%)
+/ txcolor = white
+/ txbgcolor = black
+/ position = (10, 15)
+/ halign = left
+/ valign = top
+</text>
+
+<text press_to_finish>
+/ numitems = 1
+/ items = 
+("Press spacebar to finish")
+/ fontstyle = ("Arial", 3%)
+/ txcolor = lightgreen
+/ txbgcolor = black
+/ position = (50, 90)
+/ halign = center
+/ valign = top
+</text>
+
+*********************
+trials
+*********************
+
+<trial debriefing>
+/ inputdevice = keyboard
+/ validresponse = (" ")
+/ monkeyresponse = (" ")
+/ stimulustimes = [1000 = debriefing_text, press_to_finish]
+</trial>
+
+*********************
+block
+********************* 
+
+<block debriefing>
+/ trials = [1 = debriefing]
+</block>
+
+********************* 
+test monkey
+*********************
+
+<monkey>
+/ latencydistribution = normal(500, 100)
+/ percentcorrect = 100
+</monkey>
