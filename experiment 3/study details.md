@@ -1,8 +1,8 @@
 # The IAT as an analogical learning task II - known stimuli 3 
 
-Previous research demonstrated that the IAT functions as an analogical learning task as well as its traditional employment as a testing task (Hussey & De Houwer, under review). These experiments demonstrated the acquisition of attitudes towards previously unknown stimuli (Chinese characters). The current experiment examines whether the IAT can also modify existing (racial) attitudes.
+The results of Experiment 1 and 2 suggested that completing a Race IAT changes participants' implicit (but not explicit) racial attiudes. Given the potential implications of this for the use of the IAT as a measure of implicit racial bias, we then sought to assess whether this effect generalises to forms of implicit bias other than implicit evaluations. Experiment 3 represents an extension of Experiment 1 and 2. We employ a Shooter Bias Task rather than a SC-IAT or AMP as DV. This task requires participants to "shoot" when pictures of men with guns are presented and "not shoot" when pictures of unarmed men are presented. Only pictures of black men were included, so as to provide a non-relative task, as in Experiments 1 and 2. If the effect of the IAT acting as a training task impacts not only implicit evaluations but also implicit shooter bias, this would indicate the IAT training effect has generalisability. 
 
-We assess the influence of a Race IAT vs. (control) Flowers-Insects IAT on evaluations of black people (both self reported ratings and automatic biases on a Shooter Bias Task), after controlling for baseline racism. We recruit white participants only so as to have a homogenous in/out-group.
+Building on the previous experiments, we assess the influence of a Race IAT vs. (control) Flowers-Insects IAT on evaluations of black people (both self reported ratings and automatic biases on a Shooter Bias Task), after controlling for baseline racism. We recruit white participants only so as to have a homogenous in/out-group.
 
 ## Design
 
