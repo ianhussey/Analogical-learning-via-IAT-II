@@ -19,6 +19,7 @@ and Social Psychology, 83, 1314-1329.
 All images used in this script are the originals. Millisecond Software thanks Dr. Correll et al for
 providing generous assistance!
 
+
 NB the measure's original implementation made a distinction between trials on which a black or white male was presented. 
 I (Ian) tried to remove this factor in a clean way, so that only black men are presented. 
 However, this caused unstable behaviour in the task, which I struggled to find the root of. 
@@ -28,8 +29,7 @@ As such, the code and data still make an unnecessary distinction between "black"
 Script Specifics:
 (1) Design: 2 (ethnicity: black vs. Black2) x 2 (gun vs. no gun) = 4 experimental conditions, 
 all tested within participants (see Correll et al, 2002)
-(2) Counterbalanced for shootkey vs. no shootkey (Default: A and L keys, change
-possible under values)
+(2) Counterbalanced for shootkey vs. no shootkey (E and I keys)
 (3) 1 Experimental Block that runs 80 trials:  20 trials in each of the 4 conditions,
  conditions are randomly sampled without replacement (see list.condition for details)
 There are 20 slides for each condition, each slide is sampled once (see Correll et al, 2002)
@@ -974,17 +974,115 @@ EXPERIMENT
 
 Experiment counterbalanced for shootkey/noshootkey (assignment by subjectnumber)
 
-*odd subjectnumbers:
+*subjectnumbers 1-8:
 <expt >
-/ subjects = (1 of 2)
+/ subjects = (1 of 16)
 / onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
 / blocks = [1 = POD_practiceA; 2 = POD_A]
 / preinstructions = (intro1_A, intro2)
 </expt>
 
-*even subjectnumbers:
 <expt >
-/ subjects = (2 of 2)
+/ subjects = (2 of 16)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+<expt >
+/ subjects = (3 of 16)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+<expt >
+/ subjects = (4 of 16)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+<expt >
+/ subjects = (5 of 16)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+<expt >
+/ subjects = (6 of 16)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+<expt >
+/ subjects = (7 of 16)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+<expt >
+/ subjects = (8 of 16)
+/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
+/ blocks = [1 = POD_practiceA; 2 = POD_A]
+/ preinstructions = (intro1_A, intro2)
+</expt>
+
+*subjectnumbers 9-16:
+<expt >
+/ subjects = (9 of 16)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
+
+<expt >
+/ subjects = (10 of 16)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
+
+<expt >
+/ subjects = (11 of 16)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
+
+<expt >
+/ subjects = (12 of 16)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
+
+<expt >
+/ subjects = (13 of 16)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
+
+<expt >
+/ subjects = (14 of 16)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
+
+<expt >
+/ subjects = (15 of 16)
+/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
+/ blocks = [1 = POD_practiceB; 2 = POD_B]
+/ preinstructions = (intro1_B, intro2)
+</expt>
+
+<expt >
+/ subjects = (16 of 16)
 / onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
 / blocks = [1 = POD_practiceB; 2 = POD_B]
 / preinstructions = (intro1_B, intro2)

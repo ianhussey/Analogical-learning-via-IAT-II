@@ -4,13 +4,9 @@ Batch script for IAT as an analogical task II3
 Ian Hussey (ian.hussey@ugent.be)
 GPLv3+ license
 
-************************************************
-overview 
-************************************************
-If participants do not agree to participate in the experiment, the entire batch file
-gets aborted via function script.abort() in the ConsentformScript.iqx script
 
-************************************************
+NB the shooter task also counterbalances the mapping of the left and right responses with shoot/no shoot. 
+For subject codes 1-8 of 16, left = shoot. For 9-16 of 16, right = shoot. 
 
 IAT/shooter task block order 1 & race IAT & ratings first
 <batch>
@@ -107,4 +103,5 @@ IAT/shooter task block order 2 & flowers insects IAT & shooter task first
 / file="ratings.iqx"
 / file="debriefing.iqx"
 </batch>
+ 
 

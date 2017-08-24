@@ -65,11 +65,11 @@ H4 The conditions will differ in their self-reported evaluations of the black fa
 
 ### Power analysis
 
-No power analysis as I'm still working out how to do this for interaction effects in LMMs. 
+No power analysis as I'm still working out how to do this for interaction effects in LMMs. Sample size increased relative to previous experiments given larger number of analyses on the shooter task.
 
 ### Planned sample size
 
-250
+300
 
 ### Payment
 
