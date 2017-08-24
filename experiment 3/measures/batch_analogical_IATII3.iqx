@@ -1,0 +1,110 @@
+﻿************************************************
+Batch script for IAT as an analogical task II3
+************************************************
+Ian Hussey (ian.hussey@ugent.be)
+GPLv3+ license
+
+************************************************
+overview 
+************************************************
+If participants do not agree to participate in the experiment, the entire batch file
+gets aborted via function script.abort() in the ConsentformScript.iqx script
+
+************************************************
+
+IAT/shooter task block order 1 & race IAT & ratings first
+<batch>
+/ subjects=(1 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="ratings.iqx"
+/ file="shooter_task.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+IAT/shooter task block order 2 & race IAT & ratings first
+<batch>
+/ subjects=(2 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="ratings.iqx"
+/ file="shooter_task.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+IAT/shooter task block order 1 & race IAT & shooter task first
+<batch>
+/ subjects=(3 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="shooter_task.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+IAT/shooter task block order 2 & race IAT & shooter task first
+<batch>
+/ subjects=(4 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_race.iqx"
+/ file="shooter_task.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+IAT/shooter task block order 1 & flowers insects IAT & ratings first
+<batch>
+/ subjects=(5 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="ratings.iqx"
+/ file="shooter_task.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+IAT/shooter task block order 2 & flowers insects IAT & ratings first
+<batch>
+/ subjects=(6 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="ratings.iqx"
+/ file="shooter_task.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+IAT/shooter task block order 1 & flowers insects IAT & shooter task first
+<batch>
+/ subjects=(7 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="shooter_task.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
+
+IAT/shooter task block order 2 & flowers insects IAT & shooter task first
+<batch>
+/ subjects=(8 of 8)
+/ groupassignment = subjectnumber
+/ file="demographics.iqx"
+/ file="modern_racism_scale.iqx"
+/ file="IAT_flowers_insects.iqx"
+/ file="shooter_task.iqx"
+/ file="ratings.iqx"
+/ file="debriefing.iqx"
+</batch>
+
