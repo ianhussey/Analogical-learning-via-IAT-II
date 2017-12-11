@@ -109,7 +109,7 @@ AMP_data <-
                                                  ifelse(accuracy == 1, "positive", NA))),
                 IAT_condition = as.factor(IAT_condition)) %>%
   dplyr::rename(prime_type = item,
-                rating = accuracy) 
+                rating = accuracy)
 
 # Check that variables that should be factors are indeed factors
 sapply(AMP_data, class)
@@ -175,7 +175,7 @@ model_1_predicted_effects %>%
   
 ### Plot predictions
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, fig.height=2, fig.width=4, message=FALSE, warning=FALSE}
 ggplot(data = model_1_predicted_effects,
        aes(x = `AMP prime type`, y = fit, colour = `IAT condition`)) +
   geom_pointrange(aes(ymax = upper,
@@ -183,8 +183,8 @@ ggplot(data = model_1_predicted_effects,
                   position = position_dodge(width = .1)) +
   geom_line(aes(group = `IAT condition`),
             position = position_dodge(width = .1)) +
-  ylab("Mean rating of Chinese characters") +
-  xlab("AMP prime type") +
+  ylab("Mean rating in AMP") +
+  xlab("Prime type") +
   scale_colour_grey() +
   theme_classic() 
 ```
@@ -243,7 +243,7 @@ model_2_predicted_effects %>%
   
 ### Plot predictions
 
-```{r, message=FALSE, fig.height=3, fig.width=4, warning=FALSE, echo=FALSE}
+```{r, message=FALSE, fig.height=2, fig.width=2, warning=FALSE, echo=FALSE}
 ggplot(data = model_2_predicted_effects,
        aes(x = IAT_condition, y = fit)) +
   geom_pointrange(aes(ymax = upper,
@@ -327,7 +327,7 @@ model_3_predicted_effects %>%
   
 ### Plot predictions
 
-```{r, message=FALSE, fig.height=3, fig.width=4, warning=FALSE, echo=FALSE}
+```{r, message=FALSE, fig.height=2, fig.width=2, warning=FALSE, echo=FALSE}
 ggplot(data = model_3_predicted_effects,
        aes(x = IAT_condition, y = fit)) +
   geom_pointrange(aes(ymax = upper,

@@ -345,7 +345,7 @@ blocks
 / responsemode = correct
 </block>
 
-Note: presents the trials in a  20:20:30 ratio => 40 (good + target) on responsekey_left and 30 (bad) on responsekey_right
+Note: presents the trials in a  2:2:3 ratio 
 <block compatibletest>
 / bgstim = (attributeAleft, orleft, targetAleftmixed, attributeBright)
 / trials = [1-70 = noreplace(targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, targetAleft, 
@@ -358,7 +358,6 @@ Note: presents the trials in a  20:20:30 ratio => 40 (good + target) on response
 / responsemode = correct
 </block>
 
-Note: presents the trials in a  7:7:10 ratio => 10 (good) on responsekey_left and 14 (bad + target) on responsekey_right
 <block practice_incompatibletest>
 / bgstim = (attributeAleft, attributeBright)
 / trials = [1=instructions; 
@@ -367,12 +366,16 @@ Note: presents the trials in a  7:7:10 ratio => 10 (good) on responsekey_left an
 / responsemode = correct
 </block>
 
-Note: presents the trials in a  7:7:10 ratio => 10 (good) on responsekey_left and 14 (bad + target) on responsekey_right
+Note: presents the trials in a  2:2:3 ratio 
 <block incompatibletest>
 / bgstim = (attributeAleft, targetARightMixed, orright, attributeBright)
-/ trials = [1-70 = noreplace(targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, targetAright, 
-							 attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA, attributeA,   
-							 attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, attributeB, )]
+/ trials = [1-70 = noreplace(targetAright, targetAright, targetAright, targetAright, targetAright, 
+							 targetAright, targetAright, targetAright, targetAright, targetAright, 
+							 attributeA, attributeA, attributeA, attributeA, attributeA, 
+							 attributeA, attributeA, attributeA, attributeA, attributeA, 
+							 attributeA, attributeA, attributeA, attributeA, attributeA,   
+							 attributeB, attributeB, attributeB, attributeB, attributeB, 
+							 attributeB, attributeB, attributeB, attributeB, attributeB, )]
 / ontrialend = [if(block.incompatibletest.latency  <= 10000) values.sum2 =  values.sum2 + block.incompatibletest.latency]
 / ontrialend = [if(block.incompatibletest.latency  <= 10000) values.n2 =  values.n2 + 1]
 / ontrialend = [if(block.incompatibletest.latency  <= 10000) values.ss2 =  values.ss2 + (block.incompatibletest.latency * block.incompatibletest.latency)]

@@ -179,7 +179,7 @@ model_1_predicted_effects %>%
   
 ### Plot predictions
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, fig.height=2, fig.width=4, message=FALSE, warning=FALSE}
 ggplot(data = model_1_predicted_effects,
        aes(x = `SCIAT block`, y = fit, colour = `IAT condition`)) +
   geom_pointrange(aes(ymax = upper,
@@ -201,8 +201,8 @@ ggplot(data = model_1_predicted_effects,
 
 ```{r, message=FALSE, warning=FALSE}
 model_1_alt <- lm(SCIAT_D1 ~ IAT_condition + modern_racism_scale_total,
-                contrasts = list(IAT_condition = "contr.sum"),
-                data = passers_df)
+                  contrasts = list(IAT_condition = "contr.sum"),
+                  data = passers_df)
 ```
 
 ### Summary
@@ -271,7 +271,7 @@ model_2_predicted_effects %>%
   
 ### Plot predictions
 
-```{r, message=FALSE, fig.height=3, fig.width=4, warning=FALSE, echo=FALSE}
+```{r, message=FALSE, fig.height=2, fig.width=2, warning=FALSE, echo=FALSE}
 ggplot(data = model_2_predicted_effects,
        aes(x = IAT_condition, y = fit)) +
   geom_pointrange(aes(ymax = upper,

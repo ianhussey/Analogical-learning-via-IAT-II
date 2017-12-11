@@ -173,7 +173,27 @@ AMP_summary_stats_df <-
                    AMP_perc_acc = round(sum(accuracy)/n(), 2)) %>%  # arbitrary number of test block trials
   dplyr::select(participant,
                 AMP_mean_RT,
-                AMP_perc_acc)
+                AMP_perc_acc) %>%
+  ungroup()
+
+AMP_summary_stats_2_df <- 
+  cleaned_df %>%
+  dplyr::filter(task == "AMP_test") %>% # test block only
+  dplyr::select(participant,
+                accuracy,
+                rt,
+                item) %>%
+  dplyr::group_by(participant, item) %>%
+  dplyr::summarize(AMP_perc_acc = round(sum(accuracy)/n(), 3)) %>%  # arbitrary number of test block trials
+  spread(item, AMP_perc_acc) %>%
+  dplyr::rename(AMP_neutral_perc_acc = primeNeutral,
+                AMP_race_perc_acc = primeRace) %>%
+  dplyr::mutate(AMP_diff = AMP_race_perc_acc - AMP_neutral_perc_acc) %>%
+  dplyr::select(participant,
+                AMP_neutral_perc_acc,
+                AMP_race_perc_acc,
+                AMP_diff) %>%
+  ungroup()
 
 
 # join wide D1 scored data and write to disk ------------------------------
@@ -182,8 +202,10 @@ AMP_summary_stats_df <-
 wide_data_df <- 
   plyr::join_all(list(as.data.frame(demographics_df),  # join_all throws a requires input be data.frame error, despite is.data.frame returning TRUE for all members of list. Workaround is to coerce all to DF here. 
                       as.data.frame(racism_scale_df),
+                      as.data.frame(ratings_df),
                       as.data.frame(IAT_summary_stats_df),
-                      as.data.frame(AMP_summary_stats_df)),
+                      as.data.frame(AMP_summary_stats_df),
+                      as.data.frame(AMP_summary_stats_2_df)),
                  by = "participant",
                  type = "full") %>%
   dplyr::arrange(participant) %>%

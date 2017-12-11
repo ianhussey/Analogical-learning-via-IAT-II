@@ -30,20 +30,20 @@ GPLv3+ license
 ************************************************
 Demographics
 ************************************************
-<textbox age>
-/ caption = "What is your age:"
-</textbox>
-
-<textbox gender>
-/ caption = "What is your gender"
-</textbox>
-
 <textbox ProlificCode>
 / caption = 
 "Please copy and paste your prolific ID here. It is available in the window that launched this experiment. Without this code you cannot be paid."
 / position = (10%,10%)
 / textboxsize = (45, 40)
 / multiline = true
+</textbox>
+
+<textbox age>
+/ caption = "What is your age:"
+</textbox>
+
+<textbox gender>
+/ caption = "What is your gender"
 </textbox>
 
 ***********************************************

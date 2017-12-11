@@ -58,7 +58,7 @@ Hypothesis refers to the the three way interaction effect.
 
 # Exploratory hypothesis 2: Interaction between racism and condition on the AMP effect
 
-```{r, message=FALSE, warning=FALSE, include=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 # get data
 AMP_data <- 
   read.csv("experiment 2/data/processed/processed AMP data - long format.csv") %>%
