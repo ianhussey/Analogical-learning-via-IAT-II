@@ -124,30 +124,29 @@ countGunBlack2...countObjectBlack:		counts the trials in each condition
 /backgroundduration = 0
 /count_background = 0
 /selectfeedback = 0
+/Sum_BlackHits = 0
+/Sum_BlackMisses = 0
+/Sum_BlackFAs = 0
+/Sum_BlackCRs = 0
+/SumRT_BlackHits = 0
+/SumRT_BlackMisses = 0
+/SumRT_BlackFAs = 0
+/SumRT_BlackCRs = 0
+/count_GunBlack = 0
+/count_ObjectBlack = 0
+</values>
 
 /Sum_Black2Hits = 0
 /Sum_Black2Misses = 0
 /Sum_Black2FAs = 0
 /Sum_Black2CRs = 0
-/Sum_BlackHits = 0
-/Sum_BlackMisses = 0
-/Sum_BlackFAs = 0
-/Sum_BlackCRs = 0
-
 /SumRT_Black2Hits = 0
 /SumRT_Black2Misses = 0
 /SumRT_Black2FAs = 0
 /SumRT_Black2CRs = 0
-/SumRT_BlackHits = 0
-/SumRT_BlackMisses = 0
-/SumRT_BlackFAs = 0
-/SumRT_BlackCRs = 0
-
 /count_GunBlack2 = 0
-/count_GunBlack = 0
-/count_ObjectBlack = 0
 /count_ObjectBlack2 = 0
-</values>
+
 
 **************************************************************************************************************
 EXPRESSIONS
@@ -157,24 +156,25 @@ MeanRT_Black2Hits...MeanRT_BlackCRs:				calculates the mean reaction times for H
 %_Black2Hits...%_BlackCRs:						calculates the percentages of Hits-Misses and CRs-FAs for each ethnicity
 
 <expressions >
-/MeanRT_Black2Hits = values.SumRT_Black2Hits / values.Sum_Black2Hits
-/MeanRT_Black2Misses = values.SumRT_Black2Misses / values.Sum_Black2Misses
-/MeanRT_Black2FAs = values.SumRT_Black2FAs / values.Sum_Black2FAs
-/MeanRT_Black2CRs = values.SumRT_Black2CRs / values.Sum_Black2CRs
+
 /MeanRT_BlackHits = values.SumRT_BlackHits / values.Sum_BlackHits
 /MeanRT_BlackMisses = values.SumRT_BlackMisses / values.Sum_BlackMisses
 /MeanRT_BlackFAs = values.SumRT_BlackFAs / values.Sum_BlackFAs
 /MeanRT_BlackCRs = values.SumRT_BlackCRs / values.Sum_BlackCRs
-
-/%_Black2Hits = 100* (values.Sum_Black2Hits /values.count_GunBlack2)
-/%_Black2Misses = 100 * (values.Sum_Black2Misses /values.count_GunBlack2)
-/%_Black2FAs = 100 * (values.Sum_Black2FAs /values.count_ObjectBlack2)
-/%_Black2CRs = 100 * (values.Sum_Black2CRs /values.count_ObjectBlack2)
 /%_BlackHits = 100 * (values.Sum_BlackHits /values.count_GunBlack)
 /%_BlackMisses = 100 * (values.Sum_BlackMisses /values.count_GunBlack)
 /%_BlackFAs = 100 * (values.Sum_BlackFAs /values.count_ObjectBlack)
 /%_BlackCRs = 100 * (values.Sum_BlackCRs /values.count_ObjectBlack)
 </expressions>
+
+/MeanRT_Black2Hits = values.SumRT_Black2Hits / values.Sum_Black2Hits
+/MeanRT_Black2Misses = values.SumRT_Black2Misses / values.Sum_Black2Misses
+/MeanRT_Black2FAs = values.SumRT_Black2FAs / values.Sum_Black2FAs
+/MeanRT_Black2CRs = values.SumRT_Black2CRs / values.Sum_Black2CRs
+/%_Black2Hits = 100* (values.Sum_Black2Hits /values.count_GunBlack2)
+/%_Black2Misses = 100 * (values.Sum_Black2Misses /values.count_GunBlack2)
+/%_Black2FAs = 100 * (values.Sum_Black2FAs /values.count_ObjectBlack2)
+/%_Black2CRs = 100 * (values.Sum_Black2CRs /values.count_ObjectBlack2)
 
 **************************************************************************************************************
 DATA
@@ -296,12 +296,19 @@ You are done with practice.
 <page results>
 ^^Your individual results:
 ^Accuracy:^
+^~People with guns: <%expressions.%_BlackHits%>%.
+^~Unarmed people: <%expressions.%_BlackCRs%>%.^^^
+^Reaction times:^
+^~People with guns: <%expressions.MeanRT_BlackHits%>ms.
+^~Unarmed people: <%expressions.MeanRT_BlackCRs%>ms.
+</page>
+
 ^~People with guns: <%(expressions.%_Black2Hits+expressions.%_BlackHits)/2%>%.
 ^~Unarmed people: <%(expressions.%_Black2CRs+expressions.%_BlackCRs)/2%>%.^^^
-^Reaction times:^
 ^~People with guns: <%(expressions.MeanRT_Black2Hits+expressions.MeanRT_BlackHits)/2%>ms.
 ^~Unarmed people: <%(expressions.MeanRT_Black2CRs+expressions.MeanRT_BlackCRs)/2%>ms.
-</page>
+^~People with guns: <%(expressions.MeanRT_Black2Hits+expressions.MeanRT_BlackHits)/2%>ms.
+^~Unarmed people: <%(expressions.MeanRT_Black2CRs+expressions.MeanRT_BlackCRs)/2%>ms.
 
 <page intro2>
 ^Your responses will affect your score.
@@ -409,7 +416,7 @@ EXPERIMENTAL STIMULI
 /20 = "bg20.jpg"
 </item>
 
-<item GunBlack2s>
+item GunBlack2s>
 /1 = "bg01d.jpg"
 /2 = "bg02d.jpg"
 /3 = "bg03d.jpg"
@@ -455,7 +462,7 @@ EXPERIMENTAL STIMULI
 /20 = "bg20d.jpg"
 </item>
 
-<item ObjectBlack2s>
+item ObjectBlack2s>
 /1 = "bg01c.jpg"
 /2 = "bg02c.jpg"
 /3 = "bg03c.jpg"
@@ -513,7 +520,7 @@ Main Stimuli
 /erase = false
 </picture>
 
-<picture GunBlack2>
+picture GunBlack2>
 / items = GunBlack2s
 /select = values.itemnumber
 / position = (50%, 50%)
@@ -527,7 +534,7 @@ Main Stimuli
 / size = (80%, 80%)
 </picture>
 
-<picture ObjectBlack2>
+picture ObjectBlack2>
 / items = ObjectBlack2s
 /select = values.itemnumber
 / position = (50%, 50%)
@@ -606,10 +613,15 @@ list.condition selects next experimental condition randomly without replacement
 
 <list condition>
 / items = (
-1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4,
-1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)
+1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 
+1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 
+1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 
+1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2)
 / replace = false
 </list>
+
+1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4,
+1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4)
 
 ***********************************
 the following four lists select the item number for each condition
@@ -626,12 +638,12 @@ without replacement => all items will be used
 / replace = false
 </list>
 
-<list itemnumber3>
+list itemnumber3>
 /items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 / replace = false
 </list>
 
-<list itemnumber4>
+list itemnumber4>
 /items = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)
 / replace = false
 </list>
@@ -644,6 +656,7 @@ list.repetition selects randomly how many background pictures are presented
 / items = (1, 2, 3, 4)
 / replace = true
 </list>
+
 
 ***********************************
 list.duration selects randomly the duration of a background picture
@@ -688,16 +701,16 @@ trial.fixation
 / ontrialbegin = [values.condition = list.condition.nextvalue]
 / ontrialbegin = [if (values.condition == 1) values.itemnumber = list.itemnumber1.nextvalue]
 / ontrialbegin = [if (values.condition == 2) values.itemnumber = list.itemnumber2.nextvalue]
-/ ontrialbegin = [if (values.condition == 3) values.itemnumber = list.itemnumber3.nextvalue]
-/ ontrialbegin = [if (values.condition == 4) values.itemnumber = list.itemnumber4.nextvalue]
 / ontrialbegin = [values.repetition = list.repetition.nextvalue]
-
 / stimulusframes = [1 = fixation]
 / trialduration = values.fixationduration
 / validresponse = (noresponse)
 / branch = [trial.background]
 / recorddata = false
 </trial>
+
+/ ontrialbegin = [if (values.condition == 3) values.itemnumber = list.itemnumber3.nextvalue]
+/ ontrialbegin = [if (values.condition == 4) values.itemnumber = list.itemnumber4.nextvalue]
 
 ***********************************************************
 trial.background
@@ -719,18 +732,19 @@ experimental condition
 							values.selectbackground = values.itemnumber]
 / stimulusframes = [1 = background]
 /timeout = (values.backgroundduration)
-
 / branch = [if (values.count_background  < values.repetition) trial.background]
 / branch = [if (values.count_background  >= values.repetition && values.condition == 1)
-					{reset(list.selectbackground); trial.GunBlack2}]
-/ branch = [if (values.count_background  >= values.repetition && values.condition == 2)
 					{reset(list.selectbackground); trial.GunBlack}]
-/ branch = [if (values.count_background  >= values.repetition && values.condition == 3)
-					{reset(list.selectbackground); trial.ObjectBlack2}]
-/ branch = [if (values.count_background  >= values.repetition && values.condition == 4)
+
+/ branch = [if (values.count_background  >= values.repetition && values.condition == 2)
 					{reset(list.selectbackground); trial.ObjectBlack}]
 / recorddata = false
 </trial>
+
+/ branch = [if (values.count_background  >= values.repetition && values.condition == 1)
+					{reset(list.selectbackground); trial.GunBlack2}]
+/ branch = [if (values.count_background  >= values.repetition && values.condition == 3)
+					{reset(list.selectbackground); trial.ObjectBlack2}]
 
 ***************************************************************
 Main Trials: 4 experimental conditions
@@ -740,7 +754,7 @@ Main Trials: 4 experimental conditions
 *calls feedback
 **************************************************************
 
-<trial GunBlack2>
+trial GunBlack2>
 / ontrialbegin = [values.count_GunBlack2 += 1]
 / stimulusframes = [1 = GunBlack2]
 
@@ -761,7 +775,7 @@ Main Trials: 4 experimental conditions
 / ontrialend = [if (trial.GunBlack2.response == 0) 
 					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
 / branch = [trial.feedback]
-</trial>
+/trial>
 
 <trial GunBlack>
 / ontrialbegin = [values.count_GunBlack += 1]
@@ -786,7 +800,7 @@ Main Trials: 4 experimental conditions
 / branch = [trial.feedback]
 </trial>
 
-<trial ObjectBlack2>
+trial ObjectBlack2>
 / ontrialbegin = [values.count_ObjectBlack2 += 1]
 / stimulusframes = [1 = ObjectBlack2]
 / isvalidresponse = [trial.ObjectBlack2.response == values.shootkey ||
@@ -807,7 +821,7 @@ Main Trials: 4 experimental conditions
 / ontrialend = [if (trial.ObjectBlack2.response == 0) 
 					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
 / branch = [trial.feedback]
-</trial>
+/trial>
 
 <trial ObjectBlack>
 / ontrialbegin = [values.count_ObjectBlack += 1]
