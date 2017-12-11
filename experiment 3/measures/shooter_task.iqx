@@ -27,9 +27,9 @@ As a workaround, I simply replaced all image stimuli in both the black and white
 As such, the code and data still make an unnecessary distinction between "black" and "black2" trials. However, in data processing and analysis these are treated as one.
 
 Script Specifics:
-(1) Design: 2 (ethnicity: black vs. Black2) x 2 (gun vs. no gun) = 4 experimental conditions, 
+(1) Design: 1 (ethnicity: black) x 2 (gun vs. no gun) = 2 experimental conditions, 
 all tested within participants (see Correll et al, 2002)
-(2) Counterbalanced for shootkey vs. no shootkey (E and I keys)
+(2) Counterbalanced for shootkey vs. no shootkey (E and I keys) between participants
 (3) 1 Experimental Block that runs 80 trials:  20 trials in each of the 4 conditions,
  conditions are randomly sampled without replacement (see list.condition for details)
 There are 20 slides for each condition, each slide is sampled once (see Correll et al, 2002)
@@ -136,23 +136,11 @@ countGunBlack2...countObjectBlack:		counts the trials in each condition
 /count_ObjectBlack = 0
 </values>
 
-/Sum_Black2Hits = 0
-/Sum_Black2Misses = 0
-/Sum_Black2FAs = 0
-/Sum_Black2CRs = 0
-/SumRT_Black2Hits = 0
-/SumRT_Black2Misses = 0
-/SumRT_Black2FAs = 0
-/SumRT_Black2CRs = 0
-/count_GunBlack2 = 0
-/count_ObjectBlack2 = 0
-
-
 **************************************************************************************************************
 EXPRESSIONS
 **************************************************************************************************************
 
-MeanRT_Black2Hits...MeanRT_BlackCRs:				calculates the mean reaction times for Hits, Misses, FAs, CRs for each ethnicity
+MeanRT_Black2Hits...MeanRT_BlackCRs:		    calculates the mean reaction times for Hits, Misses, FAs, CRs for each ethnicity
 %_Black2Hits...%_BlackCRs:						calculates the percentages of Hits-Misses and CRs-FAs for each ethnicity
 
 <expressions >
@@ -166,15 +154,6 @@ MeanRT_Black2Hits...MeanRT_BlackCRs:				calculates the mean reaction times for H
 /%_BlackFAs = 100 * (values.Sum_BlackFAs /values.count_ObjectBlack)
 /%_BlackCRs = 100 * (values.Sum_BlackCRs /values.count_ObjectBlack)
 </expressions>
-
-/MeanRT_Black2Hits = values.SumRT_Black2Hits / values.Sum_Black2Hits
-/MeanRT_Black2Misses = values.SumRT_Black2Misses / values.Sum_Black2Misses
-/MeanRT_Black2FAs = values.SumRT_Black2FAs / values.Sum_Black2FAs
-/MeanRT_Black2CRs = values.SumRT_Black2CRs / values.Sum_Black2CRs
-/%_Black2Hits = 100* (values.Sum_Black2Hits /values.count_GunBlack2)
-/%_Black2Misses = 100 * (values.Sum_Black2Misses /values.count_GunBlack2)
-/%_Black2FAs = 100 * (values.Sum_Black2FAs /values.count_ObjectBlack2)
-/%_Black2CRs = 100 * (values.Sum_Black2CRs /values.count_ObjectBlack2)
 
 **************************************************************************************************************
 DATA
@@ -211,8 +190,7 @@ General Intro
 ***********************************************
 
 Note: 
-Current Instructions modelled after
-the latest instructions used by Correll et al (these later instructions are 
+Current Instructions modelled after the latest instructions used by Correll et al (these later instructions are 
 less detailed than the original 2002 instructions)
 
 <page intro1_A>
@@ -303,13 +281,6 @@ You are done with practice.
 ^~Unarmed people: <%expressions.MeanRT_BlackCRs%>ms.
 </page>
 
-^~People with guns: <%(expressions.%_Black2Hits+expressions.%_BlackHits)/2%>%.
-^~Unarmed people: <%(expressions.%_Black2CRs+expressions.%_BlackCRs)/2%>%.^^^
-^~People with guns: <%(expressions.MeanRT_Black2Hits+expressions.MeanRT_BlackHits)/2%>ms.
-^~Unarmed people: <%(expressions.MeanRT_Black2CRs+expressions.MeanRT_BlackCRs)/2%>ms.
-^~People with guns: <%(expressions.MeanRT_Black2Hits+expressions.MeanRT_BlackHits)/2%>ms.
-^~Unarmed people: <%(expressions.MeanRT_Black2CRs+expressions.MeanRT_BlackCRs)/2%>ms.
-
 <page intro2>
 ^Your responses will affect your score.
 ^^^If you SHOOT when there is a GUN:			+<%values.HitReward%> points
@@ -324,55 +295,56 @@ You are done with practice.
 PRACTICE STIMULI
 **************************************************************************************************************
 
+order of presentation of the practice block trials is fixed, as is their coding for feedback
+
 <item backgrounds_practice>
-/1 = "wu06.jpg"
-/2 = "wu09.jpg"
-/3 = "wu10.jpg"
-/4 = "wu12.jpg"
-/5 = "wu13.jpg"
-/6 = "wu14.jpg"
-/7 = "wu16.jpg"
-/8 = "wu17.jpg"
-/9 = "wu18.jpg"
-/10 = "wu20.jpg"
-/11 = "wu06.jpg"
-/12 = "wu09.jpg"
+/1 = "wu13.jpg"
+/2 = "wu16.jpg"
+/3 = "wu17.jpg"
+/4 = "wu14.jpg"
+/5 = "wu20.jpg"
+/6 = "wu17.jpg"
+/7 = "wu20.jpg"
+/8 = "wu12.jpg"
+/9 = "wu13.jpg"
+/10 = "wu09.jpg"
+/11 = "wu16.jpg"
+/12 = "wu12.jpg"
 /13 = "wu10.jpg"
-/14 = "wu12.jpg"
-/15 = "wu13.jpg"
-/16 = "wu14.jpg"
-/17 = "wu16.jpg"
-/18 = "wu17.jpg"
+/14 = "wu18.jpg"
+/15 = "wu14.jpg"
+/16 = "wu06.jpg"
+/17 = "wu10.jpg"
+/18 = "wu09.jpg"
 /19 = "wu18.jpg"
-/20 = "wu20.jpg"
+/20 = "wu06.jpg"
 </item>
+
+order is identical between backgrounds and objects as a given background must be followed by that background including a figure
+"object" is somewhat confusing here as it contains a mix of both guns and not guns. in the experimental blocks these are all randomised.
 
 <item objects_practice>
-/1 = "wu06y.jpg"
-/2 = "wu09y.jpg"
-/3 = "wu10y.jpg"
-/4 = "wu12y.jpg"
-/5 = "wu13y.jpg"
-/6 = "wu14y.jpg"
-/7 = "wu16y.jpg"
-/8 = "wu17y.jpg"
-/9 = "wu18y.jpg"
-/10 = "wu20y.jpg"
-/11 = "wu06y.jpg"
-/12 = "wu09y.jpg"
+/1 = "wu13y.jpg"
+/2 = "wu16y.jpg"
+/3 = "wu17y.jpg"
+/4 = "wu14y.jpg"
+/5 = "wu20y.jpg"
+/6 = "wu17y.jpg"
+/7 = "wu20y.jpg"
+/8 = "wu12y.jpg"
+/9 = "wu13y.jpg"
+/10 = "wu09y.jpg"
+/11 = "wu16y.jpg"
+/12 = "wu12y.jpg"
 /13 = "wu10y.jpg"
-/14 = "wu12y.jpg"
-/15 = "wu13y.jpg"
-/16 = "wu14y.jpg"
-/17 = "wu16y.jpg"
-/18 = "wu17y.jpg"
+/14 = "wu18y.jpg"
+/15 = "wu14y.jpg"
+/16 = "wu06y.jpg"  
+/17 = "wu10y.jpg"
+/18 = "wu09y.jpg"
 /19 = "wu18y.jpg"
-/20 = "wu20y.jpg"
+/29 = "wu06y.jpg"  
 </item>
-
-**********************************************
-Practice Stimuli
-**********************************************
 
 <picture background_practice>
 / items = backgrounds_practice
@@ -416,29 +388,6 @@ EXPERIMENTAL STIMULI
 /20 = "bg20.jpg"
 </item>
 
-item GunBlack2s>
-/1 = "bg01d.jpg"
-/2 = "bg02d.jpg"
-/3 = "bg03d.jpg"
-/4 = "bg04d.jpg"
-/5 = "bg05d.jpg"
-/6 = "bg06d.jpg"
-/7 = "bg07d.jpg"
-/8 = "bg08d.jpg"
-/9 = "bg09d.jpg"
-/10 ="bg10d.jpg"
-/11 = "bg11d.jpg"
-/12 = "bg12d.jpg"
-/13 = "bg13d.jpg"
-/14 = "bg14d.jpg"
-/15 = "bg15d.jpg"
-/16 = "bg16d.jpg"
-/17 = "bg17d.jpg"
-/18 = "bg18d.jpg"
-/19 = "bg19d.jpg"
-/20 = "bg20d.jpg"
-</item>
-
 <item GunBlacks>
 /1 = "bg01d.jpg"
 /2 = "bg02d.jpg"
@@ -460,29 +409,6 @@ item GunBlack2s>
 /18 = "bg18d.jpg"
 /19 = "bg19d.jpg"
 /20 = "bg20d.jpg"
-</item>
-
-item ObjectBlack2s>
-/1 = "bg01c.jpg"
-/2 = "bg02c.jpg"
-/3 = "bg03c.jpg"
-/4 = "bg04c.jpg"
-/5 = "bg05c.jpg"
-/6 = "bg06c.jpg"
-/7 = "bg07c.jpg"
-/8 = "bg08c.jpg"
-/9 = "bg09c.jpg"
-/10 ="bg10c.jpg"
-/11 = "bg11c.jpg"
-/12 = "bg12c.jpg"
-/13 = "bg13c.jpg"
-/14 = "bg14c.jpg"
-/15 = "bg15c.jpg"
-/16 = "bg16c.jpg"
-/17 = "bg17c.jpg"
-/18 = "bg18c.jpg"
-/19 = "bg19c.jpg"
-/20 = "bg20c.jpg"
 </item>
 
 <item ObjectBlacks>
@@ -520,22 +446,8 @@ Main Stimuli
 /erase = false
 </picture>
 
-picture GunBlack2>
-/ items = GunBlack2s
-/select = values.itemnumber
-/ position = (50%, 50%)
-/ size = (80%, 80%)
-</picture>
-
 <picture GunBlack>
 / items = GunBlacks
-/select = values.itemnumber
-/ position = (50%, 50%)
-/ size = (80%, 80%)
-</picture>
-
-picture ObjectBlack2>
-/ items = ObjectBlack2s
 /select = values.itemnumber
 / position = (50%, 50%)
 / size = (80%, 80%)
@@ -680,6 +592,79 @@ Backgrounds are selected randomly with replacement by default
 </list>
 
 **************************************************************************************************************
+PRACTICE  TRIALS
+**************************************************************************************************************
+
+Note:
+*calls the 20 practice backgrounds in sequence
+
+<trial fixation_practice>
+/ ontrialbegin = [values.count_background = 0; values.Hit = 0; values.Miss = 0; values.FA = 0; values.CR = 0]
+/ ontrialbegin = [values.itemnumber += 1]
+/ ontrialbegin = [values.repetition = list.repetition.nextvalue]
+/ stimulusframes = [1 = fixation]
+/ trialduration = values.fixationduration
+/ validresponse = (noresponse)
+/ branch = [trial.background_practice]
+/ recorddata = false
+</trial>
+
+<trial background_practice>
+/ ontrialbegin = [values.backgroundduration = list.duration.nextvalue]
+/ ontrialbegin = [values.count_background += 1]
+/ ontrialbegin = [if (values.count_background  < values.repetition) 
+							{
+							values.selectbackground = list.selectbackground.nextvalue}
+					else
+							values.selectbackground = values.itemnumber]
+/ stimulusframes = [1 = background_practice]
+/timeout = (values.backgroundduration)
+/ branch = [if (values.count_background  < values.repetition) trial.background_practice else trial.practiceobject]
+</trial>
+
+coding of responses on the practice block is hardcoded, as the order of presentation is hardcoded. 
+
+<trial practiceobject>
+/ontrialbegin = [reset(list.selectbackground)]
+/ stimulusframes = [1 = object]
+
+/ isvalidresponse = [trial.practiceobject.response == values.shootkey ||
+							trial.practiceobject.response == values.noshootkey]
+/ timeout = (values.timeout)
+/ iscorrectresponse = [
+									((values.itemnumber == 1 || values.itemnumber == 2  || values.itemnumber == 3 ||
+									values.itemnumber == 5 ||  values.itemnumber == 6 ||  values.itemnumber == 7 || 
+									values.itemnumber == 9 ||  values.itemnumber == 11 ||  values.itemnumber == 14 || 
+									values.itemnumber == 19)  && trial.practiceobject.response == values.shootkey) ||
+									((values.itemnumber != 1 &&  values.itemnumber != 2  && values.itemnumber != 3 &&
+									values.itemnumber != 5 &&  values.itemnumber != 6 &&  values.itemnumber != 7 &&
+									values.itemnumber!= 9 &&  values.itemnumber != 11 &&  values.itemnumber != 14 &&
+									values.itemnumber != 19)  && trial.practiceobject.response == values.noshootkey) ]
+/ ontrialend = [if ((values.itemnumber == 1 || values.itemnumber == 2  || values.itemnumber == 3 ||
+									values.itemnumber == 5 ||  values.itemnumber == 6 ||  values.itemnumber == 7 || 
+									values.itemnumber == 9 ||  values.itemnumber == 11 ||  values.itemnumber == 14 || 
+									values.itemnumber == 19)  && trial.practiceobject.response == values.shootkey) 
+									{values.Hit = 1; values.total += values.HitReward}]
+/ ontrialend = [if ((values.itemnumber == 1 || values.itemnumber == 2  || values.itemnumber == 3 ||
+									values.itemnumber == 5 ||  values.itemnumber == 6 ||  values.itemnumber == 7 || 
+									values.itemnumber == 9 ||  values.itemnumber == 11 ||  values.itemnumber == 14 || 
+									values.itemnumber == 19)  && trial.practiceobject.response == values.noshootkey) 
+									{values.Miss = 1; values.total -= values.MissPunish}]
+/ ontrialend = [if ((values.itemnumber != 1 &&  values.itemnumber != 2  && values.itemnumber != 3 &&
+									values.itemnumber != 5 &&  values.itemnumber != 6 &&  values.itemnumber != 7 &&
+									values.itemnumber!= 9 &&  values.itemnumber != 11 &&  values.itemnumber != 14 &&
+									values.itemnumber != 19)  && trial.practiceobject.response == values.noshootkey) 
+									{values.CR = 1; values.total += values.CRReward}]
+/ ontrialend = [if ((values.itemnumber != 1 &&  values.itemnumber != 2  && values.itemnumber != 3 &&
+									values.itemnumber != 5 &&  values.itemnumber != 6 &&  values.itemnumber != 7 &&
+									values.itemnumber!= 9 &&  values.itemnumber != 11 &&  values.itemnumber != 14 &&
+									values.itemnumber != 19)  && trial.practiceobject.response == values.shootkey) 
+									{values.FA = 1; values.total = values.total - values.FAPunish}]
+/ ontrialend = [if (trial.practiceobject.response == 0) values.total -= values.NoresponsePunish]
+/ branch = [trial.feedback]
+</trial>
+
+**************************************************************************************************************
 EXPERIMENTAL TRIALS
 **************************************************************************************************************
 
@@ -741,11 +726,6 @@ experimental condition
 / recorddata = false
 </trial>
 
-/ branch = [if (values.count_background  >= values.repetition && values.condition == 1)
-					{reset(list.selectbackground); trial.GunBlack2}]
-/ branch = [if (values.count_background  >= values.repetition && values.condition == 3)
-					{reset(list.selectbackground); trial.ObjectBlack2}]
-
 ***************************************************************
 Main Trials: 4 experimental conditions
 *show target picture
@@ -753,29 +733,6 @@ Main Trials: 4 experimental conditions
 *times out after 850ms (default) if no response made (-10)
 *calls feedback
 **************************************************************
-
-trial GunBlack2>
-/ ontrialbegin = [values.count_GunBlack2 += 1]
-/ stimulusframes = [1 = GunBlack2]
-
-/ isvalidresponse = [trial.GunBlack2.response == values.shootkey ||
-							trial.GunBlack2.response == values.noshootkey]
-/ iscorrectresponse = [trial.GunBlack2.response == values.shootkey]
-/ timeout = (values.timeout)
-/ ontrialend = [if (trial.GunBlack2.response == values.shootkey) 
-					{values.Hit = 1; values.total += values.HitReward;
-					values.result = "Hit";
-					values.Sum_Black2Hits += 1;
-					values.SumRT_Black2Hits += trial.GunBlack2.latency}]
-/ ontrialend = [if (trial.GunBlack2.response == values.noshootkey) 
-					{values.Miss = 1; values.total -= values.MissPunish;
-					values.result = "Miss";
-					values.Sum_Black2Misses += 1;
-					values.SumRT_Black2Misses += trial.GunBlack2.latency }]
-/ ontrialend = [if (trial.GunBlack2.response == 0) 
-					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
-/ branch = [trial.feedback]
-/trial>
 
 <trial GunBlack>
 / ontrialbegin = [values.count_GunBlack += 1]
@@ -799,29 +756,6 @@ trial GunBlack2>
 					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
 / branch = [trial.feedback]
 </trial>
-
-trial ObjectBlack2>
-/ ontrialbegin = [values.count_ObjectBlack2 += 1]
-/ stimulusframes = [1 = ObjectBlack2]
-/ isvalidresponse = [trial.ObjectBlack2.response == values.shootkey ||
-							trial.ObjectBlack2.response == values.noshootkey]
-
-/ iscorrectresponse = [trial.ObjectBlack2.response == values.noshootkey]
-/ timeout = (values.timeout)
-/ ontrialend = [if (trial.ObjectBlack2.response == values.shootkey ) 
-					{values.FA = 1; values.total -= values.FAPunish;
-					values.result = "FA";
-					values.Sum_Black2FAs += 1;
-					values.SumRT_Black2FAs += trial.ObjectBlack2.latency}]
-/ ontrialend = [if (trial.ObjectBlack2.response == values.noshootkey ) 
-					{values.CR = 1; values.total += values.CRReward;
-					values.result = "CR";
-					values.Sum_Black2CRs += 1;
-					values.SumRT_Black2CRs += trial.ObjectBlack2.latency }]
-/ ontrialend = [if (trial.ObjectBlack2.response == 0) 
-					{values.total -= values.NoresponsePunish; values.result = "Noresponse"}]
-/ branch = [trial.feedback]
-/trial>
 
 <trial ObjectBlack>
 / ontrialbegin = [values.count_ObjectBlack += 1]
@@ -864,77 +798,6 @@ feedback trial:
 / stimulusframes = [1 = feedback, result, totalreport]
 / recorddata = false
 / timeout = (values.feedbackduration)
-</trial>
-
-**************************************************************************************************************
-PRACTICE  TRIALS
-**************************************************************************************************************
-
-Note:
-*calls the 20 practice backgrounds in sequence
-
-<trial fixation_practice>
-/ ontrialbegin = [values.count_background = 0; values.Hit = 0; values.Miss = 0; values.FA = 0; values.CR = 0]
-/ ontrialbegin = [values.itemnumber += 1]
-/ ontrialbegin = [values.repetition = list.repetition.nextvalue]
-/ stimulusframes = [1 = fixation]
-/ trialduration = values.fixationduration
-/ validresponse = (noresponse)
-/ branch = [trial.background_practice]
-/ recorddata = false
-</trial>
-
-<trial background_practice>
-/ ontrialbegin = [values.backgroundduration = list.duration.nextvalue]
-/ ontrialbegin = [values.count_background += 1]
-/ ontrialbegin = [if (values.count_background  < values.repetition) 
-							{
-							values.selectbackground = list.selectbackground.nextvalue}
-					else
-							values.selectbackground = values.itemnumber]
-/ stimulusframes = [1 = background_practice]
-/timeout = (values.backgroundduration)
-/ branch = [if (values.count_background  < values.repetition) trial.background_practice else trial.practiceobject]
-</trial>
-
-<trial practiceobject>
-/ontrialbegin = [reset(list.selectbackground)]
-/ stimulusframes = [1 = object]
-
-/ isvalidresponse = [trial.practiceobject.response == values.shootkey ||
-							trial.practiceobject.response == values.noshootkey]
-/ timeout = (values.timeout)
-/ iscorrectresponse = [
-									((values.itemnumber == 4 || values.itemnumber == 7  || values.itemnumber == 8 ||
-									values.itemnumber == 11 ||  values.itemnumber == 13 ||  values.itemnumber == 16 || 
-									values.itemnumber == 17 ||  values.itemnumber == 18 ||  values.itemnumber == 19 || 
-									values.itemnumber == 20)  && trial.practiceobject.response == values.shootkey) ||
-									((values.itemnumber != 4 &&  values.itemnumber !=7  && values.itemnumber !=8 &&
-									values.itemnumber != 11 &&  values.itemnumber != 13 &&  values.itemnumber != 16 &&
-									values.itemnumber!=17 &&  values.itemnumber != 18 &&  values.itemnumber != 19 &&
-									values.itemnumber != 20)  && trial.practiceobject.response == values.noshootkey) ]
-/ ontrialend = [if ((values.itemnumber == 4 || values.itemnumber == 7  || values.itemnumber == 8 ||
-									values.itemnumber == 11 ||  values.itemnumber == 13 ||  values.itemnumber == 16 || 
-									values.itemnumber == 17 ||  values.itemnumber == 18 ||  values.itemnumber == 19 || 
-									values.itemnumber == 20)  && trial.practiceobject.response == values.shootkey) 
-									{values.Hit = 1; values.total += values.HitReward}]
-/ ontrialend = [if ((values.itemnumber == 4 || values.itemnumber == 7  || values.itemnumber == 8 ||
-									values.itemnumber == 11 ||  values.itemnumber == 13 ||  values.itemnumber == 16 || 
-									values.itemnumber == 17 ||  values.itemnumber == 18 ||  values.itemnumber == 19 || 
-									values.itemnumber == 20)  && trial.practiceobject.response == values.noshootkey) 
-									{values.Miss = 1; values.total -= values.MissPunish}]
-/ ontrialend = [if ((values.itemnumber != 4 &&  values.itemnumber !=7  && values.itemnumber !=8 &&
-									values.itemnumber != 11 &&  values.itemnumber != 13 &&  values.itemnumber != 16 &&
-									values.itemnumber!=17 &&  values.itemnumber != 18 &&  values.itemnumber != 19 &&
-									values.itemnumber != 20)  && trial.practiceobject.response == values.noshootkey) 
-									{values.CR = 1; values.total += values.CRReward}]
-/ ontrialend = [if ((values.itemnumber != 4 &&  values.itemnumber !=7  && values.itemnumber !=8 &&
-									values.itemnumber != 11 &&  values.itemnumber != 13 &&  values.itemnumber != 16 &&
-									values.itemnumber!=17 &&  values.itemnumber != 18 &&  values.itemnumber != 19 &&
-									values.itemnumber != 20)  && trial.practiceobject.response == values.shootkey) 
-									{values.FA = 1; values.total = values.total - values.FAPunish}]
-/ ontrialend = [if (trial.practiceobject.response == 0) values.total -= values.NoresponsePunish]
-/ branch = [trial.feedback]
 </trial>
 
 **************************************************************************************************************
@@ -990,56 +853,8 @@ Experiment counterbalanced for shootkey/noshootkey (assignment by subjectnumber)
 
 *subjectnumbers 1-8:
 <expt >
-/ subjects = (1 of 16)
-/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A]
-/ preinstructions = (intro1_A, intro2)
-</expt>
-
-<expt >
-/ subjects = (2 of 16)
-/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A]
-/ preinstructions = (intro1_A, intro2)
-</expt>
-
-<expt >
-/ subjects = (3 of 16)
-/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A]
-/ preinstructions = (intro1_A, intro2)
-</expt>
-
-<expt >
-/ subjects = (4 of 16)
-/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A]
-/ preinstructions = (intro1_A, intro2)
-</expt>
-
-<expt >
-/ subjects = (5 of 16)
-/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A]
-/ preinstructions = (intro1_A, intro2)
-</expt>
-
-<expt >
-/ subjects = (6 of 16)
-/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A]
-/ preinstructions = (intro1_A, intro2)
-</expt>
-
-<expt >
-/ subjects = (7 of 16)
-/ onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
-/ blocks = [1 = POD_practiceA; 2 = POD_A]
-/ preinstructions = (intro1_A, intro2)
-</expt>
-
-<expt >
-/ subjects = (8 of 16)
+/ subjects = (1,2,3,4,5,6,7,8 of 16)
+/groupassignment = subjectnumber
 / onexptbegin = [values.shootkey = values.key1; values.noshootkey = values.key2; values.group = 1]
 / blocks = [1 = POD_practiceA; 2 = POD_A]
 / preinstructions = (intro1_A, intro2)
@@ -1047,56 +862,8 @@ Experiment counterbalanced for shootkey/noshootkey (assignment by subjectnumber)
 
 *subjectnumbers 9-16:
 <expt >
-/ subjects = (9 of 16)
-/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B]
-/ preinstructions = (intro1_B, intro2)
-</expt>
-
-<expt >
-/ subjects = (10 of 16)
-/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B]
-/ preinstructions = (intro1_B, intro2)
-</expt>
-
-<expt >
-/ subjects = (11 of 16)
-/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B]
-/ preinstructions = (intro1_B, intro2)
-</expt>
-
-<expt >
-/ subjects = (12 of 16)
-/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B]
-/ preinstructions = (intro1_B, intro2)
-</expt>
-
-<expt >
-/ subjects = (13 of 16)
-/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B]
-/ preinstructions = (intro1_B, intro2)
-</expt>
-
-<expt >
-/ subjects = (14 of 16)
-/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B]
-/ preinstructions = (intro1_B, intro2)
-</expt>
-
-<expt >
-/ subjects = (15 of 16)
-/ onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
-/ blocks = [1 = POD_practiceB; 2 = POD_B]
-/ preinstructions = (intro1_B, intro2)
-</expt>
-
-<expt >
-/ subjects = (16 of 16)
+/ subjects = (9,10,11,12,13,14,15,16 of 16)
+/groupassignment = subjectnumber
 / onexptbegin = [values.shootkey = values.key2; values.noshootkey = values.key1; values.group = 2]
 / blocks = [1 = POD_practiceB; 2 = POD_B]
 / preinstructions = (intro1_B, intro2)
