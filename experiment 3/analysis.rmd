@@ -75,8 +75,7 @@ I.e., after applying inclusion/exclusion criteria.
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 passers_df <- 
   data_df %>%
-  filter(IAT_exclude_based_on_fast_trials == FALSE &
-           shooter_exclude_based_on_fast_trials == FALSE)
+  filter(IAT_exclude_based_on_fast_trials == FALSE)
 
 passers_df %>% 
   dplyr::count(IAT_condition) %>%
@@ -120,8 +119,7 @@ shooter_data <-
   dplyr::mutate(participant = as.factor(participant),
          trial_type = as.factor(trial_type),
          IAT_condition = as.factor(IAT_condition)) %>%
-  filter(IAT_exclude_based_on_fast_trials == FALSE &
-           shooter_exclude_based_on_fast_trials == FALSE)
+  filter(IAT_exclude_based_on_fast_trials == FALSE)
 
 # exclude outlier rts
 shooter_data_outliers_removed <- shooter_data %>%
@@ -270,8 +268,7 @@ H4: Participants who complete a race IAT will demonstrate more negative self-rep
 ratings_data <- 
   read.csv("data/processed/processed ratings data - long format.csv") %>%
   dplyr::mutate(participant = as.factor(participant)) %>%
-  filter(IAT_exclude_based_on_fast_trials == FALSE & 
-           shooter_exclude_based_on_fast_trials == FALSE)
+  filter(IAT_exclude_based_on_fast_trials == FALSE)
 ```
 
 ## Linear mixed model

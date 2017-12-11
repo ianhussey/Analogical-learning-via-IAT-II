@@ -50,11 +50,17 @@ Not included in primary analyses.
 
 H1-H3 The conditions will differ in their automatic biases evaluations on the shooter bias task. The shooter bias task is relatively liberal in that it provides multiple scoring metrics. We will employ three of the most common ones. The first is consistent with the previous analyses of RT biases (e.g., on the SC-IAT), the second and third represent two forms of signal detection analysis that are frequently employed in the shooter bias task literature.
 
-- H1: RT biases (main effect for condition or condition*trial type interaction effect)
-- H2: sensitivity differences (d' between conditions)
-- H3: response bias differences (c between conditions)
+- H1: RT biases 
+  - condition*trial type interaction effect or main effect for condition
+- H2: sensitivity differences (d')
+  - main effect for condition
+- H3: response bias differences (c)
+  - main effect for condition
 
 H4 The conditions will differ in their self-reported evaluations of the black faces.
+
+- H4: ratings differences (c)
+  - main effect for condition
 
 ## Sample
 
@@ -79,11 +85,13 @@ No power analysis as I'm still working out how to do this for interaction effect
 
 ### Exclusion criteria
 
-Participants who have >10% of RTs < 300ms on the IAT's test blocks (3, 4, 6, 7) or on the shooter task test block will be excluded from the analysis. This provides a way to screen for low quality responding given the internet based sample.
+Participants who have >10% of RTs < 300ms on the IAT's test blocks (3, 4, 6, 7) will be excluded from the analysis. This provides a way to screen for low quality responding given the internet based sample.
 
-Individual shooter task RTs that deviate from the mean by more than 2.5 SD will be defined as outliers and excluded from the analysis.
+Individual shooter task RTs that deviate from the mean by more than 2.5 SD will be defined as outliers and excluded from the analysis of RT level data.
 
 ### Analyses 
+
+*Analyses of the shooter bias task:*
 
 #### H1 shooter task RT analysis
 
@@ -98,6 +106,10 @@ shooter_d' ~ condition + modern_racism + (1 | participant)
 #### H3 shooter task response bias analysis
 
 shooter_c ~ condition + modern_racism + (1 | participant)
+
+
+
+*Analyses of ratings data:*
 
 #### H4 ratings analysis
 

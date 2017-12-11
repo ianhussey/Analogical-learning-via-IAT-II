@@ -12,7 +12,7 @@ The purpose of this study is to examine factors that influence learning and cogn
 
 ### Max time
 
-40 mins
+45 mins
 
 ### Reward
 

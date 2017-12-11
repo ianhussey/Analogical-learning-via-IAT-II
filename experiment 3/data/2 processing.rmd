@@ -171,12 +171,12 @@ shooter_trimmed <- cleaned_df %>%
 # total trials per participant per trial type
 temp1 <- shooter_trimmed %>%
   count(participant, trial_type) %>%
-  rename(totaltrials = n)
+  dplyr::rename(totaltrials = n)
 
 # n trials per participant per trial type per response type
 temp2 <- shooter_trimmed %>%
   count(participant, trial_type, response_categorisation) %>%
-  rename(ntrials = n)
+  dplyr::rename(ntrials = n)
 
 shooter_data_df <- 
   # join dfs
@@ -185,10 +185,10 @@ shooter_data_df <-
   mutate(percentage = ntrials/totaltrials) %>%
   # reshape
   spread(response_categorisation, percentage) %>%
-  rename(percentage.Hit  = Hit, 
-         percentage.Miss = Miss, 
-         percentage.FA   = FA, 
-         percentage.CR   = CR) %>%
+  dplyr::rename(percentage.Hit  = Hit, 
+                percentage.Miss = Miss, 
+                percentage.FA   = FA, 
+                percentage.CR   = CR) %>%
   mutate(
     # add zeros where data NAs are present
     percentage.Hit   = ifelse(is.na(percentage.Hit),  0, percentage.Hit),
@@ -198,11 +198,11 @@ shooter_data_df <-
   ) %>%
   
   group_by(participant, trial_type) %>%
-  summarize(totaltrials     = sum(ntrials, na.rm = TRUE),
-            percentage.Hit  = sum(percentage.Hit,  na.rm = TRUE), 
-            percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
-            percentage.FA   = sum(percentage.FA,   na.rm = TRUE), 
-            percentage.CR   = sum(percentage.CR,   na.rm = TRUE)) %>%
+  dplyr::summarize(totaltrials     = sum(ntrials, na.rm = TRUE),
+                   percentage.Hit  = sum(percentage.Hit,  na.rm = TRUE), 
+                   percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
+                   percentage.FA   = sum(percentage.FA,   na.rm = TRUE), 
+                   percentage.CR   = sum(percentage.CR,   na.rm = TRUE)) %>%
   
   rowwise() %>%
   mutate(
@@ -220,8 +220,8 @@ shooter_data_df <-
   
   # summarize across trial types
   group_by(participant) %>%
-  summarise(percentage.Hit = sum(percentage.Hit), 
-            percentage.FA  = sum(percentage.FA)) %>%
+  dplyr::summarise(percentage.Hit = sum(percentage.Hit), 
+                   percentage.FA  = sum(percentage.FA)) %>%
   
   # compute d' and c
   # d' and c require values of Hit and FA other than zero and 1. Where values of 0 occur, set to 1/2N, where N = number of trials. Where values of 1 1-1/2N. Here N = 80.
@@ -236,16 +236,12 @@ shooter_data_df <-
 
 
 shooter_summary_stats_df <- shooter_trimmed %>%
-  dplyr::mutate(too_fast_trial = ifelse(rt < 300, 1, 0)) %>%  # add new column that records if RT < 300ms.
   dplyr::group_by(participant) %>%
   dplyr::summarize(shooter_mean_RT = round(mean(rt), 0),
-                   shooter_perc_acc = round(sum(accuracy)/n(), 2),
-                   percent_fast_trials = sum(too_fast_trial)/n()) %>%  # arbitrary number of test block trials
-  dplyr::mutate(shooter_exclude_based_on_fast_trials = ifelse(percent_fast_trials < 0.1, FALSE, TRUE)) %>%  
+                   shooter_perc_acc = round(sum(accuracy)/n(), 2)) %>%
   dplyr::select(participant,
                 shooter_mean_RT,
-                shooter_perc_acc,
-                shooter_exclude_based_on_fast_trials)
+                shooter_perc_acc)
 
 
 # join wide D1 scored data and write to disk ------------------------------
@@ -282,8 +278,7 @@ other_tasks_df <-
                 gender, 
                 age, 
                 modern_racism_scale_total, 
-                IAT_exclude_based_on_fast_trials,
-                shooter_exclude_based_on_fast_trials)
+                IAT_exclude_based_on_fast_trials)
 
 
 # long format shooter rts --------------------------------------------------
@@ -307,6 +302,7 @@ ratings_long_format_df <-
   dplyr::left_join(other_tasks_df, by = "participant")
 
 ratings_long_format_df %>% write.csv(file = "processed/processed ratings data - long format.csv", row.names = FALSE)
+
 ```
 
 N participants in wide data: `r wide_D1_scored_data_df %>% dplyr::summarize(n = n()) %>% as.numeric()`
