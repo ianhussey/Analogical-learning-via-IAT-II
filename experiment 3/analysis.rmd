@@ -206,7 +206,7 @@ ggplot(data = model_1_predicted_effects,
   #       legend.key = element_rect(colour = "transparent"))
 ```
 
-# Hypothesis test 2: differences in sensitivity (d')
+# Hypothesis test 2: differences in accuracy
 
 H2 refers to the sensitivity analysis: main effect for IAT condition.
 
@@ -233,9 +233,36 @@ sjp.lm(model_2,
        type = "fe")
 ```
 
-# Hypothesis test 3: differences in response bias (c)
+# Hypothesis test 3: differences in sensitivity (d')
 
-H3 refers to the response bias analysis: main effect for IAT condition.
+H3 refers to the sensitivity analysis: main effect for IAT condition.
+
+## Model
+
+```{r, message=FALSE, warning=FALSE}
+model_2 <- lm(d ~ IAT_condition + modern_racism_scale_total,
+              contrasts = list(IAT_condition = "contr.sum"),
+              data = passers_df)
+```
+
+## Summary
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+sjt.lm(model_2, 
+       emph.p = FALSE, 
+       show.std = TRUE)
+```
+
+## Plot effects
+
+```{r, message=FALSE, fig.height=4, fig.width=6, warning=FALSE, echo=FALSE}
+sjp.lm(model_2, 
+       type = "fe")
+```
+
+# Hypothesis test 4: differences in response bias (c)
+
+H4 refers to the response bias analysis: main effect for IAT condition.
 
 ## Model
 
@@ -260,9 +287,9 @@ sjp.lm(model_3,
        type = "fe")
 ```
 
-# Hypothesis test 4: Differences in self-reported ratings between contrast pair conditions
+# Hypothesis test 5: Differences in self-reported ratings between contrast pair conditions
 
-H4: Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
+H5: Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 ratings_data <- 

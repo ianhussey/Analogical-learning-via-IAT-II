@@ -48,7 +48,7 @@ Not included in primary analyses.
 
 ## Hypotheses
 
-H1-H3 The conditions will differ in their automatic biases evaluations on the shooter bias task. The shooter bias task is relatively liberal in that it provides multiple scoring metrics. We will employ three of the most common ones. The first is consistent with the previous analyses of RT biases (e.g., on the SC-IAT), the second and third represent two forms of signal detection analysis that are frequently employed in the shooter bias task literature.
+H1-H3 The conditions will differ in their automatic biases evaluations on the shooter bias task. The shooter bias task is relatively liberal in that it provides multiple scoring metrics. We will employ three of the most common ones. The first is consistent with the previous experiments' analyses of RT biases (e.g., on the SC-IAT and AMP), the second and third represent two forms of signal detection analysis that are frequently employed in the shooter bias task literature.
 
 - H1: RT biases 
   - condition*trial type interaction effect or main effect for condition
@@ -71,11 +71,11 @@ H4 The conditions will differ in their self-reported evaluations of the black fa
 
 ### Power analysis
 
-No power analysis as I'm still working out how to do this for interaction effects in LMMs. Sample size increased relative to previous experiments given larger number of analyses on the shooter task.
+No power analysis given the complexity of simulations for LMM interaction effects. Sample size was increased relative to previous experiments given larger number of analyses on the shooter task.
 
 ### Planned sample size
 
-300
+250
 
 ### Payment
 
@@ -91,28 +91,24 @@ Individual shooter task RTs that deviate from the mean by more than 2.5 SD will 
 
 ### Analyses 
 
-*Analyses of the shooter bias task:*
+Linear mixed effects models
 
-#### H1 shooter task RT analysis
+#### Shooter bias task
 
-Linear mixed effects model
+##### H1 shooter task RT analysis
 
 shooter_rt ~ condition * trial_type + modern_racism + (1 | participant)
 
-#### H2 shooter task sensitivity analysis
+##### H2 shooter task sensitivity analysis
 
 shooter_d' ~ condition + modern_racism + (1 | participant)
 
-#### H3 shooter task response bias analysis
+##### H3 shooter task response bias analysis
 
 shooter_c ~ condition + modern_racism + (1 | participant)
 
+#### Ratings data
 
-
-*Analyses of ratings data:*
-
-#### H4 ratings analysis
-
-Linear mixed effects model
+##### H4 ratings analysis
 
 black_faces_rating ~ condition + modern_racism + (1 | participant)
