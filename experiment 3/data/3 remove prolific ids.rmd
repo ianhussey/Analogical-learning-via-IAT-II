@@ -17,7 +17,7 @@ library(tidyverse)
 library(data.table)
 
 ## Set the working directory
-setwd("data/raw/")
+setwd("raw/")
 
 # Read all files with the .iqdat extension
 files <- list.files(pattern = "demographics")  

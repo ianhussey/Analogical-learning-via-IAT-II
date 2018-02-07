@@ -51,7 +51,8 @@ Not included in primary analyses.
 H1-H3 The conditions will differ in their automatic biases evaluations on the shooter bias task. The shooter bias task is relatively liberal in that it provides multiple scoring metrics. We will employ three of the most common ones. The first is consistent with the previous experiments' analyses of RT biases (e.g., on the SC-IAT and AMP), the second and third represent two forms of signal detection analysis that are frequently employed in the shooter bias task literature.
 
 - H1: RT biases 
-  - condition*trial type interaction effect or main effect for condition
+  - condition*trial type interaction effect
+    - preregistration mistakenly referred to the main effect for condition too, but a mere difference in responding between the IAT conditions that does not interact with the shooter bias trial type would not represent a racial bias.
 - H2: sensitivity differences (d')
   - main effect for condition
 - H3: response bias differences (c)

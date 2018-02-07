@@ -102,11 +102,11 @@ passers_df %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
 ```
 
-# Hypothesis test 1: Differences in IAT effects between contrast pair conditions
+# Hypothesis test 1: Differences in Shooter task RT effects between IAT conditions
 
 H1-H3: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will influence implicit biases towards black people on the on the shooter task relative to participants who completed a control (flowers-insects) IAT.
 
-H1 refers to the RT analysis: main effect for condition or interaction effect between condition and trial type.
+H1 refers to the RT analysis: interaction effect between condition and trial type. Preregistered code mistakenly referred to the main effect too, but a difference in responding speed between conditions does not represent a racial bias. 
 
 ## Outlier removal
 
@@ -117,8 +117,8 @@ Exclude data points > 2.5 SD from mean.
 shooter_data <- 
   read.csv("data/processed/processed shooter task data - long format.csv") %>%
   dplyr::mutate(participant = as.factor(participant),
-         trial_type = as.factor(trial_type),
-         IAT_condition = as.factor(IAT_condition)) %>%
+                trial_type = as.factor(trial_type),
+                IAT_condition = as.factor(IAT_condition)) %>%
   filter(IAT_exclude_based_on_fast_trials == FALSE)
 
 # exclude outlier rts
@@ -206,7 +206,7 @@ ggplot(data = model_1_predicted_effects,
   #       legend.key = element_rect(colour = "transparent"))
 ```
 
-# Hypothesis test 2: differences in accuracy
+# Hypothesis test 2: differences in Shooter task sensitivity (d') between IAT conditions
 
 H2 refers to the sensitivity analysis: main effect for IAT condition.
 
@@ -233,36 +233,9 @@ sjp.lm(model_2,
        type = "fe")
 ```
 
-# Hypothesis test 3: differences in sensitivity (d')
+# Hypothesis test 3: differences in Shooter task response bias (c) between conditions
 
-H3 refers to the sensitivity analysis: main effect for IAT condition.
-
-## Model
-
-```{r, message=FALSE, warning=FALSE}
-model_2 <- lm(d ~ IAT_condition + modern_racism_scale_total,
-              contrasts = list(IAT_condition = "contr.sum"),
-              data = passers_df)
-```
-
-## Summary
-
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-sjt.lm(model_2, 
-       emph.p = FALSE, 
-       show.std = TRUE)
-```
-
-## Plot effects
-
-```{r, message=FALSE, fig.height=4, fig.width=6, warning=FALSE, echo=FALSE}
-sjp.lm(model_2, 
-       type = "fe")
-```
-
-# Hypothesis test 4: differences in response bias (c)
-
-H4 refers to the response bias analysis: main effect for IAT condition.
+H3 refers to the response bias analysis: main effect for IAT condition.
 
 ## Model
 
@@ -287,9 +260,9 @@ sjp.lm(model_3,
        type = "fe")
 ```
 
-# Hypothesis test 5: Differences in self-reported ratings between contrast pair conditions
+# Hypothesis test 4: Differences in self-reported ratings between IAT conditions
 
-H5: Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
+H4: Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 ratings_data <- 
