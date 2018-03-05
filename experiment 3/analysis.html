@@ -276,18 +276,18 @@ div.tocify {
 <span class="kw">library</span>(kableExtra)
 <span class="kw">library</span>(apa)
 
-<span class="co"># comment out if knitting to pdf</span>
-<span class="kw">options</span>(<span class="dt">knitr.table.format =</span> <span class="st">&quot;html&quot;</span>)
-
-<span class="co"># knitr options</span>
-knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">echo =</span> <span class="ot">TRUE</span>)
-
 <span class="co"># rounds all numerics in a df</span>
 round_df &lt;-<span class="st"> </span><span class="cf">function</span>(df, digits) {
   nums &lt;-<span class="st"> </span><span class="kw">vapply</span>(df, is.numeric, <span class="dt">FUN.VALUE =</span> <span class="kw">logical</span>(<span class="dv">1</span>))
   df[,nums] &lt;-<span class="st"> </span><span class="kw">round</span>(df[,nums], <span class="dt">digits =</span> digits)
   (df)
-}</code></pre></div>
+}
+
+<span class="co"># options</span>
+<span class="kw">options</span>(<span class="dt">knitr.table.format =</span> <span class="st">&quot;html&quot;</span>) <span class="co"># necessary configuration of tables</span>
+
+<span class="co"># disable scientific notation</span>
+<span class="kw">options</span>(<span class="dt">scipen =</span> <span class="dv">999</span>) </code></pre></div>
 <div id="descriptive-statistics" class="section level1">
 <h1>Descriptive statistics</h1>
 <div id="full-sample" class="section level2">
@@ -303,14 +303,113 @@ attrition_rate &lt;-<span class="st"> </span>data_df <span class="op">%&gt;%</sp
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarize</span>(<span class="dt">rate =</span> <span class="kw">round</span>(<span class="kw">sum</span>(exclude)<span class="op">/</span><span class="kw">n</span>()<span class="op">*</span><span class="dv">100</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">as.numeric</span>()
 
-chi2_result &lt;-<span class="st"> </span>data_df <span class="op">%&gt;%</span>
+data_df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(exclude) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>), <span class="dt">full_width =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+exclude
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+246
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+48
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_df <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(exclude, IAT_condition) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>), <span class="dt">full_width =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+exclude
+</th>
+<th style="text-align:left;">
+IAT_condition
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+Flowers-Insects IAT
+</td>
+<td style="text-align:right;">
+116
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:left;">
+Race IAT
+</td>
+<td style="text-align:right;">
+130
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Flowers-Insects IAT
+</td>
+<td style="text-align:right;">
+31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+Race IAT
+</td>
+<td style="text-align:right;">
+17
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chi2_result &lt;-<span class="st"> </span>data_df <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">count</span>(IAT_condition, exclude) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">spread</span>(exclude, n) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>IAT_condition) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">chisq.test</span>(.) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">chisq_apa</span>(., <span class="dt">print_n =</span> <span class="ot">FALSE</span>, <span class="dt">format =</span> <span class="kw">c</span>(<span class="st">&quot;rmarkdown&quot;</span>), <span class="dt">info =</span> <span class="ot">FALSE</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">chisq_apa</span>(., <span class="dt">print_n =</span> <span class="ot">TRUE</span>, <span class="dt">format =</span> <span class="kw">c</span>(<span class="st">&quot;rmarkdown&quot;</span>), <span class="dt">info =</span> <span class="ot">FALSE</span>, <span class="dt">print =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>Attrition rate = 16.3%.</p>
-<p>A chi squared test was used to assess whether the conditions suffered from differential attrition rates: <span class="math inline">\(\chi^2\)</span>(1) = 4.21, <em>p</em> = .040.</p>
+<p>A chi squared test was used to assess whether the conditions suffered from differential attrition rates: <span class="math inline">\(\chi^2\)</span>(1, n = 294) = 4.21, <em>p</em> = .040. [nb results of p = 1.0 will show as = .000 due to an error in how chisq_apa trims its results]</p>
 </div>
 <div id="analytic-sample" class="section level2">
 <h2>Analytic sample</h2>
@@ -434,43 +533,6 @@ non-binary
 </td>
 <td style="text-align:right;">
 1
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="conditions" class="section level3">
-<h3>Conditions</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">passers_df <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">count</span>(IAT_condition) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">kable</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>, <span class="st">&quot;condensed&quot;</span>), <span class="dt">full_width =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<thead>
-<tr>
-<th style="text-align:left;">
-IAT_condition
-</th>
-<th style="text-align:right;">
-n
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Flowers-Insects IAT
-</td>
-<td style="text-align:right;">
-116
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Race IAT
-</td>
-<td style="text-align:right;">
-130
 </td>
 </tr>
 </tbody>

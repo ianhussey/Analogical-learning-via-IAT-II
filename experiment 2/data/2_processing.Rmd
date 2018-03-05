@@ -151,42 +151,28 @@ IAT_summary_stats_df <- cleaned_df %>%
 # AMP summary scores ------------------------------------------------------
 
 
-# AMP_summary_stats_df <- 
-#   cleaned_df %>%
-#   dplyr::filter(task == "AMP_test") %>% # test block only
-#   dplyr::select(participant,
-#                 accuracy,
-#                 rt,
-#                 item) %>%
-#   dplyr::mutate(AMP_too_fast_trial = ifelse(rt < 300, 1, 0)) %>%
-#   dplyr::group_by(participant) %>%
-#   dplyr::summarize(AMP_mean_RT = round(mean(rt), 0),
-#                    AMP_perc_acc = round(sum(accuracy)/n(), 2),
-#                    AMP_percent_fast_trials = sum(AMP_too_fast_trial)/n()) %>%  # arbitrary number of test block trials
-#   dplyr::mutate(AMP_exclude_based_on_fast_trials = ifelse(AMP_percent_fast_trials < 0.1, FALSE, TRUE)) %>%  
-#   dplyr::select(participant,
-#                 AMP_mean_RT,
-#                 AMP_perc_acc,
-#                 AMP_exclude_based_on_fast_trials)
-
-## The exclusion criterion of >10% trials <300ms was illconsidered - it didn't take into account the distribution
-## of RTs in the AMP and results in a very large proportion of the sample being excluded. 
-## Rather than tweak this exclusion criterion post hoc, we simple remove it for the sake of improving attrition rates.
-## This change was made prior to analysing the data.
-
 AMP_summary_stats_df <- cleaned_df %>%
   dplyr::filter(task == "AMP_test") %>% # test block only
   dplyr::select(participant,
                 accuracy,
                 rt,
                 item) %>%
+  dplyr::mutate(AMP_too_fast_trial = ifelse(rt < 300, 1, 0)) %>%
   dplyr::group_by(participant) %>%
   dplyr::summarize(AMP_mean_RT = round(mean(rt), 0),
-                   AMP_perc_acc = round(sum(accuracy)/n(), 2)) %>%  # arbitrary number of test block trials
+                   AMP_perc_acc = round(sum(accuracy)/n(), 2),
+                   AMP_percent_fast_trials = sum(AMP_too_fast_trial)/n()) %>%  # arbitrary number of test block trials
+  dplyr::mutate(AMP_exclude_based_on_fast_trials_old = ifelse(AMP_percent_fast_trials < 0.1, FALSE, TRUE)) %>%
   dplyr::select(participant,
                 AMP_mean_RT,
-                AMP_perc_acc) %>%
-  ungroup()
+                AMP_perc_acc,
+                AMP_exclude_based_on_fast_trials_old)
+
+## The exclusion criterion of >10% trials <300ms was illconsidered - it didn't take into account the distribution
+## of RTs in the AMP and results in a very large proportion of the sample being excluded. 
+## Rather than tweak this exclusion criterion post hoc, we simple remove it for the sake of improving attrition rates.
+## This change was made prior to analysing the data.
+## The variable is still included in the data but not used.
 
 AMP_summary_stats_2_df <- cleaned_df %>%
   dplyr::filter(task == "AMP_test") %>% # test block only
@@ -255,7 +241,7 @@ other_tasks_df <- wide_data_df %>%
                 modern_racism_scale_total, 
                 amp_recognition_response,
                 IAT_exclude_based_on_fast_trials,
-                #AMP_exclude_based_on_fast_trials,
+                AMP_exclude_based_on_fast_trials_old,
                 exclude)
 
 

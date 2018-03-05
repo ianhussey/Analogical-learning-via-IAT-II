@@ -34,18 +34,18 @@ library(sjPlot)
 library(kableExtra)
 library(apa)
 
-# comment out if knitting to pdf
-options(knitr.table.format = "html")
-
-# knitr options
-knitr::opts_chunk$set(echo = TRUE)
-
 # rounds all numerics in a df
 round_df <- function(df, digits) {
   nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
   df[,nums] <- round(df[,nums], digits = digits)
   (df)
 }
+
+# options
+options(knitr.table.format = "html") # necessary configuration of tables
+
+# disable scientific notation
+options(scipen = 999) 
 
 ```
 
@@ -66,18 +66,28 @@ attrition_rate <- data_df %>%
   dplyr::summarize(rate = round(sum(exclude)/n()*100, 1)) %>%
   as.numeric()
 
+data_df %>%
+  count(exclude) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+data_df %>%
+  count(exclude, IAT_condition) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 chi2_result <- data_df %>%
   count(IAT_condition, exclude) %>%
   spread(exclude, n) %>%
   select(-IAT_condition) %>%
   chisq.test(.) %>%
-  chisq_apa(., print_n = FALSE, format = c("rmarkdown"), info = FALSE, print = FALSE)
+  chisq_apa(., print_n = TRUE, format = c("rmarkdown"), info = FALSE, print = FALSE)
 
 ```
 
 Attrition rate = `r attrition_rate`%.
 
-A chi squared test was used to assess whether the conditions suffered from differential attrition rates: `r chi2_result`.
+A chi squared test was used to assess whether the conditions suffered from differential attrition rates: `r chi2_result`. [nb results of p = 1.0 will show as = .000 due to an error in how chisq_apa trims its results]
 
 ## Analytic sample
 
@@ -107,17 +117,6 @@ passers_df %>%
 
 passers_df %>% 
   dplyr::count(gender) %>%
-  kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
-
-```
-
-### Conditions
-
-```{r}
-
-passers_df %>% 
-  dplyr::count(IAT_condition) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
 
@@ -467,6 +466,17 @@ model_meta <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | exp
                    contrasts = list(IAT_condition = "contr.sum"),  
                    data = combined_ratings_data)
 
+
+model_sr_1 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id),
+                   contrasts = list(IAT_condition = "contr.sum"),  
+                   data = ratings_data_exp1)
+model_sr_2 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id),
+                   contrasts = list(IAT_condition = "contr.sum"),  
+                   data = ratings_data_exp2)
+model_sr_3 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id),
+                   contrasts = list(IAT_condition = "contr.sum"),  
+                   data = ratings_data_exp3)
+
 ```
 
 - Hypothesis refers to main effect for IAT condition.
@@ -499,9 +509,54 @@ sjp.lmer(model_meta,
 
 ```{r fig.height=3, fig.width=5}
 
-model_meta_predicted_effects <- as.data.frame(effect("IAT_condition", model_meta))
+# n per condition per study
+sr_1_n <- ratings_data_exp1 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 1")
 
-model_meta_predicted_effects %>% 
+sr_2_n <- ratings_data_exp2 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 2")
+
+sr_3_n <- ratings_data_exp3 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 3")
+
+sr_n <- rbind(sr_1_n, sr_2_n, sr_3_n) %>%
+  gather(IAT_condition, n, c("Race IAT", "Flowers-Insects IAT")) %>%
+  mutate(percent_n = round(n/sum(n), 3)) %>%
+  arrange(experiment)
+
+
+# predicted effects
+model_meta_predicted_effects <- as.data.frame(effect("IAT_condition", model_meta)) %>%
+  mutate(experiment = "Meta-analysis")
+
+model_sr_1_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_1)) %>%
+  mutate(experiment = "Experiment 1")
+model_sr_2_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_2)) %>%
+  mutate(experiment = "Experiment 2")
+model_sr_3_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_3)) %>%
+  mutate(experiment = "Experiment 3")
+
+# combine
+model_predicted_effects <- rbind(model_sr_1_predicted_effects, 
+                                 model_sr_2_predicted_effects, 
+                                 model_sr_3_predicted_effects,
+                                 model_meta_predicted_effects) %>%
+  left_join(sr_n, by = c("experiment", "IAT_condition")) %>%
+  mutate(percent_n = ifelse(is.na(percent_n), 5, percent_n*5)) %>%
+  mutate(experiment = fct_relevel(experiment,
+                                  "Meta-analysis",
+                                  "Experiment 3", 
+                                  "Experiment 2", 
+                                  "Experiment 1"))
+
+
+model_predicted_effects %>% 
   round_df(2) %>%
   kable()
 
@@ -509,15 +564,23 @@ model_meta_predicted_effects %>%
   
 ### Plot predictions
 
-```{r fig.height=2, fig.width=3}
+```{r fig.height=3, fig.width=7}
 
-ggplot(data = model_meta_predicted_effects,
-       aes(x = IAT_condition, y = fit)) +
-  geom_pointrange(aes(ymax = upper,
-                      ymin = lower)) +
+ggplot(data = model_predicted_effects,
+       aes(x = experiment,color = IAT_condition)) +
+  geom_point(aes(y = fit, 
+                 size = percent_n), 
+             position = position_dodge(width=0.75),
+             shape = 15,
+             show.legend = FALSE) +
+  geom_linerange(aes(ymax = upper,
+                     ymin = lower), 
+                 position = position_dodge(width=0.75)) +
   ylab("Rating") +
-  xlab("IAT condition") +
+  xlab("") +
   scale_colour_grey() +
-  theme_classic()
+  theme_classic() + 
+  ylim(3.8, 4.9) +
+  coord_flip() 
 
 ```

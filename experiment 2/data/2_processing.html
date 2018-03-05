@@ -391,42 +391,28 @@ IAT_summary_stats_df &lt;-<span class="st"> </span>cleaned_df <span class="op">%
 <span class="co"># AMP summary scores ------------------------------------------------------</span>
 
 
-<span class="co"># AMP_summary_stats_df &lt;- </span>
-<span class="co">#   cleaned_df %&gt;%</span>
-<span class="co">#   dplyr::filter(task == &quot;AMP_test&quot;) %&gt;% # test block only</span>
-<span class="co">#   dplyr::select(participant,</span>
-<span class="co">#                 accuracy,</span>
-<span class="co">#                 rt,</span>
-<span class="co">#                 item) %&gt;%</span>
-<span class="co">#   dplyr::mutate(AMP_too_fast_trial = ifelse(rt &lt; 300, 1, 0)) %&gt;%</span>
-<span class="co">#   dplyr::group_by(participant) %&gt;%</span>
-<span class="co">#   dplyr::summarize(AMP_mean_RT = round(mean(rt), 0),</span>
-<span class="co">#                    AMP_perc_acc = round(sum(accuracy)/n(), 2),</span>
-<span class="co">#                    AMP_percent_fast_trials = sum(AMP_too_fast_trial)/n()) %&gt;%  # arbitrary number of test block trials</span>
-<span class="co">#   dplyr::mutate(AMP_exclude_based_on_fast_trials = ifelse(AMP_percent_fast_trials &lt; 0.1, FALSE, TRUE)) %&gt;%  </span>
-<span class="co">#   dplyr::select(participant,</span>
-<span class="co">#                 AMP_mean_RT,</span>
-<span class="co">#                 AMP_perc_acc,</span>
-<span class="co">#                 AMP_exclude_based_on_fast_trials)</span>
-
-## The exclusion criterion of &gt;10% trials &lt;300ms was illconsidered - it didn't take into account the distribution
-## of RTs in the AMP and results in a very large proportion of the sample being excluded. 
-## Rather than tweak this exclusion criterion post hoc, we simple remove it for the sake of improving attrition rates.
-## This change was made prior to analysing the data.
-
 AMP_summary_stats_df &lt;-<span class="st"> </span>cleaned_df <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(task <span class="op">==</span><span class="st"> &quot;AMP_test&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># test block only</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(participant,
                 accuracy,
                 rt,
                 item) <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">AMP_too_fast_trial =</span> <span class="kw">ifelse</span>(rt <span class="op">&lt;</span><span class="st"> </span><span class="dv">300</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">group_by</span>(participant) <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarize</span>(<span class="dt">AMP_mean_RT =</span> <span class="kw">round</span>(<span class="kw">mean</span>(rt), <span class="dv">0</span>),
-                   <span class="dt">AMP_perc_acc =</span> <span class="kw">round</span>(<span class="kw">sum</span>(accuracy)<span class="op">/</span><span class="kw">n</span>(), <span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># arbitrary number of test block trials</span>
+                   <span class="dt">AMP_perc_acc =</span> <span class="kw">round</span>(<span class="kw">sum</span>(accuracy)<span class="op">/</span><span class="kw">n</span>(), <span class="dv">2</span>),
+                   <span class="dt">AMP_percent_fast_trials =</span> <span class="kw">sum</span>(AMP_too_fast_trial)<span class="op">/</span><span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># arbitrary number of test block trials</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">AMP_exclude_based_on_fast_trials_old =</span> <span class="kw">ifelse</span>(AMP_percent_fast_trials <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.1</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(participant,
                 AMP_mean_RT,
-                AMP_perc_acc) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ungroup</span>()
+                AMP_perc_acc,
+                AMP_exclude_based_on_fast_trials_old)
+
+## The exclusion criterion of &gt;10% trials &lt;300ms was illconsidered - it didn't take into account the distribution
+## of RTs in the AMP and results in a very large proportion of the sample being excluded. 
+## Rather than tweak this exclusion criterion post hoc, we simple remove it for the sake of improving attrition rates.
+## This change was made prior to analysing the data.
+## The variable is still included in the data but not used.
 
 AMP_summary_stats_2_df &lt;-<span class="st"> </span>cleaned_df <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(task <span class="op">==</span><span class="st"> &quot;AMP_test&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># test block only</span>
@@ -501,7 +487,7 @@ other_tasks_df &lt;-<span class="st"> </span>wide_data_df <span class="op">%&gt;
                 modern_racism_scale_total, 
                 amp_recognition_response,
                 IAT_exclude_based_on_fast_trials,
-                <span class="co">#AMP_exclude_based_on_fast_trials,</span>
+                AMP_exclude_based_on_fast_trials_old,
                 exclude)
 
 

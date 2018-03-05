@@ -37,6 +37,12 @@ round_df <- function(df, digits) {
   (df)
 }
 
+# options
+options(knitr.table.format = "html") # necessary configuration of tables
+
+# disable scientific notation
+options(scipen = 999) 
+
 ```
 
 # Descriptive statistics
@@ -58,18 +64,23 @@ attrition_rate <- data_df %>%
   dplyr::summarize(rate = round(sum(exclude)/n()*100, 1)) %>%
   as.numeric()
 
+data_df %>%
+  count(exclude) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 chi2_result <- data_df %>%
   count(IAT_condition, exclude) %>%
   spread(exclude, n) %>%
   select(-IAT_condition) %>%
   chisq.test(.) %>%
-  chisq_apa(., print_n = FALSE, format = c("rmarkdown"), info = FALSE, print = FALSE)
+  chisq_apa(., print_n = TRUE, format = c("rmarkdown"), info = FALSE, print = FALSE)
 
 ```
 
 Attrition rate = `r attrition_rate`%.
 
-A chi squared test was used to assess whether the conditions suffered from differential attrition rates: `r chi2_result`.
+A chi squared test was used to assess whether the conditions suffered from differential attrition rates: `r chi2_result`. [nb results of p = 1.0 will show as = .000 due to an error in how chisq_apa trims its results]
 
 ## Analytic sample
 
@@ -99,17 +110,6 @@ passers_df %>%
 
 passers_df %>% 
   dplyr::count(gender) %>%
-  kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
-
-```
-
-### Conditions
-
-```{r}
-
-passers_df %>% 
-  dplyr::count(IAT_condition, exclude) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
 
@@ -241,7 +241,7 @@ model_1_predicted_effects %>%
   
 ### Plot predictions
 
-```{r fig.height=2, fig.width=4}
+```{r fig.height=3, fig.width=5}
 
 ggplot(data = model_1_predicted_effects,
        aes(x = `SCIAT block`, y = fit, colour = `IAT condition`)) +
