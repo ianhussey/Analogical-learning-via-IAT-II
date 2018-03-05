@@ -3,11 +3,21 @@ title: "Changing established atttiudes via the IAT: Experiment 1"
 author: "Ian Hussey"
 output:
   html_document:
+    code_folding: hide
     highlight: haddock
+    theme: flatly
     toc: yes
+    toc_float: yes
 ---
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+knitr::opts_chunk$set(message=FALSE,
+                      warning=FALSE,
+                      cache.lazy=FALSE)
+```
+
+```{r}
+
 # dependencies
 library(tidyverse)
 library(psych)
@@ -16,7 +26,9 @@ library(plotrix)  # for std.error
 library(lme4)
 library(effects)
 library(knitr)
+library(kableExtra)
 library(sjPlot)
+library(apa)
 
 # rounds all numerics in a df
 round_df <- function(df, digits) {
@@ -24,15 +36,17 @@ round_df <- function(df, digits) {
   df[,nums] <- round(df[,nums], digits = digits)
   (df)
 }
+
 ```
 
 # Descriptive statistics
 
 ## Full sample
 
-### Age
+Assess selective attrition between conditions.
 
-```{r, message=FALSE, warning=FALSE, echo = FALSE}
+```{r}
+
 # get data
 data_df <- 
   read.csv("data/processed/processed summary data - wide format.csv") %>%
@@ -40,42 +54,71 @@ data_df <-
 
 #colnames(data_df)
 
-data_df %>% 
-  dplyr::select(age) %>%
-  psych::describe(fast = TRUE,  # subset of descriptive stats
-                  ranges = FALSE,
-                  trim = 0) %>%
-  dplyr::select(-vars, -se) %>%
-  kable()
+attrition_rate <- data_df %>%
+  dplyr::summarize(rate = round(sum(exclude)/n()*100, 1)) %>%
+  as.numeric()
+
+chi2_result <- data_df %>%
+  count(IAT_condition, exclude) %>%
+  spread(exclude, n) %>%
+  select(-IAT_condition) %>%
+  chisq.test(.) %>%
+  chisq_apa(., print_n = FALSE, format = c("rmarkdown"), info = FALSE, print = FALSE)
+
 ```
 
-### Gender
+Attrition rate = `r attrition_rate`%.
 
-```{r, message=FALSE, warning=FALSE, echo = FALSE}
-data_df %>% 
-  dplyr::count(gender) %>%
-  kable()
-```
+A chi squared test was used to assess whether the conditions suffered from differential attrition rates: `r chi2_result`.
 
 ## Analytic sample
 
 I.e., after applying inclusion/exclusion criteria.
 
-### Conditions
+### Age
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-passers_df <- 
-  data_df %>%
-  filter(IAT_exclude_based_on_fast_trials == FALSE & SCIAT_exclude_based_on_fast_trials == FALSE) 
+```{r}
+
+passers_df <- data_df %>%
+  filter(exclude == FALSE) 
 
 passers_df %>% 
-  dplyr::count(IAT_condition) %>%
-  kable()
+  dplyr::select(age) %>%
+  psych::describe(fast = TRUE,  # subset of descriptive stats
+                  ranges = FALSE,
+                  trim = 0) %>%
+  dplyr::select(-vars, -se) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+```
+
+### Gender
+
+```{r}
+
+passers_df %>% 
+  dplyr::count(gender) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+```
+
+### Conditions
+
+```{r}
+
+passers_df %>% 
+  dplyr::count(IAT_condition, exclude) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
 
 ### Performance on the IAT and SC-IAT
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 passers_df %>% 
   dplyr::select(IAT_mean_RT,
                 IAT_perc_acc,
@@ -87,7 +130,9 @@ passers_df %>%
   dplyr::select(-vars, -se) %>%
   dplyr::mutate(mean = round(mean, 2),
          sd = round(sd, 2)) %>%
-  kable()
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
 
 # Hypothesis test 1: Differences in IAT effects between contrast pair conditions
@@ -98,7 +143,8 @@ H1: Completing an IAT serves to train attitudes as well as test them. Participan
 
 Exclude data points > 2.5 SD from mean.
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 # exclude participants who had more than 10% of trials in less than 300ms, and make variables factors
 SCIAT_data <- 
   read.csv("data/processed/processed SCIAT data - long format.csv") %>%
@@ -117,31 +163,38 @@ SCIAT_data_outliers_removed <-
                     todo="elim", 
                     upper.z = 2.5, 
                     lower.z = -2.5)
+
 ```
 
-```{r, message=FALSE, warning=FALSE, include=FALSE}
+```{r}
+
 # Check that variables that should be factors are indeed factors
 sapply(SCIAT_data_outliers_removed, class)
+
 ```
 
 ### Plot distribution
 
 Distribution of SC-IAT RTs after trimming outliers.
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 ggplot(data = SCIAT_data_outliers_removed) + 
   geom_density(aes(x = rt)) +
   theme_classic()
+
 ```
 
 ## Linear mixed model
 
 ### Model
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+
 model_1 <- lmer(rt ~ SCIAT_block * IAT_condition + modern_racism_scale_total + (1 | participant), 
                 contrasts = list(SCIAT_block = "contr.sum", IAT_condition = "contr.sum"),  
                 data = SCIAT_data_outliers_removed)
+
 ```
 
 - Hypothesis refers to the IAT_condition*SCIAT_block interaction effect.
@@ -149,24 +202,31 @@ model_1 <- lmer(rt ~ SCIAT_block * IAT_condition + modern_racism_scale_total + (
 
 ### Summary
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r}
+
 sjt.lmer(model_1, 
          emph.p = FALSE, 
          p.kr = FALSE,
-         show.std = TRUE)
+         show.std = TRUE,
+         digits.est = 3,
+         digits.ci = 3)
+
 ```
 
 ### Plot effects
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 sjp.lmer(model_1, 
          p.kr = FALSE,
          type = "fe")
+
 ```
 
 ### Table predictions
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 model_1_predicted_effects <- 
   as.data.frame(effect("SCIAT_block:IAT_condition", model_1)) %>%
   dplyr::rename(`IAT condition` = IAT_condition,
@@ -174,12 +234,15 @@ model_1_predicted_effects <-
 
 model_1_predicted_effects %>% 
   round_df(2) %>%
-  kable()
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
   
 ### Plot predictions
 
-```{r, echo=FALSE, fig.height=2, fig.width=4, message=FALSE, warning=FALSE}
+```{r fig.height=2, fig.width=4}
+
 ggplot(data = model_1_predicted_effects,
        aes(x = `SCIAT block`, y = fit, colour = `IAT condition`)) +
   geom_pointrange(aes(ymax = upper,
@@ -193,85 +256,105 @@ ggplot(data = model_1_predicted_effects,
   theme_classic()
   # theme(legend.justification=c(0.5,1), legend.position=c(0.5,1),
   #       legend.key = element_rect(colour = "transparent"))
+
 ```
 
 ## Alternative analytic strategy: Linear fixed effect model on SC-IAT D1 scores
 
 ### Model
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+
 model_1_alt <- lm(SCIAT_D1 ~ IAT_condition + modern_racism_scale_total,
                   contrasts = list(IAT_condition = "contr.sum"),
                   data = passers_df)
+
 ```
 
 ### Summary
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 sjt.lm(model_1_alt, 
        emph.p = FALSE, 
        show.std = TRUE)
+
 ```
 
 ### Plot effects
 
-```{r, message=FALSE, fig.height=4, fig.width=6, warning=FALSE, echo=FALSE}
+```{r fig.height=4, fig.width=6}
+
 sjp.lm(model_1_alt, 
        type = "fe")
+
 ```
 
 # Hypothesis test 2: Differences in self-reported ratings between contrast pair conditions
 
 H2: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 ratings_data <- 
   read.csv("data/processed/processed ratings data - long format.csv") %>%
   dplyr::mutate(participant = as.factor(participant)) %>%
+  mutate(IAT_condition = fct_relevel(as.factor(IAT_condition), "Race IAT", "Flowers-Insects IAT")) %>%
   filter(IAT_exclude_based_on_fast_trials == FALSE & 
            SCIAT_exclude_based_on_fast_trials == FALSE)
+
 ```
 
 ## Linear mixed model
 
 ### Model 
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+
 model_2 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | participant), 
                 contrasts = list(IAT_condition = "contr.sum"),  
                 data = ratings_data)
+
 ```
 
 ### Summary
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 sjt.lmer(model_2, 
          emph.p = FALSE, 
          p.kr = FALSE,
          show.std = TRUE)
+
 ```
 
 ### Plot effects
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 sjp.lmer(model_2, 
          p.kr = FALSE,
          type = "fe")
+
 ```
 
 ### Table predictions
 
-```{r, message=FALSE, fig.height=3, fig.width=5, warning=FALSE, echo=FALSE}
+```{r fig.height=3, fig.width=5}
+
 model_2_predicted_effects <- as.data.frame(effect("IAT_condition", model_2))
 
 model_2_predicted_effects %>% 
   round_df(2) %>%
-  kable()
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
   
 ### Plot predictions
 
-```{r, message=FALSE, fig.height=2, fig.width=2, warning=FALSE, echo=FALSE}
+```{r fig.height=2, fig.width=2}
+
 ggplot(data = model_2_predicted_effects,
        aes(x = IAT_condition, y = fit)) +
   geom_pointrange(aes(ymax = upper,
@@ -280,4 +363,5 @@ ggplot(data = model_2_predicted_effects,
   xlab("IAT condition") +
   scale_colour_grey() +
   theme_classic() 
+
 ```

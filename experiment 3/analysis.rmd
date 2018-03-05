@@ -1,13 +1,26 @@
 ---
 title: "Changing established atttiudes via the IAT: Experiment 3"
 author: "Ian Hussey"
+params:
+  location_of_exp_1_data: ~/git/Analogical learning via the IAT II/experiment 1/
+  location_of_exp_2_data: ~/git/Analogical learning via the IAT II/experiment 2/
 output:
   html_document:
+    code_folding: hide
     highlight: haddock
+    theme: flatly
     toc: yes
+    toc_float: yes
 ---
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,
+                      warning=FALSE,
+                      cache.lazy=FALSE)
+```
+
+```{r}
+
 # dependencies
 library(tidyverse)
 library(psych)
@@ -16,14 +29,16 @@ library(plotrix)  # for std.error
 library(lme4)
 library(effects)
 library(knitr)
+library(kableExtra)
 library(sjPlot)
 library(kableExtra)
+library(apa)
 
 # comment out if knitting to pdf
 options(knitr.table.format = "html")
 
 # knitr options
-knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 
 # rounds all numerics in a df
 round_df <- function(df, digits) {
@@ -31,15 +46,15 @@ round_df <- function(df, digits) {
   df[,nums] <- round(df[,nums], digits = digits)
   (df)
 }
+
 ```
 
 # Descriptive statistics
 
 ## Full sample
 
-### Age
+```{r}
 
-```{r, message=FALSE, warning=FALSE, echo = FALSE}
 # get data
 data_df <- 
   read.csv("data/processed/processed summary data - wide format.csv") %>%
@@ -47,7 +62,35 @@ data_df <-
 
 #colnames(data_df)
 
-data_df %>% 
+attrition_rate <- data_df %>%
+  dplyr::summarize(rate = round(sum(exclude)/n()*100, 1)) %>%
+  as.numeric()
+
+chi2_result <- data_df %>%
+  count(IAT_condition, exclude) %>%
+  spread(exclude, n) %>%
+  select(-IAT_condition) %>%
+  chisq.test(.) %>%
+  chisq_apa(., print_n = FALSE, format = c("rmarkdown"), info = FALSE, print = FALSE)
+
+```
+
+Attrition rate = `r attrition_rate`%.
+
+A chi squared test was used to assess whether the conditions suffered from differential attrition rates: `r chi2_result`.
+
+## Analytic sample
+
+I.e., after applying inclusion/exclusion criteria.
+
+### Age
+
+```{r}
+
+passers_df <- data_df %>%
+  filter(exclude == FALSE) 
+
+passers_df %>% 
   dplyr::select(age) %>%
   psych::describe(fast = TRUE,  # subset of descriptive stats
                   ranges = FALSE,
@@ -55,37 +98,35 @@ data_df %>%
   dplyr::select(-vars, -se) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
 
 ### Gender
 
-```{r, message=FALSE, warning=FALSE, echo = FALSE}
-data_df %>% 
+```{r}
+
+passers_df %>% 
   dplyr::count(gender) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
-
-## Analytic sample
-
-I.e., after applying inclusion/exclusion criteria.
 
 ### Conditions
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-passers_df <- 
-  data_df %>%
-  filter(IAT_exclude_based_on_fast_trials == FALSE)
+```{r}
 
 passers_df %>% 
   dplyr::count(IAT_condition) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
 
 ### Performance on the IAT and shooter task
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 passers_df %>% 
   dplyr::select(IAT_mean_RT,
                 IAT_perc_acc,
@@ -94,12 +135,12 @@ passers_df %>%
   psych::describe(fast = TRUE,  # subset of descriptive stats
                   ranges = FALSE,
                   trim = 0) %>%
-  tibble::rownames_to_column() %>%
   dplyr::select(-vars, -se) %>%
-  dplyr::mutate(mean = round(mean, 2),
+  mutate(mean = round(mean, 2),
          sd = round(sd, 2)) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
 
 # Hypothesis test 1: Differences in Shooter task RT effects between IAT conditions
@@ -112,7 +153,8 @@ H1 refers to the RT analysis: interaction effect between condition and trial typ
 
 Exclude data points > 2.5 SD from mean.
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 # exclude participants who had more than 10% of trials in less than 300ms, and make variables factors
 shooter_data <- 
   read.csv("data/processed/processed shooter task data - long format.csv") %>%
@@ -127,31 +169,38 @@ shooter_data_outliers_removed <- shooter_data %>%
                     todo="elim", 
                     upper.z = 2.5, 
                     lower.z = -2.5)
+
 ```
 
-```{r, message=FALSE, warning=FALSE, include=FALSE}
+```{r, include=FALSE}
+
 # Check that variables that should be factors are indeed factors
 sapply(shooter_data_outliers_removed, class)
+
 ```
 
 ### Plot distribution
 
 Distribution of shooter RTs after trimming outliers.
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 ggplot(data = shooter_data_outliers_removed) + 
   geom_density(aes(x = rt)) +
   theme_classic()
+
 ```
 
 ## Linear mixed model
 
 ### Model
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+
 model_1 <- lmer(rt ~ trial_type * IAT_condition + modern_racism_scale_total + (1 | participant), 
                 contrasts = list(trial_type = "contr.sum", IAT_condition = "contr.sum"),  
                 data = shooter_data_outliers_removed)
+
 ```
 
 - Hypothesis refers to the main effect for IAT condition or the IAT condition*trial type interaction effect.
@@ -159,24 +208,31 @@ model_1 <- lmer(rt ~ trial_type * IAT_condition + modern_racism_scale_total + (1
 
 ### Summary
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE}
+
 sjt.lmer(model_1, 
          emph.p = FALSE, 
          p.kr = FALSE,
-         show.std = TRUE)
+         show.std = TRUE,
+         digits.est = 3,
+         digits.ci = 3)
+
 ```
 
 ### Plot effects
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 sjp.lmer(model_1, 
          p.kr = FALSE,
          type = "fe")
+
 ```
 
 ### Table predictions
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 model_1_predicted_effects <- 
   as.data.frame(effect("trial_type:IAT_condition", model_1)) %>%
   dplyr::rename(`IAT condition` = IAT_condition,
@@ -186,11 +242,13 @@ model_1_predicted_effects %>%
   round_df(2) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
   
 ### Plot predictions
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 ggplot(data = model_1_predicted_effects,
        aes(x = `Trial type`, y = fit, colour = `IAT condition`)) +
   geom_pointrange(aes(ymax = upper,
@@ -204,6 +262,7 @@ ggplot(data = model_1_predicted_effects,
   theme_classic()
   # theme(legend.justification=c(0.5,1), legend.position=c(0.5,1),
   #       legend.key = element_rect(colour = "transparent"))
+
 ```
 
 # Hypothesis test 2: differences in Shooter task sensitivity (d') between IAT conditions
@@ -212,25 +271,33 @@ H2 refers to the sensitivity analysis: main effect for IAT condition.
 
 ## Model
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+
 model_2 <- lm(d ~ IAT_condition + modern_racism_scale_total,
               contrasts = list(IAT_condition = "contr.sum"),
               data = passers_df)
+
 ```
 
 ## Summary
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 sjt.lm(model_2, 
        emph.p = FALSE, 
-       show.std = TRUE)
+       show.std = TRUE,
+       digits.est = 2,
+       digits.ci = 2)
+
 ```
 
 ## Plot effects
 
-```{r, message=FALSE, fig.height=4, fig.width=6, warning=FALSE, echo=FALSE}
+```{r fig.height=4, fig.width=6}
+
 sjp.lm(model_2, 
        type = "fe")
+
 ```
 
 # Hypothesis test 3: differences in Shooter task response bias (c) between conditions
@@ -239,79 +306,99 @@ H3 refers to the response bias analysis: main effect for IAT condition.
 
 ## Model
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+
 model_3 <- lm(c ~ IAT_condition + modern_racism_scale_total,
               contrasts = list(IAT_condition = "contr.sum"),
               data = passers_df)
+
 ```
 
 ## Summary
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 sjt.lm(model_3, 
        emph.p = FALSE, 
-       show.std = TRUE)
+       show.std = TRUE,
+       digits.est = 3,
+       digits.ci = 3)
+
 ```
 
 ## Plot effects
 
-```{r, message=FALSE, fig.height=4, fig.width=6, warning=FALSE, echo=FALSE}
+```{r fig.height=4, fig.width=6}
+
 sjp.lm(model_3, 
        type = "fe")
+
 ```
 
 # Hypothesis test 4: Differences in self-reported ratings between IAT conditions
 
 H4: Participants who complete a race IAT will demonstrate more negative self-reported evaluations of the outgroup (black people) on the ratings than participants who completed a control (flowers-insects) IAT.  
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 ratings_data <- 
   read.csv("data/processed/processed ratings data - long format.csv") %>%
   dplyr::mutate(participant = as.factor(participant)) %>%
+  mutate(IAT_condition = fct_relevel(as.factor(IAT_condition), "Race IAT", "Flowers-Insects IAT")) %>%
   filter(IAT_exclude_based_on_fast_trials == FALSE)
+
 ```
 
 ## Linear mixed model
 
 ### Model 
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+
 model_4 <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | participant), 
                 contrasts = list(IAT_condition = "contr.sum"),  
                 data = ratings_data)
+
 ```
 
 ### Summary
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+
 sjt.lmer(model_4, 
          emph.p = FALSE, 
          p.kr = FALSE,
          show.std = TRUE)
+
 ```
 
 ### Plot effects
 
-```{r, echo=FALSE, fig.height=3, fig.width=5, message=FALSE, warning=FALSE}
+```{r fig.height=3, fig.width=5}
+
 sjp.lmer(model_4, 
          p.kr = FALSE,
          type = "fe")
+
 ```
 
 ### Table predictions
 
-```{r, message=FALSE, fig.height=3, fig.width=5, warning=FALSE, echo=FALSE}
+```{r fig.height=3, fig.width=5}
+
 model_4_predicted_effects <- as.data.frame(effect("IAT_condition", model_4))
 
 model_4_predicted_effects %>% 
   round_df(2) %>%
   kable() %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
 ```
   
 ### Plot predictions
 
-```{r, message=FALSE, fig.height=3, fig.width=4, warning=FALSE, echo=FALSE}
+```{r fig.height=3, fig.width=4}
+
 ggplot(data = model_4_predicted_effects,
        aes(x = IAT_condition, y = fit)) +
   geom_pointrange(aes(ymax = upper,
@@ -320,4 +407,117 @@ ggplot(data = model_4_predicted_effects,
   xlab("IAT condition") +
   scale_colour_grey() +
   theme_classic() 
+
+```
+
+# Meta-analysis of self-report effects
+
+## Descriptive statistics
+
+```{r}
+
+# get data from exp 1
+setwd(params$location_of_exp_1_data)
+
+ratings_data_exp1 <- 
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = 1,
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, 
+                                 ifelse(SCIAT_exclude_based_on_fast_trials == TRUE, TRUE,
+                                        FALSE))) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+
+# get data from exp 2
+setwd(params$location_of_exp_2_data)
+
+ratings_data_exp2 <- 
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = 2,
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, FALSE)) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+# trim exp 3 data
+ratings_data_exp3 <-
+  ratings_data %>%
+  dplyr::mutate(experiment = 3,
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, FALSE)) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+# combine
+combined_ratings_data <- rbind(ratings_data_exp1, ratings_data_exp2, ratings_data_exp3) %>%
+  filter(exclude == FALSE) %>%
+  mutate(IAT_condition = fct_relevel(as.factor(IAT_condition), "Race IAT", "Flowers-Insects IAT"))
+
+```
+
+## Linear mixed model
+
+### Model 
+
+```{r}
+
+# http://www.metafor-project.org/doku.php/tips:rma_vs_lm_lme_lmer
+model_meta <- lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | experiment) + (1 | unique_id),
+                   contrasts = list(IAT_condition = "contr.sum"),  
+                   data = combined_ratings_data)
+
+```
+
+- Hypothesis refers to main effect for IAT condition.
+- *p* values estimated via Wald method.
+
+### Summary
+
+```{r}
+
+sjt.lmer(model_meta, 
+         emph.p = FALSE, 
+         p.kr = FALSE,
+         show.std = TRUE)
+
+```
+
+total N for meta analysis = `r combined_ratings_data %>% distinct(unique_id) %>% dplyr::summarize(n = n()) %>% as.numeric()`.
+
+### Plot effects
+
+```{r fig.height=3, fig.width=5}
+
+sjp.lmer(model_meta, 
+         p.kr = FALSE,
+         type = "fe")
+
+```
+
+### Table predictions
+
+```{r fig.height=3, fig.width=5}
+
+model_meta_predicted_effects <- as.data.frame(effect("IAT_condition", model_meta))
+
+model_meta_predicted_effects %>% 
+  round_df(2) %>%
+  kable()
+
+```
+  
+### Plot predictions
+
+```{r fig.height=2, fig.width=3}
+
+ggplot(data = model_meta_predicted_effects,
+       aes(x = IAT_condition, y = fit)) +
+  geom_pointrange(aes(ymax = upper,
+                      ymin = lower)) +
+  ylab("Rating") +
+  xlab("IAT condition") +
+  scale_colour_grey() +
+  theme_classic()
+
 ```

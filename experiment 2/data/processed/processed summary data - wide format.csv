@@ -1,215 +1,233 @@
-"participant","amp_recognition_response","condition","IAT_condition","block_order","task_order","gender","age","modern_racism_scale_total","mean_rating","IAT_mean_RT","IAT_perc_acc","IAT_exclude_based_on_fast_trials","AMP_mean_RT","AMP_perc_acc","AMP_neutral_perc_acc","AMP_race_perc_acc","AMP_diff","exclude"
-4,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",26,16,4,740,0.96,FALSE,370,0.67,0.56,0.78,0.22,FALSE
-7,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",37,22,4,962,0.98,FALSE,936,0.51,0.74,0.28,-0.46,FALSE
-8,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",26,20,4,1042,0.88,FALSE,408,0.96,0.92,1,0.08,FALSE
-12,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",21,13,3.83,721,0.78,FALSE,355,0.37,0.52,0.22,-0.3,FALSE
-13,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",40,21,4.33,718,0.95,FALSE,683,0.76,1,0.52,-0.48,FALSE
-15,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female ",20,17,3.17,1078,0.98,FALSE,878,0.68,0.68,0.68,0,FALSE
-16,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",50,15,5.67,871,0.98,FALSE,1153,0.8,0.8,0.8,0,FALSE
-18,"Both white and black faces",2,"Race IAT","incongruent","ratings first","male",33,16,2.33,1155,0.82,FALSE,504,0.73,0.8,0.66,-0.14,FALSE
-21,"I don't know",5,"Flowers-Insects IAT","congruent","ratings first","male",36,15,4.17,665,1,FALSE,669,0.51,0.58,0.44,-0.14,FALSE
-22,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","female",54,20,3.83,887,0.98,FALSE,631,0.66,0.64,0.68,0.04,FALSE
-23,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",31,12,5,622,0.91,FALSE,431,0.68,0.66,0.7,0.0399999999999999,FALSE
-24,"Both white and black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",37,16,3.83,949,0.98,FALSE,793,0.42,0.38,0.46,0.08,FALSE
-26,"I don't know",2,"Race IAT","incongruent","ratings first","female",20,20,4,897,0.98,FALSE,442,0.51,0.52,0.5,-0.02,FALSE
-29,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",40,18,4,731,0.98,FALSE,731,0.72,0.58,0.86,0.28,FALSE
-32,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",23,21,5.17,989,0.82,FALSE,756,0.56,0.54,0.58,0.0399999999999999,FALSE
-33,"Only black faces",1,"Race IAT","congruent","ratings first","female",30,22,4.33,804,0.96,FALSE,749,0.69,0.8,0.58,-0.22,FALSE
-37,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",64,17,4.33,775,1,FALSE,660,1,1,1,0,FALSE
-39,"Both white and black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",28,14,4,1096,0.94,FALSE,566,0.76,0.54,0.98,0.44,FALSE
-44,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",57,14,4,781,0.99,FALSE,778,0.49,0.48,0.5,0.02,FALSE
-52,"Both white and black faces",4,"Race IAT","incongruent","SCIAT first","female",34,15,3.83,672,0.58,FALSE,258,0.7,0.66,0.74,0.08,FALSE
-53,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",38,15,4,828,0.93,FALSE,225,1,1,1,0,FALSE
-59,"Only black faces",3,"Race IAT","congruent","SCIAT first","male",34,13,6,945,0.99,FALSE,418,0.71,0.5,0.92,0.42,FALSE
-64,"Both white and black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",19,16,4,646,0.92,FALSE,455,0.58,0.6,0.56,-0.0399999999999999,FALSE
-65,"Only black faces",1,"Race IAT","congruent","ratings first","male",28,19,4,817,0.99,FALSE,610,0.84,0.88,0.8,-0.08,FALSE
-68,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",43,25,3.5,712,0.83,FALSE,412,0.5,0.64,0.36,-0.28,FALSE
-69,"Both white and black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",35,17,4,702,0.98,FALSE,361,1,1,1,0,FALSE
-72,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",44,12,7,601,0.92,FALSE,432,0.64,0.62,0.66,0.04,FALSE
-73,"Only black faces",1,"Race IAT","congruent","ratings first","female",59,9,6,925,0.91,FALSE,381,0,0,0,0,FALSE
-75,"Only black faces",3,"Race IAT","congruent","SCIAT first","fee",35,19,4,1048,0.98,FALSE,632,0.51,0.5,0.52,0.02,FALSE
-76,"Both white and black faces",4,"Race IAT","incongruent","SCIAT first","female",39,15,5.5,712,0.98,FALSE,270,1,1,1,0,FALSE
-77,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",57,18,4,854,0.98,FALSE,400,0.86,0.86,0.86,0,FALSE
-78,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",49,17,4.67,574,0.93,FALSE,169,0.52,0.48,0.56,0.0800000000000001,FALSE
-79,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","male",40,28,4,722,0.97,FALSE,264,0.47,0.48,0.46,-0.02,FALSE
-80,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",61,21,3.83,680,1,FALSE,735,0.49,0.58,0.4,-0.18,FALSE
-83,"Only black faces",3,"Race IAT","congruent","SCIAT first","male",22,22,4,1056,0.97,FALSE,329,0.57,0.74,0.4,-0.34,FALSE
-86,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","female",53,13,4.5,870,0.91,FALSE,477,0.71,0.62,0.8,0.18,FALSE
-87,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",39,11,4,740,0.97,FALSE,554,0.98,0.96,1,0.04,FALSE
-89,"Only black faces",1,"Race IAT","congruent","ratings first","male",49,14,4,829,0.9,FALSE,676,1,1,1,0,FALSE
-94,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",41,11,4,667,0.96,FALSE,643,0.66,0.66,0.66,0,FALSE
-96,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",29,16,4,813,0.91,FALSE,358,1,1,1,0,FALSE
-97,"Only black faces",1,"Race IAT","congruent","ratings first","male",56,16,6,1169,1,FALSE,578,0.99,1,0.98,-0.02,FALSE
-98,"Only black faces",2,"Race IAT","incongruent","ratings first","male",37,17,4,980,0.98,FALSE,741,0.63,0.72,0.54,-0.18,FALSE
-100,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",37,19,4.33,726,0.97,FALSE,787,0.56,0.64,0.48,-0.16,FALSE
-102,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",38,22,3.17,889,0.95,FALSE,177,0.72,0.68,0.76,0.08,FALSE
-104,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",28,26,6,887,1,FALSE,524,0.02,0.02,0.02,0,FALSE
-107,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",25,13,5,768,0.97,FALSE,696,0.67,0.62,0.72,0.1,FALSE
-108,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",62,17,4,963,0.99,FALSE,418,0.75,0.5,1,0.5,FALSE
-111,"Both white and black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","male",41,13,2,964,0.98,FALSE,335,0.57,0.7,0.44,-0.26,FALSE
-116,"Both white and black faces",4,"Race IAT","incongruent","SCIAT first","male",35,23,4,916,0.88,FALSE,666,0.68,0.48,0.88,0.4,FALSE
-120,"Both white and black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",27,17,5,798,0.86,FALSE,685,0.47,0.4,0.54,0.14,FALSE
-121,"Both white and black faces",1,"Race IAT","congruent","ratings first","male",22,19,4,905,0.81,FALSE,133,0.67,0.74,0.6,-0.14,FALSE
-123,"Both white and black faces",3,"Race IAT","congruent","SCIAT first","female",28,21,6,1621,0.87,FALSE,578,0.49,0.48,0.5,0.02,FALSE
-124,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",22,15,4.83,762,0.86,FALSE,664,0.58,0.64,0.52,-0.12,FALSE
-125,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",41,22,4,954,0.89,FALSE,550,0.46,0.48,0.44,-0.04,FALSE
-127,"I don't know",7,"Flowers-Insects IAT","congruent","SCIAT first","female",27,20,3.17,737,0.97,FALSE,601,0.69,0.72,0.66,-0.0599999999999999,FALSE
-128,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",21,18,4.67,635,0.91,FALSE,445,0.52,0.56,0.48,-0.0800000000000001,FALSE
-136,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",32,27,4,804,0.95,FALSE,235,1,1,1,0,FALSE
-137,"Both white and black faces",1,"Race IAT","congruent","ratings first","male",61,14,3.83,903,0.99,FALSE,663,0.6,0.54,0.66,0.12,FALSE
-138,"Only black faces",2,"Race IAT","incongruent","ratings first","woman",22,13,5,860,0.96,FALSE,739,0.57,0.62,0.52,-0.1,FALSE
-139,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",37,15,5.67,923,0.95,FALSE,632,0.64,0.7,0.58,-0.12,FALSE
-140,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",37,18,3.67,686,0.94,FALSE,674,0.85,0.82,0.88,0.0600000000000001,FALSE
-147,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",54,16,4,1187,0.95,FALSE,320,0,0,0,0,FALSE
-147,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",54,16,4,1187,0.95,FALSE,320,0,0,0,0,FALSE
-150,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",57,15,4,957,0.97,FALSE,492,0.32,0.28,0.36,0.08,FALSE
-151,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",21,25,4.33,922,0.87,FALSE,574,0.55,0.6,0.5,-0.1,FALSE
-152,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",22,20,4.17,688,0.9,FALSE,846,0.52,0.54,0.5,-0.04,FALSE
-154,"Only black faces",2,"Race IAT","incongruent","ratings first","male",28,22,5,1167,0.99,FALSE,830,0.56,0.42,0.7,0.28,FALSE
-156,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",45,13,4.17,1081,0.97,FALSE,692,0.56,0.58,0.54,-0.0399999999999999,FALSE
-157,"Both white and black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",21,16,4.5,764,0.93,FALSE,350,0.99,0.98,1,0.02,FALSE
-159,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",51,14,4,813,0.98,FALSE,681,0.4,0.38,0.42,0.04,FALSE
-162,"Only black faces",2,"Race IAT","incongruent","ratings first","male",29,11,4.83,648,1,FALSE,518,0.63,0.62,0.64,0.02,FALSE
-163,"Only black faces",3,"Race IAT","congruent","SCIAT first","male",38,16,4.5,980,0.9,FALSE,376,0.61,0.6,0.62,0.02,FALSE
-165,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",31,13,4.17,874,0.98,FALSE,601,0.79,0.68,0.9,0.22,FALSE
-173,"I don't know",5,"Flowers-Insects IAT","congruent","ratings first","female",48,19,4.67,640,0.96,FALSE,832,0.81,0.88,0.74,-0.14,FALSE
-175,"I don't know",7,"Flowers-Insects IAT","congruent","SCIAT first","male",35,16,4.5,655,0.98,FALSE,689,0.48,0.6,0.36,-0.24,FALSE
-176,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",19,21,4,782,0.97,FALSE,666,0.52,0.56,0.48,-0.0800000000000001,FALSE
-179,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",48,26,6,745,0.98,FALSE,567,0.37,0.32,0.42,0.1,FALSE
-180,"Both white and black faces",4,"Race IAT","incongruent","SCIAT first","male",32,14,4,804,0.83,FALSE,180,0.5,0.44,0.56,0.12,FALSE
-181,"I don't know",5,"Flowers-Insects IAT","congruent","ratings first","female",44,12,4.17,1336,0.99,FALSE,642,0.81,0.84,0.78,-0.0599999999999999,FALSE
-185,"Only black faces",1,"Race IAT","congruent","ratings first","female",34,20,4,895,0.92,FALSE,581,0.87,0.88,0.86,-0.02,FALSE
-188,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",39,12,5,714,1,FALSE,427,0.87,0.9,0.84,-0.0600000000000001,FALSE
-193,"Both white and black faces",1,"Race IAT","congruent","ratings first","male",53,20,4.67,769,1,FALSE,656,0.73,0.8,0.66,-0.14,FALSE
-194,"Only black faces",2,"Race IAT","incongruent","ratings first","male",48,24,4,708,0.99,FALSE,513,0.84,0.84,0.84,0,FALSE
-196,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",27,18,4,807,0.97,FALSE,372,0.98,0.96,1,0.04,FALSE
-197,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",53,12,4.17,880,0.98,FALSE,831,0.68,0.72,0.64,-0.08,FALSE
-199,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",44,17,4.5,938,0.97,FALSE,450,0.54,0.64,0.44,-0.2,FALSE
-201,"Only black faces",1,"Race IAT","congruent","ratings first","male",18,15,7,996,0.87,FALSE,423,0.73,0.72,0.74,0.02,FALSE
-204,"I don't know",4,"Race IAT","incongruent","SCIAT first","male",61,30,4,776,0.95,FALSE,613,0.43,0.4,0.46,0.06,FALSE
-208,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",35,20,4,682,0.93,FALSE,839,0.63,0.6,0.66,0.0600000000000001,FALSE
-210,"Both white and black faces",2,"Race IAT","incongruent","ratings first","male",22,14,4.83,910,0.98,FALSE,530,0.88,0.98,0.78,-0.2,FALSE
-212,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",40,12,4,767,0.84,FALSE,385,0.94,0.94,0.94,0,FALSE
-214,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male ",29,17,5.17,705,0.94,FALSE,578,0.6,0.58,0.62,0.04,FALSE
-216,"Both white and black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",40,17,5.17,835,0.88,FALSE,536,0.78,0.76,0.8,0.04,FALSE
-217,"Only black faces",1,"Race IAT","congruent","ratings first","female",57,13,4.5,703,0.92,FALSE,433,1,1,1,0,FALSE
-220,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",30,17,4,610,0.93,FALSE,595,0.4,0.38,0.42,0.04,FALSE
-221,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",45,21,3.83,918,0.98,FALSE,402,0.87,0.78,0.96,0.18,FALSE
-222,"I don't know",6,"Flowers-Insects IAT","incongruent","ratings first","male",27,23,4,649,0.89,FALSE,499,0.44,0.44,0.44,0,FALSE
-224,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",58,20,5,887,1,FALSE,772,0.6,0.58,0.62,0.04,FALSE
-226,"Only black faces",2,"Race IAT","incongruent","ratings first","female",55,19,6,879,0.96,FALSE,559,0.93,0.9,0.96,0.0599999999999999,FALSE
-229,"I don't know",5,"Flowers-Insects IAT","congruent","ratings first","male",22,16,3.83,874,0.97,FALSE,130,0.48,0.4,0.56,0.16,FALSE
-230,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","female ",26,13,4,793,0.96,FALSE,845,0.74,0.72,0.76,0.04,FALSE
-231,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","male",44,23,4,914,0.93,FALSE,436,0.63,0.7,0.56,-0.14,FALSE
-236,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",30,22,2,732,0.92,FALSE,356,0.49,0.64,0.34,-0.3,FALSE
-240,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",23,18,4.33,767,0.95,FALSE,544,0.88,0.86,0.9,0.04,FALSE
-241,"Only black faces",1,"Race IAT","congruent","ratings first","male",22,19,3.83,612,0.91,FALSE,485,0.61,0.6,0.62,0.02,FALSE
-242,"Only black faces",2,"Race IAT","incongruent","ratings first","male",37,14,4.17,794,0.92,FALSE,651,0.58,0.48,0.68,0.2,FALSE
-245,"Both white and black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",22,18,3.33,736,0.98,FALSE,570,0.77,0.74,0.8,0.0600000000000001,FALSE
-246,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","female",59,19,4.33,876,0.99,FALSE,551,0.69,0.76,0.62,-0.14,FALSE
-248,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",44,19,4.33,806,0.99,FALSE,687,0.6,0.6,0.6,0,FALSE
-250,"Only black faces",2,"Race IAT","incongruent","ratings first","male",27,24,3,803,0.9,FALSE,234,0.47,0.8,0.14,-0.66,FALSE
-253,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",33,24,3.33,816,0.98,FALSE,583,0.24,0.22,0.26,0.04,FALSE
-255,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","male",52,22,6,771,0.95,FALSE,376,1,1,1,0,FALSE
-257,"Only black faces",1,"Race IAT","congruent","ratings first","male",22,14,4,664,0.96,FALSE,451,0.72,0.76,0.68,-0.08,FALSE
-258,"Only black faces",2,"Race IAT","incongruent","ratings first","female",33,21,4,714,0.95,FALSE,567,0.66,0.76,0.56,-0.2,FALSE
-259,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",31,17,5.83,609,0.97,FALSE,563,0.81,0.86,0.76,-0.1,FALSE
-260,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",24,18,4.33,746,0.96,FALSE,612,0.57,0.66,0.48,-0.18,FALSE
-263,"I don't know",7,"Flowers-Insects IAT","congruent","SCIAT first","female",48,12,4.83,808,0.93,FALSE,544,0.16,0.14,0.18,0.04,FALSE
-265,"Only black faces",1,"Race IAT","congruent","ratings first","female",25,15,3.83,801,0.93,FALSE,458,0.52,0.62,0.42,-0.2,FALSE
-266,"Only black faces",2,"Race IAT","incongruent","ratings first","female",50,14,5.67,922,0.98,FALSE,865,0.49,0.54,0.44,-0.1,FALSE
-268,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",26,15,5.17,1075,0.99,FALSE,820,0.65,0.66,0.64,-0.02,FALSE
-270,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","female",44,14,4.17,983,0.96,FALSE,437,0.9,0.92,0.88,-0.04,FALSE
-272,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",23,15,5.83,657,0.87,FALSE,566,0.51,0.52,0.5,-0.02,FALSE
-274,"Only black faces",2,"Race IAT","incongruent","ratings first","male",30,17,3.83,709,0.98,FALSE,422,0.21,0.26,0.16,-0.1,FALSE
-275,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",34,18,4.5,903,0.98,FALSE,1160,0.59,0.52,0.66,0.14,FALSE
-277,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",35,17,3.17,485,0.93,FALSE,176,0.67,0.7,0.64,-0.0599999999999999,FALSE
-278,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",52,15,5,841,0.99,FALSE,745,0.95,0.96,0.94,-0.02,FALSE
-282,"Only black faces",2,"Race IAT","incongruent","ratings first","male",58,20,4,1065,0.89,FALSE,351,0.6,0.66,0.54,-0.12,FALSE
-284,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",30,15,2.83,729,0.94,FALSE,834,0.55,0.62,0.48,-0.14,FALSE
-286,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","female",55,24,4.67,1382,0.68,FALSE,369,0.82,0.76,0.88,0.12,FALSE
-289,"Only black faces",1,"Race IAT","congruent","ratings first","female",40,14,5.5,723,0.97,FALSE,968,0.53,0.56,0.5,-0.0600000000000001,FALSE
-290,"I don't know",2,"Race IAT","incongruent","ratings first","female",51,17,4.83,709,0.98,FALSE,518,0.66,0.68,0.64,-0.04,FALSE
-291,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",37,13,4,922,0.91,FALSE,508,0.72,0.74,0.7,-0.04,FALSE
-292,"I don't know",4,"Race IAT","incongruent","SCIAT first","female",23,15,4,604,0.95,FALSE,502,0.41,0.42,0.4,-0.02,FALSE
-293,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",21,13,3.5,765,0.94,FALSE,516,0.53,0.52,0.54,0.02,FALSE
-294,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","female",51,17,4.83,746,0.97,FALSE,546,0.58,0.56,0.6,0.0399999999999999,FALSE
-297,"Only black faces",1,"Race IAT","congruent","ratings first","male",48,12,4.33,615,0.9,FALSE,428,0.49,0.58,0.4,-0.18,FALSE
-298,"Only black faces",2,"Race IAT","incongruent","ratings first","female",28,18,4,982,0.94,FALSE,444,0.54,0.98,0.1,-0.88,FALSE
-305,"Only black faces",1,"Race IAT","congruent","ratings first","male",18,19,4.33,1093,0.93,FALSE,646,0.79,0.7,0.88,0.18,FALSE
-306,"Only black faces",2,"Race IAT","incongruent","ratings first","female",21,15,3.33,760,0.82,FALSE,526,0.64,0.76,0.52,-0.24,FALSE
-308,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",22,19,4.67,817,0.99,FALSE,537,0.8,0.84,0.76,-0.08,FALSE
-312,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",29,14,4,889,0.95,FALSE,483,0.99,1,0.98,-0.02,FALSE
-315,"Only black faces",3,"Race IAT","congruent","SCIAT first","male",26,20,4.17,1019,1,FALSE,865,0.36,0.32,0.4,0.08,FALSE
-316,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",24,12,4.67,592,0.94,FALSE,422,0.74,0.62,0.86,0.24,FALSE
-324,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",47,16,4,863,0.93,FALSE,530,0.59,0.64,0.54,-0.1,FALSE
-330,"Only black faces",2,"Race IAT","incongruent","ratings first","female",55,17,4.67,883,0.94,FALSE,773,0.52,0.58,0.46,-0.12,FALSE
-332,"Both white and black faces",4,"Race IAT","incongruent","SCIAT first","male",51,18,4.67,995,0.96,FALSE,901,0.59,0.54,0.64,0.1,FALSE
-333,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","male",51,14,3.83,908,0.99,FALSE,726,0.62,0.46,0.78,0.32,FALSE
-335,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",33,18,3.5,978,0.89,FALSE,503,0.68,0.66,0.7,0.0399999999999999,FALSE
-336,"Both white and black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",53,15,3.33,1125,0.88,FALSE,545,0.63,0.64,0.62,-0.02,FALSE
-338,"Only black faces",2,"Race IAT","incongruent","ratings first","male",32,17,2,704,0.85,FALSE,341,0.47,0.78,0.16,-0.62,FALSE
-340,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",28,15,4,915,0.91,FALSE,443,1,1,1,0,FALSE
-342,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",29,16,4,955,0.94,FALSE,416,0.98,0.98,0.98,0,FALSE
-343,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",48,14,5.83,814,0.96,FALSE,642,0.56,0.34,0.78,0.44,FALSE
-344,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",27,14,4.67,756,0.82,FALSE,525,0.51,0.56,0.46,-0.1,FALSE
-345,"Only black faces",1,"Race IAT","congruent","ratings first","genderfluid",27,17,4,842,0.96,FALSE,1106,0.57,0.66,0.48,-0.18,FALSE
-347,"Both white and black faces",3,"Race IAT","congruent","SCIAT first","female",28,18,4.67,758,0.94,FALSE,450,0.22,0.26,0.18,-0.08,FALSE
-348,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",33,14,5.67,801,0.96,FALSE,660,0.45,0.44,0.46,0.02,FALSE
-349,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",47,15,4,936,1,FALSE,799,1,1,1,0,FALSE
-350,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",60,19,4.33,940,0.94,FALSE,782,0.66,0.6,0.72,0.12,FALSE
-351,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","male",24,14,5.33,1059,0.91,FALSE,400,0.51,0.28,0.74,0.46,FALSE
-352,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",38,12,4.33,725,0.96,FALSE,671,0.46,0.44,0.48,0.04,FALSE
-355,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",33,12,5.33,1106,1,FALSE,681,0.79,0.78,0.8,0.02,FALSE
-356,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",34,15,6.83,707,0.99,FALSE,290,0.79,0.66,0.92,0.26,FALSE
-360,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",36,21,4,1032,0.97,FALSE,769,0.55,0.58,0.52,-0.0599999999999999,FALSE
-362,"Both white and black faces",2,"Race IAT","incongruent","ratings first","female",33,22,4,724,0.94,FALSE,306,0.91,0.92,0.9,-0.02,FALSE
-364,"Both white and black faces",4,"Race IAT","incongruent","SCIAT first","male",26,14,3.83,653,0.95,FALSE,387,0.68,0.62,0.74,0.12,FALSE
-367,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",19,15,3.83,813,0.88,FALSE,562,0.86,0.84,0.88,0.04,FALSE
-368,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",35,16,4,818,0.98,FALSE,620,0.83,0.9,0.76,-0.14,FALSE
-369,"Only black faces",1,"Race IAT","congruent","ratings first","male",42,26,2.33,1119,0.98,FALSE,525,0.54,0.98,0.1,-0.88,FALSE
-372,"Only black faces",4,"Race IAT","incongruent","SCIAT first","female",20,16,6,710,0.97,FALSE,671,0.51,0.52,0.5,-0.02,FALSE
-375,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","male",27,25,3.83,744,0.9,FALSE,258,0.53,0.64,0.42,-0.22,FALSE
-376,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",29,20,3.5,651,0.92,FALSE,277,0.54,0.78,0.3,-0.48,FALSE
-379,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",24,23,3.67,761,0.91,FALSE,538,0.63,0.66,0.6,-0.0600000000000001,FALSE
-381,"Only black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",19,14,3.5,726,0.97,FALSE,560,0.7,0.7,0.7,0,FALSE
-383,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",54,20,3.83,835,1,FALSE,686,0.73,0.64,0.82,0.18,FALSE
-385,"Only black faces",1,"Race IAT","congruent","ratings first","male",22,22,6,647,0.64,TRUE,509,0.69,0.68,0.7,0.0199999999999999,TRUE
-386,"Only black faces",2,"Race IAT","incongruent","ratings first","female",28,19,4,695,0.91,FALSE,151,0.61,0.56,0.66,0.1,FALSE
-389,"Both white and black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",33,13,4.17,723,0.92,FALSE,377,0.55,0.56,0.54,-0.02,FALSE
-398,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",23,28,4.83,720,0.83,FALSE,339,0.63,0.56,0.7,0.14,FALSE
-400,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",20,14,4.83,596,0.99,FALSE,606,0.77,0.64,0.9,0.26,FALSE
-402,"Only black faces",2,"Race IAT","incongruent","ratings first","male",22,14,4,666,0.84,FALSE,475,0.92,0.92,0.92,0,FALSE
-404,"Only black faces",4,"Race IAT","incongruent","SCIAT first","male",18,20,6,791,0.93,FALSE,281,0.53,0.1,0.96,0.86,FALSE
-410,"Only black faces",2,"Race IAT","incongruent","ratings first","female",47,18,5,804,0.98,FALSE,290,1,1,1,0,FALSE
-416,"Both white and black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",54,23,4,864,0.77,FALSE,478,0.95,0.92,0.98,0.0599999999999999,FALSE
-421,"I don't know",5,"Flowers-Insects IAT","congruent","ratings first","female",29,20,4,719,0.84,FALSE,452,0.34,0.38,0.3,-0.08,FALSE
-422,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",55,15,3.33,988,0.97,FALSE,450,0.65,0.86,0.44,-0.42,FALSE
-424,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",35,24,3,953,0.98,FALSE,607,0.43,0.58,0.28,-0.3,FALSE
-427,"Only black faces",3,"Race IAT","congruent","SCIAT first","male",23,16,4,794,0.75,FALSE,945,0.62,0.6,0.64,0.04,FALSE
-429,"Both white and black faces",5,"Flowers-Insects IAT","congruent","ratings first","female",37,15,4,715,0.98,FALSE,209,1,1,1,0,FALSE
-432,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","female",28,14,3.83,979,0.98,FALSE,564,0.43,0.46,0.4,-0.06,FALSE
-433,"I don't know",1,"Race IAT","congruent","ratings first","female",24,21,4,863,0.92,FALSE,727,0.73,0.86,0.6,-0.26,FALSE
-435,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",49,17,3.67,930,0.97,FALSE,887,0.61,0.78,0.44,-0.34,FALSE
-440,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",37,19,4.17,931,0.92,FALSE,746,0.36,0.36,0.36,0,FALSE
-442,"Only black faces",2,"Race IAT","incongruent","ratings first","female",30,16,7,781,0.97,FALSE,504,0.62,0.7,0.54,-0.16,FALSE
-443,"Both white and black faces",3,"Race IAT","congruent","SCIAT first","female",45,12,5.5,736,0.87,FALSE,364,0.75,0.76,0.74,-0.02,FALSE
-446,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",40,25,4,553,0.85,FALSE,265,0.6,0.58,0.62,0.04,FALSE
-448,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","",33,24,4,1025,0.95,FALSE,685,0.41,0.38,0.44,0.06,FALSE
-450,"Only black faces",2,"Race IAT","incongruent","ratings first","male",18,22,4,787,0.74,FALSE,529,0.68,0.64,0.72,0.08,FALSE
-454,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",43,16,3.83,978,0.99,FALSE,419,0.57,0.16,0.98,0.82,FALSE
-456,"Both white and black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",20,19,4.17,711,0.73,FALSE,647,0.92,0.88,0.96,0.08,FALSE
-457,"Only black faces",1,"Race IAT","congruent","ratings first","female",23,15,5,686,0.97,FALSE,437,1,1,1,0,FALSE
-459,"Only black faces",3,"Race IAT","congruent","SCIAT first","female",27,22,4.83,862,0.95,FALSE,590,0.91,0.88,0.94,0.0599999999999999,FALSE
-460,"Both white and black faces",4,"Race IAT","incongruent","SCIAT first","female",34,19,1.5,747,0.88,FALSE,285,0.51,0.98,0.04,-0.94,FALSE
-463,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","male",57,16,4,1088,0.96,FALSE,357,0.83,0.82,0.84,0.02,FALSE
-464,"I don't know",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",32,13,4,978,0.97,FALSE,577,0.63,0.3,0.96,0.66,FALSE
-465,"Only black faces",1,"Race IAT","congruent","ratings first","male",39,18,4,780,0.91,FALSE,326,0.49,0.42,0.56,0.14,FALSE
-466,"Only black faces",2,"Race IAT","incongruent","ratings first","female",27,11,6,736,0.78,FALSE,374,0.95,0.92,0.98,0.0599999999999999,FALSE
-468,"I don't know",4,"Race IAT","incongruent","SCIAT first","male",22,19,4.17,992,0.91,FALSE,608,0.56,0.56,0.56,0,FALSE
-470,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",33,16,6,992,0.88,FALSE,245,1,1,1,0,FALSE
-471,"Only black faces",7,"Flowers-Insects IAT","congruent","SCIAT first","female",19,18,4.17,678,0.96,FALSE,434,0.83,0.8,0.86,0.0599999999999999,FALSE
-475,"Both white and black faces",3,"Race IAT","congruent","SCIAT first","male",31,23,6,1037,0.96,FALSE,353,0.89,0.86,0.92,0.0600000000000001,FALSE
-478,"Only black faces",6,"Flowers-Insects IAT","incongruent","ratings first","male",52,18,4,842,0.99,FALSE,846,0.52,0.54,0.5,-0.04,FALSE
-480,"Only black faces",8,"Flowers-Insects IAT","incongruent","SCIAT first","male",28,19,4,737,0.94,FALSE,772,0.51,0.46,0.56,0.1,FALSE
-481,"Both white and black faces",1,"Race IAT","congruent","ratings first","male",22,22,5,891,0.92,FALSE,585,0.63,0.56,0.7,0.14,FALSE
+"participant","complete","amp_recognition_response","gender","age","modern_racism_scale_total","mean_rating","IAT_mean_RT","IAT_perc_acc","IAT_exclude_based_on_fast_trials","AMP_mean_RT","AMP_perc_acc","AMP_neutral_perc_acc","AMP_race_perc_acc","AMP_diff","exclude","condition","IAT_condition","block_order","task_order"
+1,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,1,"Race IAT","congruent","ratings first"
+2,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,2,"Race IAT","incongruent","ratings first"
+3,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,3,"Race IAT","congruent","SCIAT first"
+4,TRUE,"Only black faces","male",26,16,4,740,0.96,FALSE,370,0.67,0.56,0.78,0.22,FALSE,4,"Race IAT","incongruent","SCIAT first"
+7,TRUE,"Only black faces","female",37,22,4,962,0.98,FALSE,936,0.51,0.74,0.28,-0.46,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+8,TRUE,"I don't know","male",26,20,4,1042,0.88,FALSE,408,0.96,0.92,1,0.08,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+12,TRUE,"Only black faces","male",21,13,3.83,721,0.78,FALSE,355,0.37,0.52,0.22,-0.3,FALSE,4,"Race IAT","incongruent","SCIAT first"
+13,TRUE,"Only black faces","male",40,21,4.33,718,0.95,FALSE,683,0.76,1,0.52,-0.48,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+15,TRUE,"Only black faces","female ",20,17,3.17,1078,0.98,FALSE,878,0.68,0.68,0.68,0,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+16,TRUE,"Only black faces","male",50,15,5.67,871,0.98,FALSE,1153,0.8,0.8,0.8,0,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+18,TRUE,"Both white and black faces","male",33,16,2.33,1155,0.82,FALSE,504,0.73,0.8,0.66,-0.14,FALSE,2,"Race IAT","incongruent","ratings first"
+19,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,3,"Race IAT","congruent","SCIAT first"
+21,TRUE,"I don't know","male",36,15,4.17,665,1,FALSE,669,0.51,0.58,0.44,-0.14,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+22,TRUE,"Only black faces","female",54,20,3.83,887,0.98,FALSE,631,0.66,0.64,0.68,0.04,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+23,TRUE,"Only black faces","female",31,12,5,622,0.91,FALSE,431,0.68,0.66,0.7,0.0399999999999999,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+24,TRUE,"Both white and black faces","female",37,16,3.83,949,0.98,FALSE,793,0.42,0.38,0.46,0.08,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+26,TRUE,"I don't know","female",20,20,4,897,0.98,FALSE,442,0.51,0.52,0.5,-0.02,FALSE,2,"Race IAT","incongruent","ratings first"
+29,TRUE,"Only black faces","female",40,18,4,731,0.98,FALSE,731,0.72,0.58,0.86,0.28,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+32,TRUE,"Only black faces","male",23,21,5.17,989,0.82,FALSE,756,0.56,0.54,0.58,0.0399999999999999,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+33,TRUE,"Only black faces","female",30,22,4.33,804,0.96,FALSE,749,0.69,0.8,0.58,-0.22,FALSE,1,"Race IAT","congruent","ratings first"
+36,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,4,"Race IAT","incongruent","SCIAT first"
+37,TRUE,"Only black faces","male",64,17,4.33,775,1,FALSE,660,1,1,1,0,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+38,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,6,"Flowers-Insects IAT","incongruent","ratings first"
+39,TRUE,"Both white and black faces","female",28,14,4,1096,0.94,FALSE,566,0.76,0.54,0.98,0.44,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+44,TRUE,"Only black faces","male",57,14,4,781,0.99,FALSE,778,0.49,0.48,0.5,0.02,FALSE,4,"Race IAT","incongruent","SCIAT first"
+48,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+52,TRUE,"Both white and black faces","female",34,15,3.83,672,0.58,FALSE,258,0.7,0.66,0.74,0.08,FALSE,4,"Race IAT","incongruent","SCIAT first"
+53,TRUE,"Only black faces","male",38,15,4,828,0.93,FALSE,225,1,1,1,0,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+59,TRUE,"Only black faces","male",34,13,6,945,0.99,FALSE,418,0.71,0.5,0.92,0.42,FALSE,3,"Race IAT","congruent","SCIAT first"
+64,TRUE,"Both white and black faces","female",19,16,4,646,0.92,FALSE,455,0.58,0.6,0.56,-0.0399999999999999,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+65,TRUE,"Only black faces","male",28,19,4,817,0.99,FALSE,610,0.84,0.88,0.8,-0.08,FALSE,1,"Race IAT","congruent","ratings first"
+68,TRUE,"Only black faces","male",43,25,3.5,712,0.83,FALSE,412,0.5,0.64,0.36,-0.28,FALSE,4,"Race IAT","incongruent","SCIAT first"
+69,TRUE,"Both white and black faces","female",35,17,4,702,0.98,FALSE,361,1,1,1,0,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+72,TRUE,"Only black faces","female",44,12,7,601,0.92,FALSE,432,0.64,0.62,0.66,0.04,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+73,TRUE,"Only black faces","female",59,9,6,925,0.91,FALSE,381,0,0,0,0,FALSE,1,"Race IAT","congruent","ratings first"
+75,TRUE,"Only black faces","fee",35,19,4,1048,0.98,FALSE,632,0.51,0.5,0.52,0.02,FALSE,3,"Race IAT","congruent","SCIAT first"
+76,TRUE,"Both white and black faces","female",39,15,5.5,712,0.98,FALSE,270,1,1,1,0,FALSE,4,"Race IAT","incongruent","SCIAT first"
+77,TRUE,"Only black faces","male",57,18,4,854,0.98,FALSE,400,0.86,0.86,0.86,0,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+78,TRUE,"Only black faces","male",49,17,4.67,574,0.93,FALSE,169,0.52,0.48,0.56,0.0800000000000001,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+79,TRUE,"Only black faces","male",40,28,4,722,0.97,FALSE,264,0.47,0.48,0.46,-0.02,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+80,TRUE,"Only black faces","male",61,21,3.83,680,1,FALSE,735,0.49,0.58,0.4,-0.18,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+83,TRUE,"Only black faces","male",22,22,4,1056,0.97,FALSE,329,0.57,0.74,0.4,-0.34,FALSE,3,"Race IAT","congruent","SCIAT first"
+84,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,4,"Race IAT","incongruent","SCIAT first"
+86,TRUE,"Only black faces","female",53,13,4.5,870,0.91,FALSE,477,0.71,0.62,0.8,0.18,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+87,TRUE,"Only black faces","female",39,11,4,740,0.97,FALSE,554,0.98,0.96,1,0.04,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+89,TRUE,"Only black faces","male",49,14,4,829,0.9,FALSE,676,1,1,1,0,FALSE,1,"Race IAT","congruent","ratings first"
+94,TRUE,"Only black faces","male",41,11,4,667,0.96,FALSE,643,0.66,0.66,0.66,0,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+96,TRUE,"I don't know","female",29,16,4,813,0.91,FALSE,358,1,1,1,0,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+97,TRUE,"Only black faces","male",56,16,6,1169,1,FALSE,578,0.99,1,0.98,-0.02,FALSE,1,"Race IAT","congruent","ratings first"
+98,TRUE,"Only black faces","male",37,17,4,980,0.98,FALSE,741,0.63,0.72,0.54,-0.18,FALSE,2,"Race IAT","incongruent","ratings first"
+100,TRUE,"Only black faces","male",37,19,4.33,726,0.97,FALSE,787,0.56,0.64,0.48,-0.16,FALSE,4,"Race IAT","incongruent","SCIAT first"
+102,TRUE,"Only black faces","male",38,22,3.17,889,0.95,FALSE,177,0.72,0.68,0.76,0.08,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+104,TRUE,"I don't know","female",28,26,6,887,1,FALSE,524,0.02,0.02,0.02,0,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+107,TRUE,"Only black faces","female",25,13,5,768,0.97,FALSE,696,0.67,0.62,0.72,0.1,FALSE,3,"Race IAT","congruent","SCIAT first"
+108,TRUE,"Only black faces","female",62,17,4,963,0.99,FALSE,418,0.75,0.5,1,0.5,FALSE,4,"Race IAT","incongruent","SCIAT first"
+111,TRUE,"Both white and black faces","male",41,13,2,964,0.98,FALSE,335,0.57,0.7,0.44,-0.26,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+116,TRUE,"Both white and black faces","male",35,23,4,916,0.88,FALSE,666,0.68,0.48,0.88,0.4,FALSE,4,"Race IAT","incongruent","SCIAT first"
+120,TRUE,"Both white and black faces","female",27,17,5,798,0.86,FALSE,685,0.47,0.4,0.54,0.14,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+121,TRUE,"Both white and black faces","male",22,19,4,905,0.81,FALSE,133,0.67,0.74,0.6,-0.14,FALSE,1,"Race IAT","congruent","ratings first"
+123,TRUE,"Both white and black faces","female",28,21,6,1621,0.87,FALSE,578,0.49,0.48,0.5,0.02,FALSE,3,"Race IAT","congruent","SCIAT first"
+124,TRUE,"Only black faces","female",22,15,4.83,762,0.86,FALSE,664,0.58,0.64,0.52,-0.12,FALSE,4,"Race IAT","incongruent","SCIAT first"
+125,TRUE,"Only black faces","male",41,22,4,954,0.89,FALSE,550,0.46,0.48,0.44,-0.04,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+127,TRUE,"I don't know","female",27,20,3.17,737,0.97,FALSE,601,0.69,0.72,0.66,-0.0599999999999999,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+128,TRUE,"Only black faces","female",21,18,4.67,635,0.91,FALSE,445,0.52,0.56,0.48,-0.0800000000000001,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+136,TRUE,"I don't know","female",32,27,4,804,0.95,FALSE,235,1,1,1,0,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+137,TRUE,"Both white and black faces","male",61,14,3.83,903,0.99,FALSE,663,0.6,0.54,0.66,0.12,FALSE,1,"Race IAT","congruent","ratings first"
+138,TRUE,"Only black faces","woman",22,13,5,860,0.96,FALSE,739,0.57,0.62,0.52,-0.1,FALSE,2,"Race IAT","incongruent","ratings first"
+139,TRUE,"Only black faces","female",37,15,5.67,923,0.95,FALSE,632,0.64,0.7,0.58,-0.12,FALSE,3,"Race IAT","congruent","SCIAT first"
+140,TRUE,"Only black faces","male",37,18,3.67,686,0.94,FALSE,674,0.85,0.82,0.88,0.0600000000000001,FALSE,4,"Race IAT","incongruent","SCIAT first"
+147,TRUE,"Only black faces","female",54,16,4,1187,0.95,FALSE,320,0,0,0,0,FALSE,3,"Race IAT","congruent","SCIAT first"
+147,TRUE,"Only black faces","female",54,16,4,1187,0.95,FALSE,320,0,0,0,0,FALSE,3,"Race IAT","congruent","SCIAT first"
+150,TRUE,"Only black faces","male",57,15,4,957,0.97,FALSE,492,0.32,0.28,0.36,0.08,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+151,TRUE,"Only black faces","female",21,25,4.33,922,0.87,FALSE,574,0.55,0.6,0.5,-0.1,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+152,TRUE,"Only black faces","male",22,20,4.17,688,0.9,FALSE,846,0.52,0.54,0.5,-0.04,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+153,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,1,"Race IAT","congruent","ratings first"
+154,TRUE,"Only black faces","male",28,22,5,1167,0.99,FALSE,830,0.56,0.42,0.7,0.28,FALSE,2,"Race IAT","incongruent","ratings first"
+156,TRUE,"Only black faces","female",45,13,4.17,1081,0.97,FALSE,692,0.56,0.58,0.54,-0.0399999999999999,FALSE,4,"Race IAT","incongruent","SCIAT first"
+157,TRUE,"Both white and black faces","male",21,16,4.5,764,0.93,FALSE,350,0.99,0.98,1,0.02,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+159,TRUE,"Only black faces","female",51,14,4,813,0.98,FALSE,681,0.4,0.38,0.42,0.04,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+161,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,1,"Race IAT","congruent","ratings first"
+162,TRUE,"Only black faces","male",29,11,4.83,648,1,FALSE,518,0.63,0.62,0.64,0.02,FALSE,2,"Race IAT","incongruent","ratings first"
+163,TRUE,"Only black faces","male",38,16,4.5,980,0.9,FALSE,376,0.61,0.6,0.62,0.02,FALSE,3,"Race IAT","congruent","SCIAT first"
+165,TRUE,"Only black faces","male",31,13,4.17,874,0.98,FALSE,601,0.79,0.68,0.9,0.22,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+173,TRUE,"I don't know","female",48,19,4.67,640,0.96,FALSE,832,0.81,0.88,0.74,-0.14,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+175,TRUE,"I don't know","male",35,16,4.5,655,0.98,FALSE,689,0.48,0.6,0.36,-0.24,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+176,TRUE,"Only black faces","female",19,21,4,782,0.97,FALSE,666,0.52,0.56,0.48,-0.0800000000000001,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+179,TRUE,"Only black faces","female",48,26,6,745,0.98,FALSE,567,0.37,0.32,0.42,0.1,FALSE,3,"Race IAT","congruent","SCIAT first"
+180,TRUE,"Both white and black faces","male",32,14,4,804,0.83,FALSE,180,0.5,0.44,0.56,0.12,FALSE,4,"Race IAT","incongruent","SCIAT first"
+181,TRUE,"I don't know","female",44,12,4.17,1336,0.99,FALSE,642,0.81,0.84,0.78,-0.0599999999999999,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+185,TRUE,"Only black faces","female",34,20,4,895,0.92,FALSE,581,0.87,0.88,0.86,-0.02,FALSE,1,"Race IAT","congruent","ratings first"
+188,TRUE,"Only black faces","female",39,12,5,714,1,FALSE,427,0.87,0.9,0.84,-0.0600000000000001,FALSE,4,"Race IAT","incongruent","SCIAT first"
+193,TRUE,"Both white and black faces","male",53,20,4.67,769,1,FALSE,656,0.73,0.8,0.66,-0.14,FALSE,1,"Race IAT","congruent","ratings first"
+194,TRUE,"Only black faces","male",48,24,4,708,0.99,FALSE,513,0.84,0.84,0.84,0,FALSE,2,"Race IAT","incongruent","ratings first"
+196,TRUE,"Only black faces","male",27,18,4,807,0.97,FALSE,372,0.98,0.96,1,0.04,FALSE,4,"Race IAT","incongruent","SCIAT first"
+197,TRUE,"Only black faces","female",53,12,4.17,880,0.98,FALSE,831,0.68,0.72,0.64,-0.08,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+199,TRUE,"Only black faces","female",44,17,4.5,938,0.97,FALSE,450,0.54,0.64,0.44,-0.2,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+201,TRUE,"Only black faces","male",18,15,7,996,0.87,FALSE,423,0.73,0.72,0.74,0.02,FALSE,1,"Race IAT","congruent","ratings first"
+204,TRUE,"I don't know","male",61,30,4,776,0.95,FALSE,613,0.43,0.4,0.46,0.06,FALSE,4,"Race IAT","incongruent","SCIAT first"
+208,TRUE,"Only black faces","male",35,20,4,682,0.93,FALSE,839,0.63,0.6,0.66,0.0600000000000001,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+210,TRUE,"Both white and black faces","male",22,14,4.83,910,0.98,FALSE,530,0.88,0.98,0.78,-0.2,FALSE,2,"Race IAT","incongruent","ratings first"
+212,TRUE,"Only black faces","male",40,12,4,767,0.84,FALSE,385,0.94,0.94,0.94,0,FALSE,4,"Race IAT","incongruent","SCIAT first"
+214,TRUE,"Only black faces","male ",29,17,5.17,705,0.94,FALSE,578,0.6,0.58,0.62,0.04,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+215,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+216,TRUE,"Both white and black faces","female",40,17,5.17,835,0.88,FALSE,536,0.78,0.76,0.8,0.04,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+217,TRUE,"Only black faces","female",57,13,4.5,703,0.92,FALSE,433,1,1,1,0,FALSE,1,"Race IAT","congruent","ratings first"
+220,TRUE,"Only black faces","female",30,17,4,610,0.93,FALSE,595,0.4,0.38,0.42,0.04,FALSE,4,"Race IAT","incongruent","SCIAT first"
+221,TRUE,"Only black faces","male",45,21,3.83,918,0.98,FALSE,402,0.87,0.78,0.96,0.18,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+222,TRUE,"I don't know","male",27,23,4,649,0.89,FALSE,499,0.44,0.44,0.44,0,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+224,TRUE,"I don't know","male",58,20,5,887,1,FALSE,772,0.6,0.58,0.62,0.04,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+226,TRUE,"Only black faces","female",55,19,6,879,0.96,FALSE,559,0.93,0.9,0.96,0.0599999999999999,FALSE,2,"Race IAT","incongruent","ratings first"
+229,TRUE,"I don't know","male",22,16,3.83,874,0.97,FALSE,130,0.48,0.4,0.56,0.16,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+230,TRUE,"Only black faces","female ",26,13,4,793,0.96,FALSE,845,0.74,0.72,0.76,0.04,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+231,TRUE,"Only black faces","male",44,23,4,914,0.93,FALSE,436,0.63,0.7,0.56,-0.14,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+236,TRUE,"Only black faces","male",30,22,2,732,0.92,FALSE,356,0.49,0.64,0.34,-0.3,FALSE,4,"Race IAT","incongruent","SCIAT first"
+237,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,5,"Flowers-Insects IAT","congruent","ratings first"
+240,TRUE,"Only black faces","female",23,18,4.33,767,0.95,FALSE,544,0.88,0.86,0.9,0.04,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+241,TRUE,"Only black faces","male",22,19,3.83,612,0.91,FALSE,485,0.61,0.6,0.62,0.02,FALSE,1,"Race IAT","congruent","ratings first"
+242,TRUE,"Only black faces","male",37,14,4.17,794,0.92,FALSE,651,0.58,0.48,0.68,0.2,FALSE,2,"Race IAT","incongruent","ratings first"
+245,TRUE,"Both white and black faces","female",22,18,3.33,736,0.98,FALSE,570,0.77,0.74,0.8,0.0600000000000001,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+246,TRUE,"Only black faces","female",59,19,4.33,876,0.99,FALSE,551,0.69,0.76,0.62,-0.14,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+248,TRUE,"I don't know","female",44,19,4.33,806,0.99,FALSE,687,0.6,0.6,0.6,0,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+250,TRUE,"Only black faces","male",27,24,3,803,0.9,FALSE,234,0.47,0.8,0.14,-0.66,FALSE,2,"Race IAT","incongruent","ratings first"
+253,TRUE,"Only black faces","male",33,24,3.33,816,0.98,FALSE,583,0.24,0.22,0.26,0.04,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+255,TRUE,"Only black faces","male",52,22,6,771,0.95,FALSE,376,1,1,1,0,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+257,TRUE,"Only black faces","male",22,14,4,664,0.96,FALSE,451,0.72,0.76,0.68,-0.08,FALSE,1,"Race IAT","congruent","ratings first"
+258,TRUE,"Only black faces","female",33,21,4,714,0.95,FALSE,567,0.66,0.76,0.56,-0.2,FALSE,2,"Race IAT","incongruent","ratings first"
+259,TRUE,"Only black faces","female",31,17,5.83,609,0.97,FALSE,563,0.81,0.86,0.76,-0.1,FALSE,3,"Race IAT","congruent","SCIAT first"
+260,TRUE,"Only black faces","male",24,18,4.33,746,0.96,FALSE,612,0.57,0.66,0.48,-0.18,FALSE,4,"Race IAT","incongruent","SCIAT first"
+263,TRUE,"I don't know","female",48,12,4.83,808,0.93,FALSE,544,0.16,0.14,0.18,0.04,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+265,TRUE,"Only black faces","female",25,15,3.83,801,0.93,FALSE,458,0.52,0.62,0.42,-0.2,FALSE,1,"Race IAT","congruent","ratings first"
+266,TRUE,"Only black faces","female",50,14,5.67,922,0.98,FALSE,865,0.49,0.54,0.44,-0.1,FALSE,2,"Race IAT","incongruent","ratings first"
+267,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,3,"Race IAT","congruent","SCIAT first"
+268,TRUE,"Only black faces","male",26,15,5.17,1075,0.99,FALSE,820,0.65,0.66,0.64,-0.02,FALSE,4,"Race IAT","incongruent","SCIAT first"
+270,TRUE,"Only black faces","female",44,14,4.17,983,0.96,FALSE,437,0.9,0.92,0.88,-0.04,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+272,TRUE,"Only black faces","male",23,15,5.83,657,0.87,FALSE,566,0.51,0.52,0.5,-0.02,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+274,TRUE,"Only black faces","male",30,17,3.83,709,0.98,FALSE,422,0.21,0.26,0.16,-0.1,FALSE,2,"Race IAT","incongruent","ratings first"
+275,TRUE,"Only black faces","female",34,18,4.5,903,0.98,FALSE,1160,0.59,0.52,0.66,0.14,FALSE,3,"Race IAT","congruent","SCIAT first"
+277,TRUE,"Only black faces","male",35,17,3.17,485,0.93,FALSE,176,0.67,0.7,0.64,-0.0599999999999999,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+278,TRUE,"Only black faces","male",52,15,5,841,0.99,FALSE,745,0.95,0.96,0.94,-0.02,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+282,TRUE,"Only black faces","male",58,20,4,1065,0.89,FALSE,351,0.6,0.66,0.54,-0.12,FALSE,2,"Race IAT","incongruent","ratings first"
+283,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,3,"Race IAT","congruent","SCIAT first"
+284,TRUE,"Only black faces","male",30,15,2.83,729,0.94,FALSE,834,0.55,0.62,0.48,-0.14,FALSE,4,"Race IAT","incongruent","SCIAT first"
+286,TRUE,"Only black faces","female",55,24,4.67,1382,0.68,FALSE,369,0.82,0.76,0.88,0.12,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+289,TRUE,"Only black faces","female",40,14,5.5,723,0.97,FALSE,968,0.53,0.56,0.5,-0.0600000000000001,FALSE,1,"Race IAT","congruent","ratings first"
+290,TRUE,"I don't know","female",51,17,4.83,709,0.98,FALSE,518,0.66,0.68,0.64,-0.04,FALSE,2,"Race IAT","incongruent","ratings first"
+291,TRUE,"Only black faces","female",37,13,4,922,0.91,FALSE,508,0.72,0.74,0.7,-0.04,FALSE,3,"Race IAT","congruent","SCIAT first"
+292,TRUE,"I don't know","female",23,15,4,604,0.95,FALSE,502,0.41,0.42,0.4,-0.02,FALSE,4,"Race IAT","incongruent","SCIAT first"
+293,TRUE,"Only black faces","male",21,13,3.5,765,0.94,FALSE,516,0.53,0.52,0.54,0.02,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+294,TRUE,"Only black faces","female",51,17,4.83,746,0.97,FALSE,546,0.58,0.56,0.6,0.0399999999999999,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+297,TRUE,"Only black faces","male",48,12,4.33,615,0.9,FALSE,428,0.49,0.58,0.4,-0.18,FALSE,1,"Race IAT","congruent","ratings first"
+298,TRUE,"Only black faces","female",28,18,4,982,0.94,FALSE,444,0.54,0.98,0.1,-0.88,FALSE,2,"Race IAT","incongruent","ratings first"
+305,TRUE,"Only black faces","male",18,19,4.33,1093,0.93,FALSE,646,0.79,0.7,0.88,0.18,FALSE,1,"Race IAT","congruent","ratings first"
+306,TRUE,"Only black faces","female",21,15,3.33,760,0.82,FALSE,526,0.64,0.76,0.52,-0.24,FALSE,2,"Race IAT","incongruent","ratings first"
+308,TRUE,"Only black faces","male",22,19,4.67,817,0.99,FALSE,537,0.8,0.84,0.76,-0.08,FALSE,4,"Race IAT","incongruent","SCIAT first"
+309,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,5,"Flowers-Insects IAT","congruent","ratings first"
+312,TRUE,"Only black faces","female",29,14,4,889,0.95,FALSE,483,0.99,1,0.98,-0.02,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+315,TRUE,"Only black faces","male",26,20,4.17,1019,1,FALSE,865,0.36,0.32,0.4,0.08,FALSE,3,"Race IAT","congruent","SCIAT first"
+316,TRUE,"Only black faces","female",24,12,4.67,592,0.94,FALSE,422,0.74,0.62,0.86,0.24,FALSE,4,"Race IAT","incongruent","SCIAT first"
+324,TRUE,"Only black faces","male",47,16,4,863,0.93,FALSE,530,0.59,0.64,0.54,-0.1,FALSE,4,"Race IAT","incongruent","SCIAT first"
+330,TRUE,"Only black faces","female",55,17,4.67,883,0.94,FALSE,773,0.52,0.58,0.46,-0.12,FALSE,2,"Race IAT","incongruent","ratings first"
+332,TRUE,"Both white and black faces","male",51,18,4.67,995,0.96,FALSE,901,0.59,0.54,0.64,0.1,FALSE,4,"Race IAT","incongruent","SCIAT first"
+333,TRUE,"Only black faces","male",51,14,3.83,908,0.99,FALSE,726,0.62,0.46,0.78,0.32,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+335,TRUE,"Only black faces","female",33,18,3.5,978,0.89,FALSE,503,0.68,0.66,0.7,0.0399999999999999,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+336,TRUE,"Both white and black faces","female",53,15,3.33,1125,0.88,FALSE,545,0.63,0.64,0.62,-0.02,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+338,TRUE,"Only black faces","male",32,17,2,704,0.85,FALSE,341,0.47,0.78,0.16,-0.62,FALSE,2,"Race IAT","incongruent","ratings first"
+340,TRUE,"Only black faces","male",28,15,4,915,0.91,FALSE,443,1,1,1,0,FALSE,4,"Race IAT","incongruent","SCIAT first"
+342,TRUE,"Only black faces","male",29,16,4,955,0.94,FALSE,416,0.98,0.98,0.98,0,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+343,TRUE,"Only black faces","female",48,14,5.83,814,0.96,FALSE,642,0.56,0.34,0.78,0.44,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+344,TRUE,"Only black faces","female",27,14,4.67,756,0.82,FALSE,525,0.51,0.56,0.46,-0.1,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+345,TRUE,"Only black faces","genderfluid",27,17,4,842,0.96,FALSE,1106,0.57,0.66,0.48,-0.18,FALSE,1,"Race IAT","congruent","ratings first"
+347,TRUE,"Both white and black faces","female",28,18,4.67,758,0.94,FALSE,450,0.22,0.26,0.18,-0.08,FALSE,3,"Race IAT","congruent","SCIAT first"
+348,TRUE,"Only black faces","male",33,14,5.67,801,0.96,FALSE,660,0.45,0.44,0.46,0.02,FALSE,4,"Race IAT","incongruent","SCIAT first"
+349,TRUE,"Only black faces","female",47,15,4,936,1,FALSE,799,1,1,1,0,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+350,TRUE,"Only black faces","male",60,19,4.33,940,0.94,FALSE,782,0.66,0.6,0.72,0.12,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+351,TRUE,"Only black faces","male",24,14,5.33,1059,0.91,FALSE,400,0.51,0.28,0.74,0.46,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+352,TRUE,"Only black faces","male",38,12,4.33,725,0.96,FALSE,671,0.46,0.44,0.48,0.04,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+355,TRUE,"Only black faces","female",33,12,5.33,1106,1,FALSE,681,0.79,0.78,0.8,0.02,FALSE,3,"Race IAT","congruent","SCIAT first"
+356,TRUE,"Only black faces","female",34,15,6.83,707,0.99,FALSE,290,0.79,0.66,0.92,0.26,FALSE,4,"Race IAT","incongruent","SCIAT first"
+360,TRUE,"Only black faces","female",36,21,4,1032,0.97,FALSE,769,0.55,0.58,0.52,-0.0599999999999999,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+362,TRUE,"Both white and black faces","female",33,22,4,724,0.94,FALSE,306,0.91,0.92,0.9,-0.02,FALSE,2,"Race IAT","incongruent","ratings first"
+364,TRUE,"Both white and black faces","male",26,14,3.83,653,0.95,FALSE,387,0.68,0.62,0.74,0.12,FALSE,4,"Race IAT","incongruent","SCIAT first"
+367,TRUE,"Only black faces","female",19,15,3.83,813,0.88,FALSE,562,0.86,0.84,0.88,0.04,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+368,TRUE,"Only black faces","female",35,16,4,818,0.98,FALSE,620,0.83,0.9,0.76,-0.14,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+369,TRUE,"Only black faces","male",42,26,2.33,1119,0.98,FALSE,525,0.54,0.98,0.1,-0.88,FALSE,1,"Race IAT","congruent","ratings first"
+370,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,2,"Race IAT","incongruent","ratings first"
+372,TRUE,"Only black faces","female",20,16,6,710,0.97,FALSE,671,0.51,0.52,0.5,-0.02,FALSE,4,"Race IAT","incongruent","SCIAT first"
+375,TRUE,"Only black faces","male",27,25,3.83,744,0.9,FALSE,258,0.53,0.64,0.42,-0.22,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+376,TRUE,"Only black faces","female",29,20,3.5,651,0.92,FALSE,277,0.54,0.78,0.3,-0.48,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+379,TRUE,"Only black faces","female",24,23,3.67,761,0.91,FALSE,538,0.63,0.66,0.6,-0.0600000000000001,FALSE,3,"Race IAT","congruent","SCIAT first"
+381,TRUE,"Only black faces","female",19,14,3.5,726,0.97,FALSE,560,0.7,0.7,0.7,0,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+383,TRUE,"Only black faces","female",54,20,3.83,835,1,FALSE,686,0.73,0.64,0.82,0.18,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+385,TRUE,"Only black faces","male",22,22,6,647,0.64,TRUE,509,0.69,0.68,0.7,0.0199999999999999,TRUE,1,"Race IAT","congruent","ratings first"
+386,TRUE,"Only black faces","female",28,19,4,695,0.91,FALSE,151,0.61,0.56,0.66,0.1,FALSE,2,"Race IAT","incongruent","ratings first"
+389,TRUE,"Both white and black faces","female",33,13,4.17,723,0.92,FALSE,377,0.55,0.56,0.54,-0.02,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+398,TRUE,"Only black faces","male",23,28,4.83,720,0.83,FALSE,339,0.63,0.56,0.7,0.14,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+400,TRUE,"Only black faces","female",20,14,4.83,596,0.99,FALSE,606,0.77,0.64,0.9,0.26,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+402,TRUE,"Only black faces","male",22,14,4,666,0.84,FALSE,475,0.92,0.92,0.92,0,FALSE,2,"Race IAT","incongruent","ratings first"
+404,TRUE,"Only black faces","male",18,20,6,791,0.93,FALSE,281,0.53,0.1,0.96,0.86,FALSE,4,"Race IAT","incongruent","SCIAT first"
+410,TRUE,"Only black faces","female",47,18,5,804,0.98,FALSE,290,1,1,1,0,FALSE,2,"Race IAT","incongruent","ratings first"
+416,TRUE,"Both white and black faces","male",54,23,4,864,0.77,FALSE,478,0.95,0.92,0.98,0.0599999999999999,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+421,TRUE,"I don't know","female",29,20,4,719,0.84,FALSE,452,0.34,0.38,0.3,-0.08,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+422,TRUE,"Only black faces","male",55,15,3.33,988,0.97,FALSE,450,0.65,0.86,0.44,-0.42,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+424,TRUE,"Only black faces","male",35,24,3,953,0.98,FALSE,607,0.43,0.58,0.28,-0.3,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+426,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,2,"Race IAT","incongruent","ratings first"
+427,TRUE,"Only black faces","male",23,16,4,794,0.75,FALSE,945,0.62,0.6,0.64,0.04,FALSE,3,"Race IAT","congruent","SCIAT first"
+429,TRUE,"Both white and black faces","female",37,15,4,715,0.98,FALSE,209,1,1,1,0,FALSE,5,"Flowers-Insects IAT","congruent","ratings first"
+432,TRUE,"I don't know","female",28,14,3.83,979,0.98,FALSE,564,0.43,0.46,0.4,-0.06,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+433,TRUE,"I don't know","female",24,21,4,863,0.92,FALSE,727,0.73,0.86,0.6,-0.26,FALSE,1,"Race IAT","congruent","ratings first"
+435,TRUE,"Only black faces","female",49,17,3.67,930,0.97,FALSE,887,0.61,0.78,0.44,-0.34,FALSE,3,"Race IAT","congruent","SCIAT first"
+440,TRUE,"Only black faces","male",37,19,4.17,931,0.92,FALSE,746,0.36,0.36,0.36,0,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+442,TRUE,"Only black faces","female",30,16,7,781,0.97,FALSE,504,0.62,0.7,0.54,-0.16,FALSE,2,"Race IAT","incongruent","ratings first"
+443,TRUE,"Both white and black faces","female",45,12,5.5,736,0.87,FALSE,364,0.75,0.76,0.74,-0.02,FALSE,3,"Race IAT","congruent","SCIAT first"
+446,TRUE,"Only black faces","male",40,25,4,553,0.85,FALSE,265,0.6,0.58,0.62,0.04,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+448,TRUE,"Only black faces","",33,24,4,1025,0.95,FALSE,685,0.41,0.38,0.44,0.06,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+450,TRUE,"Only black faces","male",18,22,4,787,0.74,FALSE,529,0.68,0.64,0.72,0.08,FALSE,2,"Race IAT","incongruent","ratings first"
+454,TRUE,"Only black faces","male",43,16,3.83,978,0.99,FALSE,419,0.57,0.16,0.98,0.82,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+456,TRUE,"Both white and black faces","male",20,19,4.17,711,0.73,FALSE,647,0.92,0.88,0.96,0.08,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+457,TRUE,"Only black faces","female",23,15,5,686,0.97,FALSE,437,1,1,1,0,FALSE,1,"Race IAT","congruent","ratings first"
+459,TRUE,"Only black faces","female",27,22,4.83,862,0.95,FALSE,590,0.91,0.88,0.94,0.0599999999999999,FALSE,3,"Race IAT","congruent","SCIAT first"
+460,TRUE,"Both white and black faces","female",34,19,1.5,747,0.88,FALSE,285,0.51,0.98,0.04,-0.94,FALSE,4,"Race IAT","incongruent","SCIAT first"
+463,TRUE,"Only black faces","male",57,16,4,1088,0.96,FALSE,357,0.83,0.82,0.84,0.02,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+464,TRUE,"I don't know","male",32,13,4,978,0.97,FALSE,577,0.63,0.3,0.96,0.66,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+465,TRUE,"Only black faces","male",39,18,4,780,0.91,FALSE,326,0.49,0.42,0.56,0.14,FALSE,1,"Race IAT","congruent","ratings first"
+466,TRUE,"Only black faces","female",27,11,6,736,0.78,FALSE,374,0.95,0.92,0.98,0.0599999999999999,FALSE,2,"Race IAT","incongruent","ratings first"
+468,TRUE,"I don't know","male",22,19,4.17,992,0.91,FALSE,608,0.56,0.56,0.56,0,FALSE,4,"Race IAT","incongruent","SCIAT first"
+470,TRUE,"Only black faces","male",33,16,6,992,0.88,FALSE,245,1,1,1,0,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+471,TRUE,"Only black faces","female",19,18,4.17,678,0.96,FALSE,434,0.83,0.8,0.86,0.0599999999999999,FALSE,7,"Flowers-Insects IAT","congruent","SCIAT first"
+472,FALSE,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,TRUE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+475,TRUE,"Both white and black faces","male",31,23,6,1037,0.96,FALSE,353,0.89,0.86,0.92,0.0600000000000001,FALSE,3,"Race IAT","congruent","SCIAT first"
+478,TRUE,"Only black faces","male",52,18,4,842,0.99,FALSE,846,0.52,0.54,0.5,-0.04,FALSE,6,"Flowers-Insects IAT","incongruent","ratings first"
+480,TRUE,"Only black faces","male",28,19,4,737,0.94,FALSE,772,0.51,0.46,0.56,0.1,FALSE,8,"Flowers-Insects IAT","incongruent","SCIAT first"
+481,TRUE,"Both white and black faces","male",22,22,5,891,0.92,FALSE,585,0.63,0.56,0.7,0.14,FALSE,1,"Race IAT","congruent","ratings first"
