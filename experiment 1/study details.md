@@ -60,7 +60,7 @@ Not included in primary analyses.
 
 ### Power analysis
 
-No power analysis as I'm still working out how to do this for interaction effects in LMMs. 
+No power analysis given the complexity of simulations for LMM interaction effects. 
 
 ### Planned sample size
 

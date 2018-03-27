@@ -160,7 +160,7 @@ SCIAT_data <-
 SCIAT_data_outliers_removed <-
   SCIAT_data %>%
   schoRsch::outlier(dv = "rt",
-                    todo="elim", 
+                    todo = "elim", 
                     upper.z = 2.5, 
                     lower.z = -2.5)
 
@@ -261,6 +261,8 @@ ggplot(data = model_1_predicted_effects,
 
 ## Alternative analytic strategy: Linear fixed effect model on SC-IAT D1 scores
 
+For illustrative/reader familiarity purposes only.
+
 ### Model
 
 ```{r}
@@ -287,6 +289,29 @@ sjt.lm(model_1_alt,
 
 sjp.lm(model_1_alt, 
        type = "fe")
+
+```
+
+### Estimate effect size
+
+Differences between groups are more meaningful when experessed as Cohen's d, so regress against racism (the covariate) and then compare group differences in the residuals.
+
+```{r}
+
+model_1a_alt <- lm(SCIAT_D1 ~ modern_racism_scale_total,
+                   data = passers_df)
+
+temp <- passers_df %>%
+  rownames_to_column()
+
+resid_data <- residuals(model_1a_alt) %>%
+    as.data.frame()
+colnames(resid_data) <- "residual_SCIAT_D1"
+resid_data <- resid_data %>%  
+  rownames_to_column() %>%
+  left_join(temp, by = "rowname")
+
+effsize::cohen.d(residual_SCIAT_D1 ~ IAT_condition, data = resid_data)
 
 ```
 
