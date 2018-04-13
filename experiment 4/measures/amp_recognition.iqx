@@ -1,0 +1,32 @@
+﻿************************************************
+amp recognition test
+************************************************
+
+Ian Hussey (ian.hussey@ugent.be)
+GPLv3+ license
+
+************************************************
+
+<defaults>
+/ screencolor = white
+/ txcolor = black
+/ fontstyle = ("Arial", 3%)
+/ inputdevice = keyboard
+/ validkeys = (" ", "t")
+/ halign = center
+/ Com1BaudRate = 9600
+</defaults>
+
+<radiobuttons amp_recognition>
+/ caption = "The previous task asked you to ignore the real life images that were flashed before the Chinese characters. Some of these real life images were faces. Did you recognise what kind?"
+/ options = ("Only white faces", "Only black faces", "Both white and black faces", "I don't know")
+</radiobuttons>
+
+<survey amp_recognition>
+/ pages = [1=amp_recognition]
+/ showpagenumbers = false
+</survey>
+
+<surveypage amp_recognition>
+/ questions = [1=amp_recognition] 
+</surveypage>

@@ -1,0 +1,179 @@
+---
+title: "Screen data"
+author: "Ian Hussey^[Ghent University. Email: ian.hussey@ugent.be]"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    code_folding: hide
+    highlight: haddock
+    theme: flatly
+    toc: yes
+    toc_float: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,
+                      warning=FALSE,
+                      cache.lazy=FALSE)
+```
+
+```{r}
+
+# Screen data
+
+# author: Ian Hussey (ian.hussey@ugent.be)
+# license: GPLv3+
+
+
+# Dependencies ------------------------------------------------------------
+
+
+library(plyr)
+library(tidyverse)
+library(data.table)
+
+
+# Data acquisition and cleaning -------------------------------------------
+
+
+## Set the working directory
+setwd("./raw")
+
+# Read all files with the .iqdat extension
+files <- list.files(pattern = "\\.csv$")  
+
+# Read these files sequentially into a single data frame
+input_df <- dplyr::tbl_df(plyr::rbind.fill(lapply(files, data.table::fread, header = TRUE)))  # tbl_df() requires dplyr, rbind.fill() requires plyr, fread requires data.table
+
+```
+
+
+```{r}
+
+# Make some variable names more transparent
+trimmed_df <- input_df %>%
+  dplyr::select(subject, #participant
+                blocknum,  #block_n
+                trialnum,  #trial_n
+                blockcode, #task
+                trialcode,  #item
+                response,  
+                correct, #accuracy
+                latency,
+                amp_recognition_response) %>%  #rt
+  dplyr::rename(participant = subject,
+                block_n = blocknum,
+                trial_n = trialnum,
+                task = blockcode,
+                item = trialcode,
+                accuracy = correct,
+                rt = latency) %>%
+  dplyr::mutate(participant = as.numeric(participant))
+
+
+# complete data per task --------------------------------------------------
+
+
+## find participants who have data in each task, 
+## then for each check if they had data in all the previous tasks
+## return those participants who had data in all tasks
+
+# no base funciton for mode, so define one
+modal_value <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+#separate each tasks and find uniques
+participants_with_full_data <- trimmed_df %>%
+  dplyr::filter(grepl("demographics", task)) %>%  # filter rows where the block_name includes string
+  dplyr::distinct(participant)
+
+IAT <- trimmed_df %>%
+  dplyr::filter(grepl("compatibletest", task)) %>%  # filter rows where the block_name includes string
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(IAT_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_IAT_rows = modal_value(IAT_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(IAT_rows == modal_IAT_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_IAT_rows)
+
+participants_with_full_data <- 
+  dplyr::semi_join(participants_with_full_data, IAT, by = "participant")
+
+AMP <- trimmed_df %>%
+  dplyr::filter(grepl("AMP_test", task)) %>%  # filter rows where the block_name includes string
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(AMP_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_AMP_rows = modal_value(AMP_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(AMP_rows == modal_AMP_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_AMP_rows)
+
+participants_with_full_data <- participants_with_full_data %>%
+  dplyr::semi_join(AMP, by = "participant")
+
+ratings <- trimmed_df %>%
+  dplyr::filter(grepl("ratings", task)) %>%  # filter rows where the block_name includes string
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(ratings_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_ratings_rows = modal_value(ratings_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(ratings_rows == modal_ratings_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_ratings_rows)
+
+participants_with_full_data <- 
+  dplyr::semi_join(participants_with_full_data, ratings, by = "participant")
+
+
+modern_racism_scale <- trimmed_df %>%
+  dplyr::filter(grepl("racism_scale", task)) %>%  # filter rows where the block_name includes string
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(racism_scale_rows = n()) %>%  # count the number of trials per participant
+  dplyr::ungroup() %>%
+  dplyr::mutate(modal_racism_scale_rows = modal_value(racism_scale_rows)) %>%  # find modal n of trials
+  dplyr::rowwise() %>%
+  dplyr::filter(racism_scale_rows == modal_racism_scale_rows) %>% # if modal n != n then data is missing or participants has duplicate performance.
+  dplyr::select(-modal_racism_scale_rows)
+
+participants_with_full_data <- participants_with_full_data %>%
+  dplyr::semi_join(modern_racism_scale, by = "participant") %>%
+  mutate(complete = TRUE)
+
+
+amp_recognition_scale <- trimmed_df %>%
+  dplyr::filter(!is.na(amp_recognition_response)) %>%
+  dplyr::select(participant, amp_recognition_response)
+
+participants_with_full_data <- participants_with_full_data %>%
+  dplyr::semi_join(amp_recognition_scale, by = "participant")
+
+
+# participants with at least partial data
+participants_with_at_least_partial_data <- trimmed_df %>%
+  dplyr::distinct(participant) %>%
+  dplyr::mutate(participant_partial = participant) 
+
+# participants with incomplete data
+participants_with_incomplete_data <- participants_with_at_least_partial_data %>%
+  dplyr::anti_join(participants_with_full_data, by = "participant") %>%
+  select(-participant_partial) %>%
+  mutate(complete = FALSE, 
+         block_n = NA, trial_n = NA, task = NA, item = NA, response = NA, accuracy = NA, rt = NA, amp_recognition_response = NA) %>%
+  filter(!is.na(participant))
+
+
+# screened data -----------------------------------------------------------
+
+screened_data <- trimmed_df %>%
+  semi_join(participants_with_full_data, by = "participant") %>%
+  mutate(complete = TRUE) %>%
+  rbind(participants_with_incomplete_data)
+ 
+screened_data %>% write.csv("screened/screened data.csv", row.names = FALSE)
+
+
+```

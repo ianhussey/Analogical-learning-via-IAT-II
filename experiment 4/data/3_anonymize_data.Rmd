@@ -1,0 +1,59 @@
+---
+title: "Anonymise data"
+author: "Ian Hussey^[Ghent University. Email: ian.hussey@ugent.be]"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    code_folding: hide
+    highlight: haddock
+    theme: flatly
+    toc: yes
+    toc_float: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,
+                      warning=FALSE,
+                      cache.lazy=FALSE)
+```
+
+```{r}
+
+# author: Ian Hussey (ian.hussey@ugent.be)
+# license: GPLv3+
+
+
+# Dependencies ------------------------------------------------------------
+
+
+library(plyr)
+library(tidyverse)
+library(data.table)
+
+
+# Data acquisition and cleaning -------------------------------------------
+
+
+## Set the working directory
+setwd("raw")
+
+# Read all files with the .iqdat extension
+files <- list.files(pattern = "demographics")  
+
+# Read these files sequentially into a single data frame
+input_df <- dplyr::tbl_df(plyr::rbind.fill(lapply(files, data.table::fread, header = TRUE)))  # tbl_df() requires dplyr, rbind.fill() requires plyr, fread requires data.table
+
+```
+
+```{r}
+# remove prolific rows and save -------------------------------------------
+
+
+
+input_df %>%
+  dplyr::filter(trialcode != "ProlificCode") %>%
+  write.csv("raw/demographics.csv")
+
+```
+
+NB original file must be deleted too.

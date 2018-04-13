@@ -1,0 +1,97 @@
+﻿************************************************
+Demographics
+************************************************
+
+Ian Hussey (ian.hussey@ugent.be)
+GPLv3+ license
+
+************************************************
+<defaults>
+/ canvassize = (1024px, 768px)
+/ windowsize = (1024px, 768px)
+/ screencolor = white
+/ txcolor = black
+/ fontstyle = ("Arial", 3%)
+/ inputdevice = keyboard
+/ validkeys = (" ", "t")
+/ halign = center
+/ Com1BaudRate = 9600
+</defaults>
+
+<expt>
+/ blocks = [1 = block1]
+</expt>
+
+<variables>
+/ group = (1 of 1) (block1 = demographics)
+</variables>
+
+
+************************************************
+Demographics
+************************************************
+<textbox ProlificCode>
+/ caption = 
+"Please copy and paste your prolific ID here. It is available in the window that launched this experiment. Without this code you cannot be paid."
+/ position = (10%,10%)
+/ textboxsize = (45, 40)
+/ multiline = true
+</textbox>
+
+<textbox age>
+/ caption = "What is your age:"
+</textbox>
+
+<textbox gender>
+/ caption = "What is your gender"
+</textbox>
+
+***********************************************
+
+<surveypage info_1>
+/ questions = [1 = age]
+/ showpagenumbers = false 
+/ showquestionnumbers = false
+</surveypage>
+
+<surveypage info_2>
+/ questions = [1 = gender]
+/ showpagenumbers = false 
+/ showquestionnumbers = false
+</surveypage>
+
+<surveypage info_3>
+/ questions = [1 = ProlificCode]
+/ showpagenumbers = false 
+/ showquestionnumbers = false
+</surveypage>
+
+************************************************
+block
+************************************************
+
+<block demographics>
+/ preinstructions = (WelcomeInstructions)
+/ screencolor = white
+/ trials = [1 = info_1; 2 = info_2; 3 = info_3]
+</block>
+
+************************************************
+Instructions
+************************************************
+
+<instruct>  
+/ fontstyle = ("Arial", 3%)
+/ inputdevice = keyboard
+/ nextkey = (" ")
+/ nextlabel = "Press the spacebar to continue"
+/ prevlabel = "Press the 't' key to go back"
+/ prevkey = ("t")
+</instruct>
+
+<page WelcomeInstructions>
+Welcome to the experiment.^^
+Before you start, please silence your phone/e-mail/music & anything else distracting.^^
+Some of the tasks in this experiment take several seconds to load, even on a good internet connection.^
+The experiment has not frozen, please just give them time to load.
+</page>
