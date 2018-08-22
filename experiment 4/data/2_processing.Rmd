@@ -208,6 +208,8 @@ wide_data_df <-
   ungroup()
 
 # print N
+wide_data_df %>% count()
+
 wide_data_df %>% count(IAT_condition, exclude)
 
 wide_data_df %>% write.csv(file = "processed/processed summary data - wide format.csv", row.names = FALSE)
@@ -262,3 +264,4 @@ ratings_long_format_df <- cleaned_df %>%
 ratings_long_format_df %>% write.csv(file = "processed/processed ratings data - long format.csv", row.names = FALSE)
 
 ```
+

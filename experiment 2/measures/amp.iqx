@@ -11,6 +11,7 @@ Notes
 1 Durations:
 500 ms fixation cross (changed from original which had no cross or ITI)
 100 ms prime (changed from the original 75ms, which is 4.5 frames and therefore not reliable between trials)
+100 ms blank
 100 ms target
 100 ms mask
 

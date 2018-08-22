@@ -107,7 +107,8 @@ I.e., after applying inclusion/exclusion criteria.
 ```{r}
 
 passers_df %>% 
-  dplyr::select(age) %>%
+  #dplyr::select(age) %>%
+  pull(age) %>%
   psych::describe(fast = TRUE,  # subset of descriptive stats
                   ranges = FALSE,
                   trim = 0) %>%
@@ -128,7 +129,7 @@ passers_df %>%
 
 ```
 
-### Performance on the IAT and SC-IAT
+### Performance on the IAT and AMP
 
 ```{r}
 
@@ -140,6 +141,8 @@ passers_df %>%
   psych::describe(fast = TRUE,  # subset of descriptive stats
                   ranges = FALSE,
                   trim = 0) %>%
+  as.data.frame() %>%
+  rownames_to_column() %>%
   dplyr::select(-vars, -se) %>%
   mutate(mean = round(mean, 2),
          sd = round(sd, 2)) %>%
@@ -148,7 +151,7 @@ passers_df %>%
 
 ```
 
-# Hypothesis test 1: Differences in IAT effects between contrast pair conditions
+# Hypothesis test 1: Differences in AMP effects between contrast pair conditions
 
 H1: Completing an IAT serves to train attitudes as well as test them. Participants who complete a race IAT will demonstrate more negative implicit evaluations of the outgroup (black people) on the AMP than participants who completed a control (flowers-insects) IAT.  
 
@@ -194,11 +197,22 @@ ggplot(AMP_participant_summary_data,
 
 ```{r}
 
-model_1 <- glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total + (1 | participant), 
+# convergence issues with model apparently due to scale of continuous variable, so standardize and center it.
+# https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html
+
+temp <- AMP_data %>%
+  distinct(participant, .keep_all = TRUE) %>%
+  mutate(modern_racism_scale_total_scaled = scale(modern_racism_scale_total)) %>%
+  select(participant, modern_racism_scale_total_scaled) 
+
+AMP_data_mod <- AMP_data %>%
+  left_join(temp, by = "participant")
+  
+model_1 <- glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total_scaled + (1 | participant), 
                  family = "binomial",
                  contrasts = list(prime_type = "contr.sum", 
-                                  IAT_condition = "contr.sum"),  
-                 data = AMP_data)
+                                  IAT_condition = "contr.sum"),
+                 data = AMP_data_mod)
 
 ```
 
@@ -241,7 +255,7 @@ model_1_predicted_effects %>%
   
 ### Plot predictions
 
-```{r fig.height=3, fig.width=5}
+```{r fig.height=5, fig.width=8}
 
 ggplot(data = model_1_predicted_effects,
        aes(x = `AMP prime type`, y = fit, colour = `IAT condition`)) +

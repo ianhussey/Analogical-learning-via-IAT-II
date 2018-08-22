@@ -1,0 +1,491 @@
+---
+title: "Changing established atttiudes via the IAT: Meta analyses"
+author: "Ian Hussey"
+params:
+  location_of_exp_1_data: ~/git/Analogical learning via the IAT II/experiment 1/
+  location_of_exp_2_data: ~/git/Analogical learning via the IAT II/experiment 2/
+  location_of_exp_3_data: ~/git/Analogical learning via the IAT II/experiment 3/
+  location_of_exp_4_data: ~/git/Analogical learning via the IAT II/experiment 4/
+output:
+  html_document:
+    code_folding: hide
+    highlight: haddock
+    theme: flatly
+    toc: yes
+    toc_float: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,
+                      warning=FALSE,
+                      cache.lazy=FALSE)
+```
+
+```{r}
+
+# dependencies
+library(tidyverse)
+library(psych)
+library(weights)  # for rd(), a round() alternative
+library(plotrix)  # for std.error
+library(lme4)
+library(effects)
+library(knitr)
+library(kableExtra)
+library(sjPlot)
+library(apa)
+
+# set table formatting for html
+options(knitr.table.format = "html")
+
+# rounds all numerics in a df
+round_df <- function(df, digits) {
+  nums <- vapply(df, is.numeric, FUN.VALUE = logical(1))
+  df[,nums] <- round(df[,nums], digits = digits)
+  (df)
+}
+
+# options
+options(knitr.table.format = "html") # necessary configuration of tables
+
+# disable scientific notation
+options(scipen = 999) 
+
+```
+
+# Meta-analysis of self-report effects
+
+```{r}
+
+# get data from exp 1
+setwd(params$location_of_exp_1_data)
+
+ratings_data_exp1 <- 
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = "exp1",
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, 
+                                 ifelse(SCIAT_exclude_based_on_fast_trials == TRUE, TRUE,
+                                        FALSE))) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+
+# get data from exp 2
+setwd(params$location_of_exp_2_data)
+
+ratings_data_exp2 <- 
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = "exp2",
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, FALSE)) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+
+# get data from exp 3
+setwd(params$location_of_exp_3_data)
+
+ratings_data_exp3 <- 
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = "exp3",
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, FALSE)) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+
+# get data from exp 4
+setwd(params$location_of_exp_4_data)
+
+ratings_data_exp4 <- 
+  read.csv("data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(experiment = "exp4",
+                unique_id = as.factor(paste(experiment, participant, sep = "_")),
+                IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, FALSE)) %>%
+  dplyr::select(unique_id, experiment, IAT_condition, exclude, rating, modern_racism_scale_total)
+
+
+# combine
+combined_ratings_data <- rbind(ratings_data_exp1, 
+                               ratings_data_exp2, 
+                               ratings_data_exp3,
+                               ratings_data_exp4) %>%
+  filter(exclude == FALSE) %>%
+  mutate(IAT_condition = fct_relevel(as.factor(IAT_condition), "Race IAT", "Flowers-Insects IAT"),
+         unique_id = as.factor(unique_id),
+         experiment = as.factor(experiment))
+
+```
+
+```{r}
+
+model_sr_meta <- 
+  lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | experiment) + (1 | unique_id),
+       contrasts = list(IAT_condition = "contr.sum"),
+       data = combined_ratings_data)
+
+
+# model each experiment for plotting
+model_sr_1 <- 
+  lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id),
+       contrasts = list(IAT_condition = "contr.sum"),  
+       data = ratings_data_exp1)
+
+model_sr_2 <- 
+  lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id),
+       contrasts = list(IAT_condition = "contr.sum"),  
+       data = ratings_data_exp2)
+
+model_sr_3 <- 
+  lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id),
+       contrasts = list(IAT_condition = "contr.sum"),  
+       data = ratings_data_exp3)
+
+model_sr_4 <- 
+  lmer(rating ~ IAT_condition + modern_racism_scale_total + (1 | unique_id),
+       contrasts = list(IAT_condition = "contr.sum"),  
+       data = ratings_data_exp4)
+
+
+```
+
+- Hypothesis refers to main effect for IAT condition.
+- *p* values estimated via Wald method.
+
+### Summary
+
+```{r}
+
+sjt.lmer(model_sr_meta, 
+         emph.p = FALSE, 
+         p.kr = FALSE,
+         digits.p = 6,
+         show.std = TRUE)
+
+```
+
+Total N for meta analysis = `r combined_ratings_data %>% distinct(unique_id) %>% dplyr::summarize(n = n()) %>% as.numeric()`.
+
+### Plot effects
+
+```{r fig.height=3, fig.width=5}
+
+sjp.lmer(model_sr_meta, 
+         p.kr = FALSE,
+         type = "fe")
+
+```
+
+### Table predictions
+
+```{r fig.height=3, fig.width=5}
+
+# n per condition per study
+sr_1_n <- ratings_data_exp1 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 1")
+
+sr_2_n <- ratings_data_exp2 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 2")
+
+sr_3_n <- ratings_data_exp3 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 3")
+
+sr_4_n <- ratings_data_exp4 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 4")
+
+sr_n <- rbind(sr_1_n, sr_2_n, sr_3_n, sr_4_n) %>%
+  gather(IAT_condition, n, c("Race IAT", "Flowers-Insects IAT")) %>%
+  mutate(percent_n = round(n/sum(n), 3)) %>%
+  arrange(experiment)
+
+
+# predicted effects
+model_sr_meta_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_meta)) %>%
+  mutate(experiment = "Meta-analysis")
+
+model_sr_1_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_1)) %>%
+  mutate(experiment = "Experiment 1")
+model_sr_2_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_2)) %>%
+  mutate(experiment = "Experiment 2")
+model_sr_3_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_3)) %>%
+  mutate(experiment = "Experiment 3")
+model_sr_4_predicted_effects <- as.data.frame(effect("IAT_condition", model_sr_4)) %>%
+  mutate(experiment = "Experiment 4")
+
+# combine
+model_predicted_effects_sr <- rbind(model_sr_1_predicted_effects, 
+                                    model_sr_2_predicted_effects, 
+                                    model_sr_3_predicted_effects,
+                                    model_sr_4_predicted_effects,
+                                    model_sr_meta_predicted_effects) %>%
+  left_join(sr_n, by = c("experiment", "IAT_condition")) %>%
+  mutate(percent_n = ifelse(is.na(percent_n), 5, percent_n*5)) %>%  # needs thought
+  mutate(experiment = fct_relevel(experiment,
+                                  "Meta-analysis",
+                                  "Experiment 4", 
+                                  "Experiment 3", 
+                                  "Experiment 2", 
+                                  "Experiment 1"))
+
+model_predicted_effects_sr %>% 
+  round_df(2) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+```
+  
+### Plot predictions
+
+```{r fig.height=3, fig.width=7}
+
+ggplot(data = model_predicted_effects_sr,
+       aes(x = experiment, color = IAT_condition)) +
+  geom_point(aes(y = fit, 
+                 size = percent_n), 
+             position = position_dodge(width=0.75),
+             shape = 15,
+             show.legend = FALSE) +
+  geom_linerange(aes(ymax = upper,
+                     ymin = lower), 
+                 position = position_dodge(width=0.75)) +
+  ylab("Rating") +
+  xlab("") +
+  scale_colour_grey() +
+  theme_classic() + 
+  #ylim(3.8, 4.9) +
+  coord_flip() 
+
+```
+
+# Meta-analysis of AMP effects
+
+```{r}
+
+# get data from exp 2
+setwd(params$location_of_exp_2_data)
+
+amp_data_exp2 <- 
+  read.csv("data/processed/processed AMP data - long format.csv") %>%
+  dplyr::filter(exclude == FALSE,
+                IAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                rating_factor = as.factor(ifelse(accuracy == 0, "negative", 
+                                                 ifelse(accuracy == 1, "positive", NA))),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  dplyr::rename(prime_type = item,
+                rating = accuracy) %>%
+  dplyr::mutate(experiment = "exp2",
+                unique_id = as.factor(paste(experiment, participant, sep = "_"))) %>%
+  dplyr::select(-AMP_exclude_based_on_fast_trials_old)
+
+
+# get data from exp 4
+setwd(params$location_of_exp_4_data)
+
+amp_data_exp4 <- 
+  read.csv("data/processed/processed AMP data - long format.csv") %>%
+  dplyr::filter(exclude == FALSE,
+                IAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                rating_factor = as.factor(ifelse(accuracy == 0, "negative", 
+                                                 ifelse(accuracy == 1, "positive", NA))),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  dplyr::rename(prime_type = item,
+                rating = accuracy) %>%
+  dplyr::mutate(experiment = "exp4",
+                unique_id = as.factor(paste(experiment, participant, sep = "_")))
+
+
+# combine
+combined_amp_data <- rbind(amp_data_exp2, 
+                           amp_data_exp4) %>%
+  filter(exclude == FALSE) %>%
+  mutate(IAT_condition = fct_relevel(as.factor(IAT_condition), "Race IAT", "Flowers-Insects IAT"),
+         unique_id = as.factor(unique_id),
+         experiment = as.factor(experiment))
+
+```
+
+```{r}
+
+# convergence issues with model apparently due to scale of continuous variable, so standardize and center it.
+# https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html
+
+temp <- combined_amp_data %>%
+  distinct(unique_id, .keep_all = TRUE) %>%
+  mutate(modern_racism_scale_total_scaled = scale(modern_racism_scale_total)) %>%
+  select(unique_id, modern_racism_scale_total_scaled) 
+
+combined_amp_data_mod <- combined_amp_data %>%
+  left_join(temp, by = "unique_id")
+
+model_amp_meta <- 
+  glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total_scaled + (1 | experiment) + (1 | unique_id),
+        family = "binomial",
+        contrasts = list(prime_type = "contr.sum", 
+                         IAT_condition = "contr.sum"),  
+        data = combined_amp_data_mod)
+
+
+# individual models for plotting
+temp <- amp_data_exp2 %>%
+  distinct(unique_id, .keep_all = TRUE) %>%
+  mutate(modern_racism_scale_total_scaled = scale(modern_racism_scale_total)) %>%
+  select(unique_id, modern_racism_scale_total_scaled) 
+
+amp_data_exp2_mod <- amp_data_exp2 %>%
+  left_join(temp, by = "unique_id")
+
+model_amp_2 <- 
+  glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total_scaled + (1 | unique_id),
+        family = "binomial",
+        contrasts = list(prime_type = "contr.sum", 
+                         IAT_condition = "contr.sum"),  
+        data = amp_data_exp2_mod)
+
+
+temp <- amp_data_exp4 %>%
+  distinct(unique_id, .keep_all = TRUE) %>%
+  mutate(modern_racism_scale_total_scaled = scale(modern_racism_scale_total)) %>%
+  select(unique_id, modern_racism_scale_total_scaled) 
+
+amp_data_exp4_mod <- amp_data_exp4 %>%
+  left_join(temp, by = "unique_id")
+
+model_amp_4 <- 
+  glmer(rating ~ prime_type * IAT_condition + modern_racism_scale_total_scaled + (1 | unique_id),
+        family = "binomial",
+        contrasts = list(prime_type = "contr.sum", 
+                         IAT_condition = "contr.sum"), 
+        data = amp_data_exp4_mod)
+
+```
+
+- Hypothesis refers to interaction effect between AMP prime type and IAT condition.
+- *p* values estimated via Wald method.
+
+### Summary
+
+```{r}
+
+sjt.glmer(model_amp_meta, 
+          emph.p = FALSE,
+          digits.p = 11)
+
+# check directionality of coding of effects - why is OR > 1 here when it's < 1 in the individual analyses?
+
+# sjt.glmer(model_amp_2,
+#           emph.p = FALSE,
+#           digits.p = 7)
+# 
+# sjt.glmer(model_amp_4,
+#           emph.p = FALSE,
+#           digits.p = 5)
+
+```
+
+Total N for meta analysis = `r combined_amp_data %>% distinct(unique_id) %>% dplyr::summarize(n = n()) %>% as.numeric()`.
+
+### Plot effects
+
+```{r fig.height=3, fig.width=5}
+
+sjp.glmer(model_amp_meta, 
+         type = "fe")
+
+# check directionality of coding of effects - why is OR > 1 here when it's < 1 in the individual analyses?
+
+# sjp.glmer(model_amp_2, 
+#          type = "fe")
+# 
+# sjp.glmer(model_amp_4, 
+#          type = "fe")
+
+```
+
+### Table predictions
+
+```{r fig.height=3, fig.width=5}
+
+# n per condition per study
+amp_2_n <- amp_data_exp2 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 2")
+
+amp_4_n <- amp_data_exp4 %>%
+  count(IAT_condition) %>%
+  spread(IAT_condition, n) %>%
+  mutate(experiment = "Experiment 4")
+
+amp_n <- rbind(amp_2_n, amp_4_n) %>%
+  gather(IAT_condition, n, c("Race IAT", "Flowers-Insects IAT")) %>%
+  mutate(percent_n = round(n/sum(n), 3)) %>%
+  arrange(experiment)
+
+
+# predicted effects
+model_amp_meta_predicted_effects <- as.data.frame(effect("prime_type:IAT_condition", model_amp_meta)) %>%
+  mutate(experiment = "Meta-analysis")
+
+model_amp_2_predicted_effects <- as.data.frame(effect("prime_type:IAT_condition", model_amp_2)) %>%
+  mutate(experiment = "Experiment 2")
+model_amp_4_predicted_effects <- as.data.frame(effect("prime_type:IAT_condition", model_amp_4)) %>%
+  mutate(experiment = "Experiment 4")
+
+
+# combine
+model_predicted_effects_amp <- rbind(model_amp_2_predicted_effects, 
+                                     model_amp_4_predicted_effects,
+                                     model_amp_meta_predicted_effects) %>%
+  left_join(amp_n, by = c("experiment", "IAT_condition")) %>%
+  mutate(percent_n = ifelse(is.na(percent_n), .5, percent_n)) %>%  # hard code value needs thought
+  mutate(experiment = fct_relevel(experiment,
+                                  "Meta-analysis",
+                                  "Experiment 4", 
+                                  "Experiment 2"))
+
+
+model_predicted_effects_amp %>% 
+  round_df(2) %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE)
+
+```
+  
+### Plot predictions
+
+```{r fig.height=3, fig.width=7}
+
+ggplot(data = model_predicted_effects_amp,
+       aes(x = experiment, color = IAT_condition)) +
+  geom_point(aes(y = fit, 
+                 size = percent_n), 
+             position = position_dodge(width=0.75),
+             shape = 15,
+             show.legend = FALSE) +
+  geom_linerange(aes(ymax = upper,
+                     ymin = lower), 
+                 position = position_dodge(width=0.75)) +
+  ylab("Rating") +
+  xlab("") +
+  scale_colour_grey() +
+  theme_classic() + 
+  #ylim(3.8, 4.9) +
+  coord_flip() +
+  facet_wrap(~prime_type)
+
+# size of meta points needs thought/work
+
+```
+
