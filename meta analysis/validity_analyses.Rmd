@@ -1,0 +1,546 @@
+---
+title: "Measurement invariance between conditions"
+author: "Ian Hussey^[Ghent University. Email: ian.hussey@ugent.be]"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    code_folding: hide
+    highlight: haddock
+    theme: flatly
+    toc: yes
+    toc_float: yes
+---
+
+Measurement invariance is typically assessed in three hierarhical tests: configural, metric, and scalar invariance. However, the first of these involves assessing the adequacy of fit of a measurement model. However, none of the tasks we consider don't have a history of their structural validity being assessed. As such, decisions about the adequacy of fit for the base model are somewhat beyond the scope of the current article's focus. Tests of metric and scalar invariacne between the control (flowers-insects IAT) vs. intervention (race IAT) conditions are more directly relevant here. That is, previous tests demonstrated differences in means between the conditions on some of these tasks (AMP and SC-IAT). Tests of configural and metric invariance, here, can help address the question of whether these differences are attributable to changes in the latent variable, or merely differences in  measurement quality between the two conditions. 
+
+To put this another way: the preregistered analyses appear to demonstrate reactivity effects to the Race IAT. Here, we examine hether these reactivity effects are attributable to chagnes in the latent variable (implicit attitudes) or merely the observed variable (i.e., AMP effects and SC-IAT *D* scores). 
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message=FALSE,
+                      warning=FALSE)
+```
+
+```{r}
+
+# dependencies
+library(tidyverse)
+library(lavaan)
+library(semTools)
+library(timesavers)
+library(knitr)
+library(kableExtra)
+
+# options
+options(knitr.table.format = "html") # necessary configuration of tables
+
+# disable scientific notation
+options(scipen = 999) 
+
+# set seed for reproducability
+set.seed(42)
+
+```
+
+# Analytic strategy
+
+Function that defines the analytic strategy.
+
+Cut-offs values are generally seen as debatable, but can be useful for non-expert readers. Here I employ the well cited cut-offs suggested by simulation studies:
+
+- Configural invariance (Hu & Bentler, 1999): CFI >= 0.95 & RMSEA <= .06.
+- Metric and scalar invariance (Cheung & Rensvold, 2002): Delta-CFI >= -0.015 & Delta-RMSEA <= 0.01.
+
+Other metrics are also produced, following reccomendations for the reporting of measurement invariance (Putnick & Bornstein, 2016; Vandenberg & Lance, 2000).
+
+NB there seems to be a typo in the comparison of nested models; output currently reads "scalar - scalar" when it should read "scalar - metric". I think the issue is in `semTools::compareFit` but can't find it in the source code.  
+
+```{r}
+
+mi_via_cutoffs <- function(data, model, scale, group, ordinal = FALSE, 
+                           levels = c("1", "2", "3", "4", "5", "6", "7")) {
+  
+  # dependencies
+  require(lavaan)
+  require(tidyverse)
+  require(semTools)
+  require(timesavers)
+  
+  if (ordinal == TRUE) {
+    
+    # fit the same cfa model to both of the two conditions
+    configural_control <- data %>%
+      filter(IAT_condition == "Flowers-Insects IAT") %>%
+      select(-IAT_condition) %>%
+      cfa(model = model,
+          data  = .,
+          order = levels,
+          estimator = "WLSMV")
+    
+    configural_race <- data %>%
+      filter(IAT_condition == "Race IAT") %>%
+      select(-IAT_condition) %>%
+      cfa(model = model,
+          data  = .,
+          order = levels,
+          estimator = "WLSMV")
+    
+    # summarize these cfa fit indices
+    configural_separate_temp <- compareFit(configural_control, configural_race, nested = FALSE) %>%
+      summary()
+    
+    configural_separate <- configural_separate_temp$fit.indices %>%
+      rownames_to_column(var = "test") %>%
+      mutate(MI = ifelse(rmsea.scaled > 0.06 | cfi.scaled < 0.95, "failed", "passed")) %>%
+      round_df(3) %>%
+      mutate(scale = scale)
+    
+    # fit the model to the combined data to provide a baseline
+    configural <- data %>%
+      cfa(model = model,
+          data  = .,
+          order = levels,
+          estimator = "WLSMV",
+          group = group)
+    
+    # constrain slopes
+    metric <- data %>%
+      cfa(model = model,
+          data  = .,
+          order = levels,
+          estimator = "WLSMV",
+          group = group,
+          group.equal = "loadings")
+    
+    # constrain intercepts
+    scalar <- data %>%
+      cfa(model = model,
+          data  = .,
+          order = levels,
+          estimator = "WLSMV",
+          group = group,
+          group.equal = c( "loadings", "intercepts"))
+    
+    # summarize these cfa fit indices, and their change across nested models
+    results <- compareFit(configural, metric, scalar, nested = TRUE) %>%
+      summary()
+    
+    metric_scalar_indicies <- results$fit.indices %>%
+      rownames_to_column(var = "test") %>%
+      round_df(3) %>%
+      mutate(scale = scale)
+    
+    metric_scalar_deltas <- results$fit.diff %>%
+      rownames_to_column(var = "test") %>%
+      mutate(MI = ifelse(rmsea.scaled > 0.01 | cfi.scaled < -0.015, "failed", "passed")) %>%
+      round_df(3) %>%
+      mutate(scale = scale)
+    
+  } else {
+    
+    # fit the same cfa model to both of the two conditions
+    configural_control <- data %>%
+      filter(IAT_condition == "Flowers-Insects IAT") %>%
+      select(-IAT_condition) %>%
+      cfa(model = model,
+          data  = .,
+          estimator = "ML")
+    
+    configural_race <- data %>%
+      filter(IAT_condition == "Race IAT") %>%
+      select(-IAT_condition) %>%
+      cfa(model = model,
+          data  = .,
+          estimator = "ML")
+    
+    # summarize these cfa fit indices
+    configural_separate_temp <- compareFit(configural_control, configural_race, nested = FALSE) %>%
+      summary()
+    
+    configural_separate <- configural_separate_temp$fit.indices %>%
+      rownames_to_column(var = "test") %>%
+      mutate(MI = ifelse(rmsea > 0.06 | cfi < 0.95, "failed", "passed")) %>%
+      round_df(3) %>%
+      mutate(scale = scale)
+    
+    # fit the model to the combined data to provide a baseline
+    configural <- data %>%
+      cfa(model = model,
+          data  = .,
+          estimator = "ML",
+          group = group)
+    
+    # constrain slopes
+    metric <- data %>%
+      cfa(model = model,
+          data  = .,
+          estimator = "ML",
+          group = group,
+          group.equal = "loadings")
+    
+    # constrain intercepts
+    scalar <- data %>%
+      cfa(model = model,
+          data  = .,
+          estimator = "ML",
+          group = group,
+          group.equal = c( "loadings", "intercepts"))
+    
+    # summarize these cfa fit indices, and their change across nested models
+    results <- compareFit(configural, metric, scalar, nested = TRUE) %>%
+      summary()
+    
+    metric_scalar_indicies <- results$fit.indices %>%
+      rownames_to_column(var = "test") %>%
+      round_df(3) %>%
+      mutate(scale = scale)
+    
+    metric_scalar_deltas <- results$fit.diff %>%
+      rownames_to_column(var = "test") %>%
+      mutate(MI = ifelse(rmsea > 0.01 | cfi < -0.015, "failed", "passed")) %>%
+      round_df(3) %>%
+      mutate(scale = scale)
+    
+  }
+  
+  # return results as a list of data frames
+  return(list(configural_separate_indices = configural_separate,
+              metric_scalar_indicies      = metric_scalar_indicies,
+              metric_scalar_deltas        = metric_scalar_deltas))
+  
+}
+
+```
+
+# Single-Category Implicit Association Test
+
+## Get data
+
+```{r}
+
+data_sciat_parcels <- 
+  read.csv("../experiment 1/data/processed/processed summary data - wide format.csv") %>%
+  dplyr::filter(exclude == FALSE,
+                IAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  mutate(experiment = "1", 
+         unique_id = paste(experiment, participant, sep = "_")) %>%
+  dplyr::select(unique_id, IAT_condition, contains("SCIAT_D_parcel"))
+
+```
+
+## Model
+
+SC-IAT D scores are calculated via between block comparions, therefore trial level data can't be used. Instead, a homogenous parcelling strategy is used. Three D scores are calculated, one for each stimulus class employed in the task (i.e., positive words, negative words, and Black faces). 
+
+```{r}
+
+model_sciat <- "SCIAT =~ SCIAT_D_parcel_1 + SCIAT_D_parcel_2 + SCIAT_D_parcel_3" 
+
+```
+
+## Measurement Invariance
+
+```{r include=FALSE}
+
+mi_sciat <- mi_via_cutoffs(data  = data_sciat_parcels, 
+                           model = model_sciat,
+                           scale = "SCIAT",
+                           group = "IAT_condition")
+
+```
+
+### Configural
+
+```{r}
+
+mi_sciat$configural_separate_indices %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+```
+
+### Metric & scalar
+
+Via difference tests. Raw values also reported.
+
+```{r}
+
+mi_sciat$metric_scalar_indicies %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_sciat$metric_scalar_deltas %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_sciat_printing <- mi_sciat$metric_scalar_deltas %>% 
+  select(test, cfi, rmsea, MI)
+
+```
+
+Summary:
+
+- Metric invariance: $\Delta$CFI = `r mi_sciat_printing[1,2]`, $\Delta$RMSEA = `r mi_sciat_printing[1,3]` (`r mi_sciat_printing[1,4]`)
+- Scalar invariance: $\Delta$CFI = `r mi_sciat_printing[2,2]`, $\Delta$RMSEA = `r mi_sciat_printing[2,3]` (`r mi_sciat_printing[2,4]`)
+
+# Affect Misattribution Procedure
+
+## Get data
+
+```{r}
+
+data_amp_parcels_exp2 <- 
+  read.csv("../experiment 2/data/processed/processed summary data - wide format.csv") %>%
+  mutate(experiment = "2", 
+         unique_id = paste(experiment, participant, sep = "_"))
+
+data_amp_parcels_exp4 <- 
+  read.csv("../experiment 4/data/processed/processed summary data - wide format.csv") %>%
+  mutate(experiment = "4", 
+         unique_id = paste(experiment, participant, sep = "_"))
+
+# combine and tidy
+data_amp_parcels <- bind_rows(data_amp_parcels_exp2,
+                              data_amp_parcels_exp4) %>%
+  dplyr::filter(exclude == FALSE,
+                IAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  mutate(experiment = "2", 
+         unique_id = paste(experiment, participant, sep = "_")) %>%
+  dplyr::select(unique_id, IAT_condition, contains("AMP_diff_parcel"))
+
+```
+
+## Model
+
+AMP scores are calculated via between trial-type comparions, therefore trial level data can't be used. Homogenous parcelling can't be used either as there are only two stimulus classes/trial types (3 minimum). Instead, a heterogeneous parcelling strategy is used. Four AMP effects are calculated, one for each quarter of the task by completion order. 
+
+```{r}
+
+model_amp <- "AMP =~ AMP_diff_parcel_1 + AMP_diff_parcel_2 + AMP_diff_parcel_3 + AMP_diff_parcel_4" 
+
+```
+
+## Measurement Invariance
+
+```{r include=FALSE}
+
+mi_amp <- mi_via_cutoffs(data  = data_amp_parcels, 
+                         model = model_amp,
+                         scale = "AMP",
+                         group = "IAT_condition")
+
+```
+
+### Configural
+
+```{r}
+
+mi_amp$configural_separate_indices %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+```
+
+### Metric & scalar
+
+Via difference tests. Raw values also reported.
+
+```{r}
+
+mi_amp$metric_scalar_indicies %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_amp$metric_scalar_deltas %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_amp_printing <- mi_amp$metric_scalar_deltas %>% 
+  select(test, cfi, rmsea, MI)
+
+```
+
+Summary:
+
+- Metric invariance: $\Delta$CFI = `r mi_amp_printing[1,2]`, $\Delta$RMSEA = `r mi_amp_printing[1,3]` (`r mi_amp_printing[1,4]`)
+- Scalar invariance: $\Delta$CFI = `r mi_amp_printing[2,2]`, $\Delta$RMSEA = `r mi_amp_printing[2,3]` (`r mi_amp_printing[2,4]`)
+
+# Shooter Bias task
+
+## Get data
+
+```{r}
+
+data_shooter_parcels <-
+  read.csv("../experiment 3/data/processed/processed summary data - wide format.csv") %>%
+  dplyr::filter(exclude == FALSE,
+                IAT_exclude_based_on_fast_trials == FALSE) %>%
+  dplyr::mutate(participant = as.factor(participant),
+                IAT_condition = as.factor(IAT_condition)) %>%
+  mutate(experiment = "3",
+         unique_id = paste(experiment, participant, sep = "_")) %>%
+  dplyr::select(unique_id, IAT_condition, contains("d_parcel"))
+
+```
+
+## Model
+
+Shooter bias data doesn't have a tradition of being analysed in psychometric terms, therefore a method had to be created for our purposes here. A heterogeneous parcelling strategy was used, similar to the AMP above. Four d' effects are calculated, one for each quarter of the task by completion order. 
+
+While the Shooter bias task can and is scored in multiple other ways (e.g., c metric, % accuracy, RTs), integrating the results of multiple tests of MI would pose a challenge. The d' metric was therefore selected for analysis. The c metric was also examine, but demonstrated model convergence issues.
+
+```{r}
+
+model_shooter_d <- "SCIAT =~ d_parcel_1 + d_parcel_2 + d_parcel_3 + d_parcel_4" 
+
+```
+
+## Measurement Invariance
+
+```{r include=FALSE}
+
+mi_shooter_d <- mi_via_cutoffs(data  = data_shooter_parcels,
+                               model = model_shooter_d,
+                               scale = "Shooter bias d",
+                               group = "IAT_condition")
+
+```
+
+### Configural
+
+```{r}
+
+mi_shooter_d$configural_separate_indices %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+```
+
+### Metric & scalar
+
+Via difference tests. Raw values also reported.
+
+```{r}
+
+mi_shooter_d$metric_scalar_indicies %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_shooter_d$metric_scalar_deltas %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_shooter_d_printing <- mi_shooter_d$metric_scalar_deltas %>% 
+  select(test, cfi, rmsea, MI)
+
+```
+
+Summary:
+
+- Metric invariance: $\Delta$CFI = `r mi_shooter_d_printing[1,2]`, $\Delta$RMSEA = `r mi_shooter_d_printing[1,3]` (`r mi_shooter_d_printing[1,4]`)
+- Scalar invariance: $\Delta$CFI = `r mi_shooter_d_printing[2,2]`, $\Delta$RMSEA = `r mi_shooter_d_printing[2,3]` (`r mi_shooter_d_printing[2,4]`)
+
+# Self-report ratings
+
+## Get data
+
+```{r}
+
+data_ratings_exp1 <- 
+  read.csv("../experiment 1/data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(unique_id = as.factor(paste("exp1", participant, sep = "_"))) 
+
+data_ratings_exp2 <- 
+  read.csv("../experiment 2/data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(unique_id = as.factor(paste("exp2", participant, sep = "_")))  %>%
+  filter(unique_id != "exp2_147")
+
+data_ratings_exp3 <- 
+  read.csv("../experiment 3/data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(unique_id = as.factor(paste("exp3", participant, sep = "_")))
+
+data_ratings_exp4 <- 
+  read.csv("../experiment 4/data/processed/processed ratings data - long format.csv") %>%
+  dplyr::mutate(unique_id = as.factor(paste("exp4", participant, sep = "_"))) 
+
+# combine and tidy
+data_ratings <- bind_rows(data_ratings_exp1,
+                          data_ratings_exp2,
+                          data_ratings_exp3,
+                          data_ratings_exp4) %>%
+  dplyr::mutate(IAT_condition = as.factor(IAT_condition),
+                exclude = ifelse(IAT_exclude_based_on_fast_trials == TRUE, TRUE, 
+                                 FALSE)) %>%
+  filter(exclude == FALSE) %>%
+  dplyr::select(unique_id, IAT_condition, self_report_item, rating) %>%
+  spread(self_report_item, rating) %>%
+  rename(face_1 = bf14_nc.jpg,
+         face_2 = bf23_nc.jpg, 
+         face_3 = bf56_nc.jpg, 
+         face_4 = bm14_nc.jpg, 
+         face_5 = bm23_nc.jpg, 
+         face_6 = bm56_nc.jpg)
+
+```
+
+## Model
+
+Ratings scales used trial level data, separting by the stimulus exemplar being rated. As Likert scales were employed, we fitted ordinal models using the WLSMV estimator function.
+
+```{r}
+
+model_ratings <- "AMP =~ face_1 + face_2 + face_3 + face_4 + face_5 + face_6" 
+
+```
+
+## Measurement Invariance
+
+```{r include=FALSE}
+
+mi_ratings <- mi_via_cutoffs(data    = data_ratings, 
+                             model   = model_ratings,
+                             scale   = "ratings",
+                             group   = "IAT_condition",
+                             ordinal = TRUE)
+
+```
+
+### Configural
+
+```{r}
+
+mi_ratings$configural_separate_indices %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+```
+
+### Metric & scalar
+
+Via difference tests. Raw values also reported.
+
+```{r}
+
+mi_ratings$metric_scalar_indicies %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_ratings$metric_scalar_deltas %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = FALSE, position = "left")
+
+mi_ratings_printing <- mi_ratings$metric_scalar_deltas %>% 
+  select(test, cfi.scaled, rmsea.scaled, MI)
+
+```
+
+Summary:
+
+- Metric invariance: $\Delta$CFI = `r mi_ratings_printing[1,2]`, $\Delta$RMSEA = `r mi_ratings_printing[1,3]` (`r mi_ratings_printing[1,4]`)
+- Scalar invariance: $\Delta$CFI = `r mi_ratings_printing[2,2]`, $\Delta$RMSEA = `r mi_ratings_printing[2,3]` (`r mi_ratings_printing[2,4]`)
+
+
+

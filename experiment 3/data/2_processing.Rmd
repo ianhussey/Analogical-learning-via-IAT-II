@@ -148,14 +148,20 @@ IAT_summary_stats_df <-
 
 # shooter task --------------------------------------------------------
 
+# trials with a non response are excluded. as such, less than 80 trials in the processed data represents some degree of non responding.
 
 # select relevant data
 shooter_trimmed <- cleaned_df %>%
-  dplyr::filter(grepl("POD", task)) %>%  # only shooter trials
+  dplyr::filter(str_detect(task, "POD")) %>%  # only shooter trials
+  dplyr::filter(!str_detect(task, "practice")) %>% # only non practice trials
   dplyr::select(participant, item, accuracy, response_categorisation, rt) %>%  # only vars of interest
 
-  filter(response_categorisation != "" &                   # exclude trials with no response
-           response_categorisation != "Noresponse") %>%    # exclude practice block trials, which do not record a response type
+  # filter(response_categorisation != "" &                   # exclude trials with no response
+  #          response_categorisation != "Noresponse") %>%    # exclude practice block trials, which do not record a response type
+
+  # old code (above) mixed up how practice blocks should be excluded. this is corrected above (!str_detect) and below:
+
+  filter(response_categorisation != "Noresponse") %>%    # exclude trials with a non response
            
   # classify the trial types
   mutate(item = as.character(item),
@@ -164,12 +170,12 @@ shooter_trimmed <- cleaned_df %>%
 
 # total trials per participant per trial type
 temp1 <- shooter_trimmed %>%
-  count(participant, trial_type) %>%
+  dplyr::count(participant, trial_type) %>%
   dplyr::rename(totaltrials = n)
 
 # n trials per participant per trial type per response type
 temp2 <- shooter_trimmed %>%
-  count(participant, trial_type, response_categorisation) %>%
+  dplyr::count(participant, trial_type, response_categorisation) %>%
   dplyr::rename(ntrials = n)
 
 shooter_data_df <- 
@@ -192,7 +198,7 @@ shooter_data_df <-
   ) %>%
   
   group_by(participant, trial_type) %>%
-  dplyr::summarize(totaltrials     = sum(ntrials, na.rm = TRUE),
+  dplyr::summarize(totaltrials     = sum(ntrials,         na.rm = TRUE),
                    percentage.Hit  = sum(percentage.Hit,  na.rm = TRUE), 
                    percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
                    percentage.FA   = sum(percentage.FA,   na.rm = TRUE), 
@@ -219,23 +225,388 @@ shooter_data_df <-
   
   # compute d' and c
   # d' and c require values of Hit and FA other than zero and 1. Where values of 0 occur, set to 1/2N, where N = number of trials. Where values of 1 1-1/2N. Here N = 80.
-  mutate(percentage.Hit = ifelse(percentage.Hit == 0, 1/(80*2), percentage.Hit),  
-         percentage.Hit = ifelse(percentage.Hit == 1, 1-1/(80*2), percentage.Hit),  
-         percentage.FA = ifelse(percentage.FA == 0, 1/(80*2), percentage.FA),
-         percentage.FA = ifelse(percentage.FA == 1, 1-1/(80*2), percentage.FA),
+  mutate(percentage.Hit = ifelse(percentage.Hit == 0, 1/(80*2), 
+                                 ifelse(percentage.Hit == 1, 1-1/(80*2), percentage.Hit)),  
+         percentage.FA = ifelse(percentage.FA == 0, 1/(80*2), 
+                                ifelse(percentage.FA == 1, 1-1/(80*2), percentage.FA)),
          d              = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3),
-         c              = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3),
-         percentage.Hit = round(percentage.Hit, 3),
+         c              = round(-0.5*(qnorm(percentage.Hit) + qnorm(percentage.FA)), 3)) %>%
+  mutate(percentage.Hit = round(percentage.Hit, 3),
          percentage.FA  = round(percentage.FA, 3))
 
 
 shooter_summary_stats_df <- shooter_trimmed %>%
   dplyr::group_by(participant) %>%
-  dplyr::summarize(shooter_mean_RT = round(mean(rt), 0),
+  dplyr::summarize(n_trials_with_responses = n(),
+                   shooter_mean_RT = round(mean(rt), 0),
                    shooter_perc_acc = round(sum(accuracy)/n(), 2)) %>%
   dplyr::select(participant,
                 shooter_mean_RT,
-                shooter_perc_acc)
+                shooter_perc_acc,
+                n_trials_with_responses)
+
+
+# shooter bias by parcel 1 ------
+
+# select relevant data
+shooter_trimmed_parcel_1 <- cleaned_df %>%
+  dplyr::filter(str_detect(task, "POD") &
+                  !str_detect(task, "practice")) %>%
+  group_by(participant) %>%
+  dplyr::mutate(trial_n = row_number()) %>%
+  ungroup() %>%
+  dplyr::filter(trial_n <= 20) %>% 
+  dplyr::select(participant, item, accuracy, response_categorisation, rt) %>%  # only vars of interest
+
+  # filter(response_categorisation != "" &                   # exclude trials with no response
+  #          response_categorisation != "Noresponse") %>%    # exclude practice block trials, which do not record a response type
+
+  # old code (above) mixed up how practice blocks should be excluded. this is corrected above (!str_detect) and below:
+
+  filter(response_categorisation != "Noresponse") %>%    # exclude trials with a non response
+           
+  # classify the trial types
+  mutate(item = as.character(item),
+         trial_type = ifelse(str_detect(item, "Gun"), "gun", 
+                      ifelse(str_detect(item, "Object"), "object", NA)))
+
+# total trials per participant per trial type
+temp1_parcel_1 <- shooter_trimmed_parcel_1 %>%
+  dplyr::count(participant, trial_type) %>%
+  dplyr::rename(totaltrials = n)
+
+# n trials per participant per trial type per response type
+temp2_parcel_1 <- shooter_trimmed_parcel_1 %>%
+  dplyr::count(participant, trial_type, response_categorisation) %>%
+  dplyr::rename(ntrials = n)
+
+shooter_data_df_parcel_1 <- 
+  # join dfs
+  left_join(temp1_parcel_1, temp2_parcel_1, by = c("participant", "trial_type")) %>%
+  # calculate percentages
+  dplyr::mutate(percentage = ntrials/totaltrials) %>%
+  # reshape
+  spread(response_categorisation, percentage) %>%
+  dplyr::rename(percentage.Hit  = Hit, 
+                percentage.Miss = Miss, 
+                percentage.FA   = FA, 
+                percentage.CR   = CR) %>%
+  mutate(
+    # add zeros where data NAs are present
+    percentage.Hit   = ifelse(is.na(percentage.Hit),  0, percentage.Hit),
+    percentage.Miss  = ifelse(is.na(percentage.Miss), 0, percentage.Miss),
+    percentage.FA    = ifelse(is.na(percentage.FA),   0, percentage.FA),
+    percentage.CR    = ifelse(is.na(percentage.CR),   0, percentage.CR)
+  ) %>%
+  
+  group_by(participant, trial_type) %>%
+  dplyr::summarize(totaltrials     = sum(ntrials,         na.rm = TRUE),
+                   percentage.Hit  = sum(percentage.Hit,  na.rm = TRUE), 
+                   percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
+                   percentage.FA   = sum(percentage.FA,   na.rm = TRUE), 
+                   percentage.CR   = sum(percentage.CR,   na.rm = TRUE)) %>%
+  
+  rowwise() %>%
+  mutate(
+    # invert Hits
+    percentage.Hit = ifelse(trial_type == "Gun" & percentage.Hit == 1,
+                            (1-(1/(2*totaltrials))),
+                            percentage.Hit),
+    
+    # invert FAs
+    percentage.FA = ifelse(trial_type == "Object" & percentage.FA == 0,
+                           (1/(2*totaltrials)),
+                           percentage.FA)
+  ) %>%
+  ungroup() %>%
+  
+  # summarize across trial types
+  group_by(participant) %>%
+  dplyr::summarise(percentage.Hit = sum(percentage.Hit), 
+                   percentage.FA  = sum(percentage.FA)) %>%
+
+  # compute d' and c
+  # d' and c require values of Hit and FA other than zero and 1. Where values of 0 occur, set to 1/2N, where N = number of trials. Where values of 1 1-1/2N. Here N = 80.
+  mutate(percentage.Hit = ifelse(percentage.Hit == 0, 1/(20*2), 
+                                 ifelse(percentage.Hit == 1, 1-1/(20*2), percentage.Hit)),  
+         percentage.FA  = ifelse(percentage.FA == 0, 1/(20*2), 
+                                 ifelse(percentage.FA == 1, 1-1/(20*2), percentage.FA)),
+         d_parcel_1     = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3)) %>%
+  dplyr::select(participant, d_parcel_1)
+
+
+# shooter bias by parcel 2 ------
+
+# select relevant data
+shooter_trimmed_parcel_2 <- cleaned_df %>%
+  dplyr::filter(str_detect(task, "POD") &
+                  !str_detect(task, "practice")) %>%
+  group_by(participant) %>%
+  dplyr::mutate(trial_n = row_number()) %>%
+  ungroup() %>%
+  dplyr::filter(trial_n > 20 & trial_n <= 40) %>% 
+  dplyr::select(participant, item, accuracy, response_categorisation, rt) %>%  # only vars of interest
+
+  # filter(response_categorisation != "" &                   # exclude trials with no response
+  #          response_categorisation != "Noresponse") %>%    # exclude practice block trials, which do not record a response type
+
+  # old code (above) mixed up how practice blocks should be excluded. this is corrected above (!str_detect) and below:
+
+  filter(response_categorisation != "Noresponse") %>%    # exclude trials with a non response
+           
+  # classify the trial types
+  mutate(item = as.character(item),
+         trial_type = ifelse(str_detect(item, "Gun"), "gun", 
+                      ifelse(str_detect(item, "Object"), "object", NA)))
+
+# total trials per participant per trial type
+temp1_parcel_2 <- shooter_trimmed_parcel_2 %>%
+  dplyr::count(participant, trial_type) %>%
+  dplyr::rename(totaltrials = n)
+
+# n trials per participant per trial type per response type
+temp2_parcel_2 <- shooter_trimmed_parcel_2 %>%
+  dplyr::count(participant, trial_type, response_categorisation) %>%
+  dplyr::rename(ntrials = n)
+
+shooter_data_df_parcel_2 <- 
+  # join dfs
+  left_join(temp1_parcel_2, temp2_parcel_2, by = c("participant", "trial_type")) %>%
+  # calculate percentages
+  dplyr::mutate(percentage = ntrials/totaltrials) %>%
+  # reshape
+  spread(response_categorisation, percentage) %>%
+  dplyr::rename(percentage.Hit  = Hit, 
+                percentage.Miss = Miss, 
+                percentage.FA   = FA, 
+                percentage.CR   = CR) %>%
+  mutate(
+    # add zeros where data NAs are present
+    percentage.Hit   = ifelse(is.na(percentage.Hit),  0, percentage.Hit),
+    percentage.Miss  = ifelse(is.na(percentage.Miss), 0, percentage.Miss),
+    percentage.FA    = ifelse(is.na(percentage.FA),   0, percentage.FA),
+    percentage.CR    = ifelse(is.na(percentage.CR),   0, percentage.CR)
+  ) %>%
+  
+  group_by(participant, trial_type) %>%
+  dplyr::summarize(totaltrials     = sum(ntrials,         na.rm = TRUE),
+                   percentage.Hit  = sum(percentage.Hit,  na.rm = TRUE), 
+                   percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
+                   percentage.FA   = sum(percentage.FA,   na.rm = TRUE), 
+                   percentage.CR   = sum(percentage.CR,   na.rm = TRUE)) %>%
+  
+  rowwise() %>%
+  mutate(
+    # invert Hits
+    percentage.Hit = ifelse(trial_type == "Gun" & percentage.Hit == 1,
+                            (1-(1/(2*totaltrials))),
+                            percentage.Hit),
+    
+    # invert FAs
+    percentage.FA = ifelse(trial_type == "Object" & percentage.FA == 0,
+                           (1/(2*totaltrials)),
+                           percentage.FA)
+  ) %>%
+  ungroup() %>%
+  
+  # summarize across trial types
+  group_by(participant) %>%
+  dplyr::summarise(percentage.Hit = sum(percentage.Hit), 
+                   percentage.FA  = sum(percentage.FA)) %>%
+
+  # compute d' and c
+  # d' and c require values of Hit and FA other than zero and 1. Where values of 0 occur, set to 1/2N, where N = number of trials. Where values of 1 1-1/2N. Here N = 80.
+  mutate(percentage.Hit = ifelse(percentage.Hit == 0, 1/(20*2), 
+                                 ifelse(percentage.Hit == 1, 1-1/(20*2), percentage.Hit)),  
+         percentage.FA  = ifelse(percentage.FA == 0, 1/(20*2), 
+                                 ifelse(percentage.FA == 1, 1-1/(20*2), percentage.FA)),
+         d_parcel_2     = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3)) %>%
+  dplyr::select(participant, d_parcel_2)
+
+
+# shooter bias by parcel 3 ------
+
+# select relevant data
+shooter_trimmed_parcel_3 <- cleaned_df %>%
+  dplyr::filter(str_detect(task, "POD") &
+                  !str_detect(task, "practice")) %>%
+  group_by(participant) %>%
+  dplyr::mutate(trial_n = row_number()) %>%
+  ungroup() %>%
+  dplyr::filter(trial_n > 40 & trial_n <= 60) %>% 
+  dplyr::select(participant, item, accuracy, response_categorisation, rt) %>%  # only vars of interest
+
+  # filter(response_categorisation != "" &                   # exclude trials with no response
+  #          response_categorisation != "Noresponse") %>%    # exclude practice block trials, which do not record a response type
+
+  # old code (above) mixed up how practice blocks should be excluded. this is corrected above (!str_detect) and below:
+
+  filter(response_categorisation != "Noresponse") %>%    # exclude trials with a non response
+           
+  # classify the trial types
+  mutate(item = as.character(item),
+         trial_type = ifelse(str_detect(item, "Gun"), "gun", 
+                      ifelse(str_detect(item, "Object"), "object", NA)))
+
+# total trials per participant per trial type
+temp1_parcel_3 <- shooter_trimmed_parcel_3 %>%
+  dplyr::count(participant, trial_type) %>%
+  dplyr::rename(totaltrials = n)
+
+# n trials per participant per trial type per response type
+temp2_parcel_3 <- shooter_trimmed_parcel_3 %>%
+  dplyr::count(participant, trial_type, response_categorisation) %>%
+  dplyr::rename(ntrials = n)
+
+shooter_data_df_parcel_3 <- 
+  # join dfs
+  left_join(temp1_parcel_3, temp2_parcel_3, by = c("participant", "trial_type")) %>%
+  # calculate percentages
+  dplyr::mutate(percentage = ntrials/totaltrials) %>%
+  # reshape
+  spread(response_categorisation, percentage) %>%
+  dplyr::rename(percentage.Hit  = Hit, 
+                percentage.Miss = Miss, 
+                percentage.FA   = FA, 
+                percentage.CR   = CR) %>%
+  mutate(
+    # add zeros where data NAs are present
+    percentage.Hit   = ifelse(is.na(percentage.Hit),  0, percentage.Hit),
+    percentage.Miss  = ifelse(is.na(percentage.Miss), 0, percentage.Miss),
+    percentage.FA    = ifelse(is.na(percentage.FA),   0, percentage.FA),
+    percentage.CR    = ifelse(is.na(percentage.CR),   0, percentage.CR)
+  ) %>%
+  
+  group_by(participant, trial_type) %>%
+  dplyr::summarize(totaltrials     = sum(ntrials,         na.rm = TRUE),
+                   percentage.Hit  = sum(percentage.Hit,  na.rm = TRUE), 
+                   percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
+                   percentage.FA   = sum(percentage.FA,   na.rm = TRUE), 
+                   percentage.CR   = sum(percentage.CR,   na.rm = TRUE)) %>%
+  
+  rowwise() %>%
+  mutate(
+    # invert Hits
+    percentage.Hit = ifelse(trial_type == "Gun" & percentage.Hit == 1,
+                            (1-(1/(2*totaltrials))),
+                            percentage.Hit),
+    
+    # invert FAs
+    percentage.FA = ifelse(trial_type == "Object" & percentage.FA == 0,
+                           (1/(2*totaltrials)),
+                           percentage.FA)
+  ) %>%
+  ungroup() %>%
+  
+  # summarize across trial types
+  group_by(participant) %>%
+  dplyr::summarise(percentage.Hit = sum(percentage.Hit), 
+                   percentage.FA  = sum(percentage.FA)) %>%
+
+  # compute d' and c
+  # d' and c require values of Hit and FA other than zero and 1. Where values of 0 occur, set to 1/2N, where N = number of trials. Where values of 1 1-1/2N. Here N = 80.
+  mutate(percentage.Hit = ifelse(percentage.Hit == 0, 1/(20*2), 
+                                 ifelse(percentage.Hit == 1, 1-1/(20*2), percentage.Hit)),  
+         percentage.FA  = ifelse(percentage.FA == 0, 1/(20*2), 
+                                 ifelse(percentage.FA == 1, 1-1/(20*2), percentage.FA)),
+         d_parcel_3     = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3)) %>%
+  dplyr::select(participant, d_parcel_3)
+
+
+
+# shooter bias by parcel 4 ------
+
+# select relevant data
+shooter_trimmed_parcel_4 <- cleaned_df %>%
+  dplyr::filter(str_detect(task, "POD") &
+                  !str_detect(task, "practice")) %>%
+  group_by(participant) %>%
+  dplyr::mutate(trial_n = row_number()) %>%
+  ungroup() %>%
+  dplyr::filter(trial_n > 60) %>% 
+  dplyr::select(participant, item, accuracy, response_categorisation, rt) %>%  # only vars of interest
+
+  # filter(response_categorisation != "" &                   # exclude trials with no response
+  #          response_categorisation != "Noresponse") %>%    # exclude practice block trials, which do not record a response type
+
+  # old code (above) mixed up how practice blocks should be excluded. this is corrected above (!str_detect) and below:
+
+  filter(response_categorisation != "Noresponse") %>%    # exclude trials with a non response
+           
+  # classify the trial types
+  mutate(item = as.character(item),
+         trial_type = ifelse(str_detect(item, "Gun"), "gun", 
+                      ifelse(str_detect(item, "Object"), "object", NA)))
+
+# total trials per participant per trial type
+temp1_parcel_4 <- shooter_trimmed_parcel_4 %>%
+  dplyr::count(participant, trial_type) %>%
+  dplyr::rename(totaltrials = n)
+
+# n trials per participant per trial type per response type
+temp2_parcel_4 <- shooter_trimmed_parcel_4 %>%
+  dplyr::count(participant, trial_type, response_categorisation) %>%
+  dplyr::rename(ntrials = n)
+
+shooter_data_df_parcel_4 <- 
+  # join dfs
+  left_join(temp1_parcel_4, temp2_parcel_4, by = c("participant", "trial_type")) %>%
+  # calculate percentages
+  dplyr::mutate(percentage = ntrials/totaltrials) %>%
+  # reshape
+  spread(response_categorisation, percentage) %>%
+  dplyr::rename(percentage.Hit  = Hit, 
+                percentage.Miss = Miss, 
+                percentage.FA   = FA, 
+                percentage.CR   = CR) %>%
+  mutate(
+    # add zeros where data NAs are present
+    percentage.Hit   = ifelse(is.na(percentage.Hit),  0, percentage.Hit),
+    percentage.Miss  = ifelse(is.na(percentage.Miss), 0, percentage.Miss),
+    percentage.FA    = ifelse(is.na(percentage.FA),   0, percentage.FA),
+    percentage.CR    = ifelse(is.na(percentage.CR),   0, percentage.CR)
+  ) %>%
+  
+  group_by(participant, trial_type) %>%
+  dplyr::summarize(totaltrials     = sum(ntrials,         na.rm = TRUE),
+                   percentage.Hit  = sum(percentage.Hit,  na.rm = TRUE), 
+                   percentage.Miss = sum(percentage.Miss, na.rm = TRUE), 
+                   percentage.FA   = sum(percentage.FA,   na.rm = TRUE), 
+                   percentage.CR   = sum(percentage.CR,   na.rm = TRUE)) %>%
+  
+  rowwise() %>%
+  mutate(
+    # invert Hits
+    percentage.Hit = ifelse(trial_type == "Gun" & percentage.Hit == 1,
+                            (1-(1/(2*totaltrials))),
+                            percentage.Hit),
+    
+    # invert FAs
+    percentage.FA = ifelse(trial_type == "Object" & percentage.FA == 0,
+                           (1/(2*totaltrials)),
+                           percentage.FA)
+  ) %>%
+  ungroup() %>%
+  
+  # summarize across trial types
+  group_by(participant) %>%
+  dplyr::summarise(percentage.Hit = sum(percentage.Hit), 
+                   percentage.FA  = sum(percentage.FA)) %>%
+
+  # compute d' and c
+  # d' and c require values of Hit and FA other than zero and 1. Where values of 0 occur, set to 1/2N, where N = number of trials. Where values of 1 1-1/2N. Here N = 80.
+  mutate(percentage.Hit = ifelse(percentage.Hit == 0, 1/(20*2), 
+                                 ifelse(percentage.Hit == 1, 1-1/(20*2), percentage.Hit)),  
+         percentage.FA  = ifelse(percentage.FA == 0, 1/(20*2), 
+                                 ifelse(percentage.FA == 1, 1-1/(20*2), percentage.FA)),
+         d_parcel_4     = round(qnorm(percentage.Hit) - qnorm(percentage.FA), 3)) %>%
+  dplyr::select(participant, d_parcel_4)
+
+
+shooter_parcels <- shooter_data_df_parcel_1 %>%
+  full_join(shooter_data_df_parcel_2, by = "participant") %>%
+  full_join(shooter_data_df_parcel_3, by = "participant") %>%
+  full_join(shooter_data_df_parcel_4, by = "participant")
 
 
 # join wide D1 scored data and write to disk ------------------------------
@@ -248,6 +619,7 @@ wide_data_df <-
                       as.data.frame(ratings_df),
                       as.data.frame(IAT_summary_stats_df),
                       as.data.frame(shooter_data_df),
+                      as.data.frame(shooter_parcels),
                       as.data.frame(shooter_summary_stats_df)),
                  by = "participant",
                  type = "full") %>%
@@ -264,7 +636,7 @@ wide_data_df <-
 
 
 # print N
-wide_data_df %>% count(IAT_condition, exclude)
+wide_data_df %>% dplyr::count(IAT_condition, exclude)
 
 wide_data_df %>% write.csv(file = "processed/processed summary data - wide format.csv", row.names = FALSE)
 
@@ -302,7 +674,8 @@ ratings_long_format_df <- cleaned_df %>%
   dplyr::mutate(rating = as.integer(response)) %>%
   dplyr::select(participant, 
                 trial_n,
-                rating) %>%
+                rating,
+                self_report_item) %>%
   dplyr::left_join(other_tasks_df, by = "participant")
 
 ratings_long_format_df %>% write.csv(file = "processed/processed ratings data - long format.csv", row.names = FALSE)

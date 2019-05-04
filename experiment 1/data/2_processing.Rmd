@@ -168,6 +168,48 @@ SCIAT_D1_df <-
   dplyr::select(participant, 
                 SCIAT_D1)
 
+SCIAT_D1_first_half_df <-
+  SCIAT_data_df %>%
+  filter(trial_n <= 35) %>%
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(rt_mean_compatible = mean(rt[task == "compatibletest"], na.rm = TRUE),
+                   rt_mean_incompatible = mean(rt[task == "incompatibletest"], na.rm = TRUE),
+                   rt_sd = sd(rt[task == "compatibletest" | task == "incompatibletest"])) %>%
+  dplyr::mutate(diff = rt_mean_incompatible - rt_mean_compatible, # this is effectively a rowwise() calculation as we have group_by() participant and then summarize()'d. rowwise() not included for brevity.
+                SCIAT_D1_first_half = round(diff / rt_sd, 3)) %>%
+  dplyr::select(participant, 
+                SCIAT_D1_first_half)
+
+SCIAT_D1_second_half_df <-
+  SCIAT_data_df %>%
+  filter(trial_n >= 36) %>%
+  dplyr::group_by(participant) %>%
+  dplyr::summarize(rt_mean_compatible = mean(rt[task == "compatibletest"], na.rm = TRUE),
+                   rt_mean_incompatible = mean(rt[task == "incompatibletest"], na.rm = TRUE),
+                   rt_sd = sd(rt[task == "compatibletest" | task == "incompatibletest"])) %>%
+  dplyr::mutate(diff = rt_mean_incompatible - rt_mean_compatible, # this is effectively a rowwise() calculation as we have group_by() participant and then summarize()'d. rowwise() not included for brevity.
+                SCIAT_D1_second_half = round(diff / rt_sd, 3)) %>%
+  dplyr::select(participant, 
+                SCIAT_D1_second_half)
+
+SCIAT_D1_parcels_df <-
+  SCIAT_data_df %>%
+  dplyr::mutate(parcel = ifelse(str_detect(self_report_item, ".jpg"), "SCIAT_D_parcel_1",
+                                ifelse(self_report_item %in% c("Joy", "Pleasure", "Happy", "Love", "Wonderful", "Peace", "Glorious", "Laughter"), "SCIAT_D_parcel_2",
+                                       ifelse(self_report_item %in% c("Hurt",	"Terrible",	"Agony",	"Nasty",	"Evil",	"Horrible",	"Awful",	"Failure"), "SCIAT_D_parcel_3", NA)))) %>%
+  dplyr::group_by(participant, parcel) %>%
+  dplyr::summarize(rt_mean_compatible = mean(rt[task == "compatibletest"], na.rm = TRUE),
+                   rt_mean_incompatible = mean(rt[task == "incompatibletest"], na.rm = TRUE),
+                   rt_sd = sd(rt[task == "compatibletest" | task == "incompatibletest"])) %>%
+  dplyr::mutate(diff = rt_mean_incompatible - rt_mean_compatible, # this is effectively a rowwise() calculation as we have group_by() participant and then summarize()'d. rowwise() not included for brevity.
+                SCIAT_D1 = round(diff / rt_sd, 3)) %>%
+  ungroup() %>%
+  dplyr::select(participant, 
+                parcel,
+                SCIAT_D1) %>%
+  spread(parcel,
+         SCIAT_D1)
+
 # calculate % acc and % fast trials from test block data
 SCIAT_data_df$too_fast_trial <- ifelse(SCIAT_data_df$rt < 300, 1, 0)  # add new column that records if RT < 300ms.
 
@@ -194,6 +236,9 @@ wide_data_df <-
                       as.data.frame(ratings_df),
                       as.data.frame(IAT_summary_stats_df),
                       as.data.frame(SCIAT_D1_df),
+                      as.data.frame(SCIAT_D1_first_half_df),
+                      as.data.frame(SCIAT_D1_second_half_df),
+                      as.data.frame(SCIAT_D1_parcels_df),
                       as.data.frame(SCIAT_summary_stats_df)),
                  by = "participant",
                  type = "full") %>%
@@ -210,7 +255,7 @@ wide_data_df <-
 
 
 # print N
-wide_data_df %>% count(IAT_condition, exclude)
+wide_data_df %>% dplyr::count(IAT_condition, exclude)
 
 wide_data_df %>% write.csv(file = "processed/processed summary data - wide format.csv", row.names = FALSE)
 
@@ -264,7 +309,8 @@ ratings_long_format_df <-
   dplyr::mutate(rating = as.integer(response)) %>%
   dplyr::select(participant, 
                 trial_n,
-                rating) %>%
+                rating,
+                self_report_item) %>%
   dplyr::left_join(other_tasks_df, by = "participant")
 
 ratings_long_format_df %>% write.csv(file = "processed/processed ratings data - long format.csv", row.names = FALSE)

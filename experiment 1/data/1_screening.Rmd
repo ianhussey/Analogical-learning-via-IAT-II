@@ -59,14 +59,16 @@ trimmed_df <- input_df %>%
                 trialcode,  #item
                 response,  
                 correct, #accuracy
-                latency) %>%  #rt
+                latency,
+                stimulusitem1) %>%  #rt
   dplyr::rename(participant = subject,
                 block_n = blocknum,
                 trial_n = trialnum,
                 task = blockcode,
                 item = trialcode,
                 accuracy = correct,
-                rt = latency) %>%
+                rt = latency,
+                self_report_item = stimulusitem1) %>%
   dplyr::mutate(participant = as.numeric(participant))
 
 
@@ -149,7 +151,7 @@ participants_with_incomplete_data <- participants_with_at_least_partial_data %>%
 screened_data <- trimmed_df %>%
   semi_join(participants_with_full_data, by = "participant") %>%
   mutate(complete = TRUE) %>%
-  rbind(participants_with_incomplete_data)
+  bind_rows(participants_with_incomplete_data)
  
 screened_data %>% write.csv("screened/screened data.csv", row.names = FALSE)
 

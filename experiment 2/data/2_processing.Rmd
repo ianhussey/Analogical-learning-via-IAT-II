@@ -192,8 +192,30 @@ AMP_summary_stats_2_df <- cleaned_df %>%
                 AMP_diff) %>%
   ungroup()
 
+AMP_parcels_df <- cleaned_df %>%
+  dplyr::filter(task == "AMP_test") %>% 
+  dplyr::mutate(parcel = ifelse(trial_n >= 2 & trial_n <= 26, "AMP_diff_parcel_1", 
+                                ifelse(trial_n >= 27 & trial_n <= 51, "AMP_diff_parcel_2", 
+                                       ifelse(trial_n >= 52 & trial_n <= 76, "AMP_diff_parcel_3", 
+                                              ifelse(trial_n >= 77 & trial_n <= 101, "AMP_diff_parcel_4", NA))))) %>%
+  dplyr::select(participant,
+                parcel,
+                item,
+                accuracy) %>%
+  dplyr::group_by(participant, parcel, item) %>%
+  dplyr::summarize(AMP_perc_acc = round(sum(accuracy)/n(), 3)) %>%  # arbitrary number of test block trials
+  spread(item, AMP_perc_acc) %>%
+  dplyr::rename(AMP_neutral_perc_acc = primeNeutral,
+                AMP_race_perc_acc = primeRace) %>%
+  dplyr::mutate(AMP_diff = AMP_race_perc_acc - AMP_neutral_perc_acc) %>%
+  dplyr::select(participant,
+                parcel,
+                AMP_diff) %>%
+  spread(parcel, AMP_diff) %>%
+  ungroup()
 
-# join wide D1 scored data and write to disk ------------------------------
+
+# join wide scored data and write to disk ------------------------------
 
 
 wide_data_df <- 
@@ -203,7 +225,8 @@ wide_data_df <-
                       as.data.frame(ratings_df),
                       as.data.frame(IAT_summary_stats_df),
                       as.data.frame(AMP_summary_stats_df),
-                      as.data.frame(AMP_summary_stats_2_df)),
+                      as.data.frame(AMP_summary_stats_2_df),
+                      as.data.frame(AMP_parcels_df)),
                  by = "participant",
                  type = "full") %>%
   dplyr::arrange(participant) %>%
@@ -218,7 +241,9 @@ wide_data_df <-
   ungroup()
 
 # print N
-wide_data_df %>% count(IAT_condition, exclude)
+wide_data_df %>% dplyr::count()
+
+wide_data_df %>% dplyr::count(IAT_condition, exclude)
 
 wide_data_df %>% write.csv(file = "processed/processed summary data - wide format.csv", row.names = FALSE)
 
@@ -267,7 +292,8 @@ ratings_long_format_df <- cleaned_df %>%
   dplyr::mutate(rating = as.integer(response)) %>%
   dplyr::select(participant, 
                 trial_n,
-                rating) %>%
+                rating,
+                self_report_item) %>%
   dplyr::left_join(other_tasks_df, by = "participant")
 
 ratings_long_format_df %>% write.csv(file = "processed/processed ratings data - long format.csv", row.names = FALSE)

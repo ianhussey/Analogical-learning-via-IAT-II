@@ -60,7 +60,8 @@ trimmed_df <- input_df %>%
                 response,  
                 correct, #accuracy
                 latency, #rt
-                values.result) %>%  
+                values.result,
+                stimulusitem1) %>%  
   dplyr::rename(participant = subject,
                 block_n = blocknum,
                 trial_n = trialnum,
@@ -68,7 +69,8 @@ trimmed_df <- input_df %>%
                 item = trialcode,
                 accuracy = correct,
                 rt = latency,
-                response_categorisation = values.result) %>%
+                response_categorisation = values.result,
+                self_report_item = stimulusitem1) %>%
   dplyr::mutate(participant = as.numeric(participant))
 
 
@@ -103,9 +105,9 @@ IAT <- trimmed_df %>%
 participants_with_full_data <- 
   dplyr::semi_join(participants_with_full_data, IAT, by = "participant")
 
-
 shooter_task <- trimmed_df %>%
-  dplyr::filter(grepl("POD", task)) %>%  # filter rows where the block_name includes string
+  dplyr::filter(str_detect(task, "POD")) %>%  # filter rows where the block_name includes string
+  dplyr::filter(!str_detect(task, "practice")) %>%
   dplyr::group_by(participant) %>%
   dplyr::summarize(shooter_trials = n()) %>%  # count the number of trials per participant
   dplyr::ungroup() %>%
@@ -116,7 +118,6 @@ shooter_task <- trimmed_df %>%
 
 participants_with_full_data <-
   dplyr::semi_join(participants_with_full_data, shooter_task, by = "participant")
-
 
 ratings <- trimmed_df %>%
   dplyr::filter(grepl("ratings", task)) %>%  # filter rows where the block_name includes string
@@ -167,7 +168,7 @@ participants_with_incomplete_data <- participants_with_at_least_partial_data %>%
 screened_data <- trimmed_df %>%
   semi_join(participants_with_full_data, by = "participant") %>%
   mutate(complete = TRUE) %>%
-  rbind(participants_with_incomplete_data)
+  bind_rows(participants_with_incomplete_data)
  
 screened_data %>% write.csv("processed/screened data.csv", row.names = FALSE)
 
